@@ -191,8 +191,9 @@ async function compressImage() {
                     const a = document.createElement("a");
                     a.href = url;
                     a.download = `Compressed_${file.name}`;
-                    openAd();
-                    a.click();
+                    setTimeout(() => {
+                        openAd();
+                    }, 100);
                     showNotify("success", "Image Compressed & Downloaded!");
                 },
                 "image/jpeg",
@@ -206,6 +207,7 @@ async function compressImage() {
 async function convertPdfToImg() {
     const file = document.getElementById("pdfInput").files[0];
     if (!file) return showNotify("error", "Please select a PDF file!");
+    openAd();
 
     const btn = document.getElementById("pdfImgBtn");
     btn.disabled = true;
@@ -238,7 +240,7 @@ async function convertPdfToImg() {
                 previewArea.innerHTML += `
                     <div class="col-6 col-md-3 text-center">
                         <img src="${imgData}" class="img-fluid border rounded shadow-sm">
-                        <a href="${imgData}" download="Page_${i}.jpg" onclick = "openAd()" class="btn btn-sm btn-link">Download Page ${i}</a>
+                        <a href="${imgData}" download="Page_${i}.jpg" class="btn btn-sm btn-link">Download Page ${i}</a>
                     </div>`;
             }
             showNotify("success", `Successfully extracted ${pdf.numPages} pages!`);
