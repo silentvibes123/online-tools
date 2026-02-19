@@ -158,7 +158,9 @@ async function generatePDF() {
     }
     btn.disabled = false;
     btn.innerHTML = "Generate PDF";
+    
 }
+
 
 // Image Compressor
 async function compressImage() {
