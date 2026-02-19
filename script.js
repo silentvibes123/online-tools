@@ -116,37 +116,6 @@ function openTool(toolName) {
             <button class="btn btn-info w-100 fw-bold" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
             <div id="pdfPreview" class="row g-3 mt-4"></div>`;
     }
-    else if (toolName === "convert") {
-        toolUI.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3><i class="fas fa-sync-alt me-2 text-primary"></i>Universal Converter</h3>
-                <button class="btn btn-sm btn-outline-danger" onclick="resetConverter()"><i class="fas fa-trash me-1"></i> Clear</button>
-            </div><hr>
-            <div class="row">
-                <div class="col-md-12 mb-3">
-                    <label class="form-label fw-bold">Select Image(s)</label>
-                    <input type="file" id="convInput" multiple accept="image/*" class="form-control" onchange="handleConvFiles()">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Convert To:</label>
-                    <select id="targetFormat" class="form-select">
-                        <option value="image/png">PNG (Lossless)</option>
-                        <option value="image/jpeg">JPG (Standard)</option>
-                        <option value="image/webp">WebP (Next-Gen/Small)</option>
-                    </select>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Resize Width (Optional):</label>
-                    <input type="number" id="targetWidth" class="form-control" placeholder="Original Width">
-                </div>
-                <div class="col-12">
-                    <button class="btn btn-primary w-100 py-2 fw-bold" id="convBtn" onclick="processConversion()">
-                        <i class="fas fa-magic me-2"></i> Convert & Download All
-                    </button>
-                </div>
-            </div>
-            <div id="convPreview" class="row mt-4 g-2"></div>`;
-    }
 }
 
 // --- 3. CORE FUNCTIONALITIES ---
@@ -479,86 +448,6 @@ function showExtra(page) {
                 <p>Tools are provided "as is" without warranty. We are not responsible for data loss due to browser crashes.</p>
             </div>`;
     }
-}
-
-// --- Universal Converter Logic ---
-let selectedFiles = [];
-
-function handleConvFiles() {
-    const files = document.getElementById('convInput').files;
-    const preview = document.getElementById('convPreview');
-    preview.innerHTML = "";
-    selectedFiles = Array.from(files);
-
-    selectedFiles.forEach((file, index) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            preview.innerHTML += `
-                <div class="col-4 col-md-2 position-relative">
-                    <img src="${e.target.result}" class="img-fluid rounded border shadow-sm" style="height: 80px; width: 100%; object-fit: cover;">
-                    <span class="badge bg-dark position-absolute top-0 start-0 m-1" style="font-size: 10px;">${(file.size / 1024).toFixed(0)} KB</span>
-                </div>`;
-        };
-        reader.readAsDataURL(file);
-    });
-}
-
-async function processConversion() {
-    if (selectedFiles.length === 0) return showNotify("error", "Please select images first!");
-    
-    const targetFormat = document.getElementById('targetFormat').value;
-    const targetWidth = document.getElementById('targetWidth').value;
-    const btn = document.getElementById('convBtn');
-    
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
-
-    try {
-        for (const file of selectedFiles) {
-            const img = new Image();
-            img.src = await readFileAsDataURL(file);
-            await img.decode();
-
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-
-            // Resize Logic
-            let width = img.width;
-            let height = img.height;
-            if (targetWidth && targetWidth < img.width) {
-                const ratio = targetWidth / img.width;
-                width = targetWidth;
-                height = img.height * ratio;
-            }
-
-            canvas.width = width;
-            canvas.height = height;
-            ctx.drawImage(img, 0, 0, width, height);
-
-            const blob = await new Promise(resolve => canvas.toBlob(resolve, targetFormat, 0.9));
-            const url = URL.createObjectURL(blob);
-            
-            const a = document.createElement('a');
-            const ext = targetFormat.split('/')[1];
-            a.href = url;
-            a.download = `SwiftTool_${file.name.split('.')[0]}.${ext}`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-        showNotify("success", `Successfully converted ${selectedFiles.length} images!`);
-    } catch (e) {
-        showNotify("error", "Conversion failed!");
-    }
-
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-magic me-2"></i> Convert & Download All';
-}
-
-function resetConverter() {
-    document.getElementById('convInput').value = "";
-    document.getElementById('convPreview').innerHTML = "";
-    selectedFiles = [];
-    showNotify("info", "Files Cleared");
 }
 
 // Update goBack function to handle extra screens too
