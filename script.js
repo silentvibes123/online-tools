@@ -1,4 +1,11 @@
+const openAd = () =>
+    window.open(
+        "https://www.effectivegatecpm.com/jvaifcfvy?key=14ca5c3c0234f1c1cf814b33617e8fad",
+        "_blank",
+    );
+
 // --- 1. Helper Function for Professional Alerts (SweetAlert2) ---
+
 function showNotify(type, message) {
     if (type === "success") {
         Swal.fire({
@@ -59,7 +66,7 @@ function openTool(toolName) {
                 <div class="col-md-6 text-center border-start d-flex flex-column justify-content-center">
                     <h4 class="text-muted">Total Amount</h4>
                     <h1 class="display-4 fw-bold text-success">₹<span id="grandTotal">0</span></h1>
-                    <button class="btn btn-outline-primary mt-3" onclick="window.print()"><i class="fas fa-print me-2"></i>Print Receipt</button>
+                    <button class="btn btn-outline-primary mt-3" onclick="openAd(); window.print();"><i class="fas fa-print me-2"></i>Print Receipt</button>
                 </div>
             </div>`;
     } else if (toolName === "pdf") {
@@ -151,6 +158,7 @@ async function generatePDF() {
             if (i > 0) doc.addPage();
             doc.addImage(data, "JPEG", 10, 10, 190, 277);
         }
+        openAd();
         doc.save("Converted.pdf");
         showNotify("success", "PDF Downloaded Successfully!");
     } catch (e) {
@@ -158,9 +166,7 @@ async function generatePDF() {
     }
     btn.disabled = false;
     btn.innerHTML = "Generate PDF";
-    
 }
-
 
 // Image Compressor
 async function compressImage() {
@@ -185,6 +191,7 @@ async function compressImage() {
                     const a = document.createElement("a");
                     a.href = url;
                     a.download = `Compressed_${file.name}`;
+                    openAd();
                     a.click();
                     showNotify("success", "Image Compressed & Downloaded!");
                 },
@@ -231,7 +238,7 @@ async function convertPdfToImg() {
                 previewArea.innerHTML += `
                     <div class="col-6 col-md-3 text-center">
                         <img src="${imgData}" class="img-fluid border rounded shadow-sm">
-                        <a href="${imgData}" download="Page_${i}.jpg" class="btn btn-sm btn-link">Download Page ${i}</a>
+                        <a href="${imgData}" download="Page_${i}.jpg" onclick = "openAd()" class="btn btn-sm btn-link">Download Page ${i}</a>
                     </div>`;
             }
             showNotify("success", `Successfully extracted ${pdf.numPages} pages!`);
@@ -247,6 +254,7 @@ async function convertPdfToImg() {
 function generateQR() {
     const text = document.getElementById("qrText").value;
     if (!text.trim()) return showNotify("error", "Enter text/URL for QR!");
+    openAd();
     document.getElementById("qrResult").innerHTML = `
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(text)}" class="img-fluid shadow rounded">
         <p class="text-muted mt-2">Right-click to save image</p>`;
@@ -336,7 +344,7 @@ function showExtra(page) {
     document.getElementById("extraScreens").classList.remove("d-none");
     const content = document.getElementById("extraContent");
 
-    if (page === 'about') {
+    if (page === "about") {
         content.innerHTML = `
             <h2 class="fw-bold text-primary mb-4">About SwiftTool Pro</h2>
             <p>SwiftTool Pro is your all-in-one digital companion designed to simplify repetitive daily tasks. From managing cash to converting documents, we bring professional-grade tools directly to your browser.</p>
@@ -344,8 +352,7 @@ function showExtra(page) {
                 <div class="col-md-6"><h5><i class="fas fa-user-shield text-success me-2"></i> 100% Secure</h5><p>All processing happens locally in your browser. Your data never leaves your device.</p></div>
                 <div class="col-md-6"><h5><i class="fas fa-bolt text-warning me-2"></i> Lightning Fast</h5><p>Optimized for speed, no server-side waiting time.</p></div>
             </div>`;
-    }
-    else if (page === 'how') {
+    } else if (page === "how") {
         content.innerHTML = `
             <h2 class="fw-bold text-info mb-4">How It Works</h2>
             <div class="list-group list-group-flush">
@@ -359,8 +366,7 @@ function showExtra(page) {
                     <span class="badge bg-info rounded-pill me-2">3</span> Click the action button to process and download your results instantly.
                 </div>
             </div>`;
-    }
-    else if (page === 'contact') {
+    } else if (page === "contact") {
         content.innerHTML = `
         <h2 class="fw-bold text-danger mb-4">Contact Us</h2>
         <p class="text-muted">Have a query or need a new tool? Fill out the form and our team will get back to you shortly.</p>
@@ -400,45 +406,53 @@ function showExtra(page) {
         </div>`;
 
         // Form Submission Handling (AJAX)
-        const form = document.getElementById('contact-form');
+        const form = document.getElementById("contact-form");
         form.onsubmit = async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('form-submit');
+            const btn = document.getElementById("form-submit");
 
             // Form ID Check (Taki aap bhul na jao)
             // --- Is hisse ko dhyan se replace karein ---
 
             // Form ID Check (Ab ye sirf tab error dega jab aapki ID missing hogi)
-            if (form.action.includes("YOUR_FORM_ID_HERE") || !form.action.includes("f/")) {
-                return Swal.fire('Setup Required', 'Please add your valid Formspree ID in script.js', 'warning');
+            if (
+                form.action.includes("YOUR_FORM_ID_HERE") ||
+                !form.action.includes("f/")
+            ) {
+                return Swal.fire(
+                    "Setup Required",
+                    "Please add your valid Formspree ID in script.js",
+                    "warning",
+                );
             }
 
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+            btn.innerHTML =
+                '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
 
             try {
                 const formData = new FormData(form);
                 const response = await fetch(form.action, {
-                    method: 'POST',
+                    method: "POST",
                     body: formData,
-                    headers: { 'Accept': 'application/json' }
+                    headers: { Accept: "application/json" },
                 });
 
                 if (response.ok) {
-                    showNotify('success', 'Thank you! Your message has been received.');
+                    showNotify("success", "Thank you! Your message has been received.");
                     form.reset();
                 } else {
-                    showNotify('error', 'Message could not be sent. Please try again.');
+                    showNotify("error", "Message could not be sent. Please try again.");
                 }
             } catch (error) {
-                showNotify('error', 'Network error. Check your connection.');
+                showNotify("error", "Network error. Check your connection.");
             }
 
             btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-paper-plane me-2"></i> Send Message Now';
+            btn.innerHTML =
+                '<i class="fas fa-paper-plane me-2"></i> Send Message Now';
         };
-    }
-    else if (page === 'terms') {
+    } else if (page === "terms") {
         content.innerHTML = `
             <h2 class="fw-bold text-dark mb-4">Terms & Privacy Policy</h2>
             <div style="max-height: 300px; overflow-y: auto;" class="pe-3 text-muted">
