@@ -116,6 +116,35 @@ function openTool(toolName) {
             <button class="btn btn-info w-100 fw-bold" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
             <div id="pdfPreview" class="row g-3 mt-4"></div>`;
     }
+    else if (toolName === "bgremover") {
+        toolUI.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3><i class="fas fa-eraser me-2 text-primary"></i>BG Remover</h3>
+                <button class="btn btn-sm btn-outline-danger" onclick="resetBGTool()"><i class="fas fa-redo me-1"></i> Reset</button>
+            </div><hr>
+            <div class="text-center">
+                <input type="file" id="bgInput" class="form-control mb-3" accept="image/*" onchange="initBGPainter(event)">
+                
+                <div id="bgControls" class="d-none mb-3 p-3 bg-light rounded border">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Brush Size</label>
+                            <input type="range" id="brushSize" min="5" max="50" value="20" class="form-range">
+                        </div>
+                        <div class="col-md-8 mt-2 mt-md-0">
+                            <button class="btn btn-success w-100 fw-bold" onclick="downloadBG()">
+                                <i class="fas fa-download me-2"></i> Download Transparent PNG
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="canvas-wrapper mt-3" style="overflow: auto; max-width: 100%; border: 2px dashed #ddd; background: url('https://www.transparenttextures.com/patterns/checkerboard.png');">
+                    <canvas id="bgCanvas" style="cursor: crosshair;"></canvas>
+                </div>
+                <p class="text-muted small mt-2"><i class="fas fa-info-circle me-1"></i> Use your mouse/touch to erase the background manually.</p>
+            </div>`;
+    }
 }
 
 // --- 3. CORE FUNCTIONALITIES ---
@@ -334,7 +363,7 @@ function showExtra(page) {
     document.getElementById("extraScreens").classList.remove("d-none");
     const content = document.getElementById("extraContent");
 
-    if (page === 'about') {
+    if (page === "about") {
         content.innerHTML = `
             <h2 class="fw-bold text-primary mb-4">About SwiftTool Pro</h2>
             <p>SwiftTool Pro is your all-in-one digital companion designed to simplify repetitive daily tasks. From managing cash to converting documents, we bring professional-grade tools directly to your browser.</p>
@@ -342,8 +371,7 @@ function showExtra(page) {
                 <div class="col-md-6"><h5><i class="fas fa-user-shield text-success me-2"></i> 100% Secure</h5><p>All processing happens locally in your browser. Your data never leaves your device.</p></div>
                 <div class="col-md-6"><h5><i class="fas fa-bolt text-warning me-2"></i> Lightning Fast</h5><p>Optimized for speed, no server-side waiting time.</p></div>
             </div>`;
-    }
-    else if (page === 'how') {
+    } else if (page === "how") {
         content.innerHTML = `
             <h2 class="fw-bold text-info mb-4">How It Works</h2>
             <div class="list-group list-group-flush">
@@ -357,8 +385,7 @@ function showExtra(page) {
                     <span class="badge bg-info rounded-pill me-2">3</span> Click the action button to process and download your results instantly.
                 </div>
             </div>`;
-    }
-    else if (page === 'contact') {
+    } else if (page === "contact") {
         content.innerHTML = `
         <h2 class="fw-bold text-danger mb-4">Contact Us</h2>
         <p class="text-muted">Have a query or need a new tool? Fill out the form and our team will get back to you shortly.</p>
@@ -398,45 +425,53 @@ function showExtra(page) {
         </div>`;
 
         // Form Submission Handling (AJAX)
-        const form = document.getElementById('contact-form');
+        const form = document.getElementById("contact-form");
         form.onsubmit = async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('form-submit');
+            const btn = document.getElementById("form-submit");
 
             // Form ID Check (Taki aap bhul na jao)
             // --- Is hisse ko dhyan se replace karein ---
 
             // Form ID Check (Ab ye sirf tab error dega jab aapki ID missing hogi)
-            if (form.action.includes("YOUR_FORM_ID_HERE") || !form.action.includes("f/")) {
-                return Swal.fire('Setup Required', 'Please add your valid Formspree ID in script.js', 'warning');
+            if (
+                form.action.includes("YOUR_FORM_ID_HERE") ||
+                !form.action.includes("f/")
+            ) {
+                return Swal.fire(
+                    "Setup Required",
+                    "Please add your valid Formspree ID in script.js",
+                    "warning",
+                );
             }
 
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+            btn.innerHTML =
+                '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
 
             try {
                 const formData = new FormData(form);
                 const response = await fetch(form.action, {
-                    method: 'POST',
+                    method: "POST",
                     body: formData,
-                    headers: { 'Accept': 'application/json' }
+                    headers: { Accept: "application/json" },
                 });
 
                 if (response.ok) {
-                    showNotify('success', 'Thank you! Your message has been received.');
+                    showNotify("success", "Thank you! Your message has been received.");
                     form.reset();
                 } else {
-                    showNotify('error', 'Message could not be sent. Please try again.');
+                    showNotify("error", "Message could not be sent. Please try again.");
                 }
             } catch (error) {
-                showNotify('error', 'Network error. Check your connection.');
+                showNotify("error", "Network error. Check your connection.");
             }
 
             btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-paper-plane me-2"></i> Send Message Now';
+            btn.innerHTML =
+                '<i class="fas fa-paper-plane me-2"></i> Send Message Now';
         };
-    }
-    else if (page === 'terms') {
+    } else if (page === "terms") {
         content.innerHTML = `
             <h2 class="fw-bold text-dark mb-4">Terms & Privacy Policy</h2>
             <div style="max-height: 300px; overflow-y: auto;" class="pe-3 text-muted">
@@ -449,6 +484,83 @@ function showExtra(page) {
             </div>`;
     }
 }
+
+// --- Background Remover Logic ---
+let bgCanvas, bgCtx, isPainting = false;
+
+function initBGPainter(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            bgCanvas = document.getElementById('bgCanvas');
+            bgCtx = bgCanvas.getContext('2d');
+            
+            // Image size ke hisaab se canvas set karein
+            bgCanvas.width = img.width;
+            bgCanvas.height = img.height;
+            bgCtx.drawImage(img, 0, 0);
+            
+            document.getElementById('bgControls').classList.remove('d-none');
+            setupBGDrawing();
+        }
+        img.src = e.target.result;
+    }
+    reader.readAsDataURL(file);
+}
+
+function setupBGDrawing() {
+    // Mouse Events
+    bgCanvas.onmousedown = () => isPainting = true;
+    bgCanvas.onmouseup = () => { isPainting = false; bgCtx.beginPath(); };
+    bgCanvas.onmousemove = (e) => drawBG(e);
+
+    // Touch Events for Mobile
+    bgCanvas.ontouchstart = (e) => { e.preventDefault(); isPainting = true; };
+    bgCanvas.ontouchend = () => { isPainting = false; bgCtx.beginPath(); };
+    bgCanvas.ontouchmove = (e) => { e.preventDefault(); drawBG(e.touches[0]); };
+}
+
+function drawBG(e) {
+    if (!isPainting) return;
+    const rect = bgCanvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * (bgCanvas.width / rect.width);
+    const y = (e.clientY - rect.top) * (bgCanvas.height / rect.height);
+    const size = document.getElementById('brushSize').value;
+
+    bgCtx.lineWidth = size;
+    bgCtx.lineCap = 'round';
+    bgCtx.globalCompositeOperation = 'destination-out'; // Ye transparency create karta hai
+
+    bgCtx.lineTo(x, y);
+    bgCtx.stroke();
+    bgCtx.beginPath();
+    bgCtx.moveTo(x, y);
+}
+
+function downloadBG() {
+    const link = document.createElement('a');
+    link.download = 'SwiftTool-Transparent.png';
+    link.href = bgCanvas.toDataURL("image/png");
+    link.click();
+    showNotify("success", "Background removed image saved!");
+}
+
+function resetBGTool() {
+    const input = document.getElementById('bgInput');
+    if(input) input.value = "";
+    const canvas = document.getElementById('bgCanvas');
+    if(canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    document.getElementById('bgControls').classList.add('d-none');
+    showNotify("info", "Tool Reset");
+}
+
 
 // Update goBack function to handle extra screens too
 function goBack() {
