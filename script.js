@@ -116,51 +116,6 @@ function openTool(toolName) {
             <button class="btn btn-info w-100 fw-bold" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
             <div id="pdfPreview" class="row g-3 mt-4"></div>`;
     }
-    else if (toolName === "bgremover") {
-        toolUI.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3><i class="fas fa-magic me-2 text-primary"></i>Advanced BG Remover</h3>
-                <div>
-                    <button class="btn btn-sm btn-outline-secondary me-2" onclick="undoBG()"><i class="fas fa-undo"></i> Undo</button>
-                    <button class="btn btn-sm btn-outline-danger" onclick="resetBGTool()"><i class="fas fa-redo"></i> Reset All</button>
-                </div>
-            </div><hr>
-            <div class="text-center">
-                <input type="file" id="bgInput" class="form-control mb-3" accept="image/*" onchange="initAdvancedBG(event)">
-                
-                <div id="bgControls" class="d-none mb-3 p-3 bg-light rounded border">
-                    <div class="row g-2">
-                        <div class="col-md-6">
-                            <button class="btn btn-primary w-100" id="autoBtn" onclick="autoRemoveBG()">
-                                <i class="fas fa-robot me-2"></i> AI Auto Remove
-                            </button>
-                        </div>
-                        <div class="col-md-6">
-                            <button class="btn btn-outline-dark w-100" onclick="enableManual()">
-                                <i class="fas fa-paint-brush me-2"></i> Manual Erase
-                            </button>
-                        </div>
-                        <div class="col-12 mt-3" id="manualSettings" style="display:none;">
-                            <label class="form-label small fw-bold">Brush Size</label>
-                            <input type="range" id="brushSize" min="2" max="50" value="15" class="form-range">
-                        </div>
-                        <div class="col-12 mt-3">
-                            <button class="btn btn-success btn-lg w-100 fw-bold" onclick="downloadBG()">
-                                <i class="fas fa-download me-2"></i> Download Result
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="canvas-wrapper mt-3 position-relative" style="overflow: auto; max-width: 100%; border: 2px dashed #ddd; background: url('https://www.transparenttextures.com/patterns/checkerboard.png');">
-                    <canvas id="bgCanvas" style="cursor: crosshair;"></canvas>
-                    <div id="loadingOverlay" class="d-none position-absolute top-50 start-50 translate-middle">
-                        <div class="spinner-border text-primary" role="status"></div>
-                        <p class="mt-2 fw-bold">AI is thinking...</p>
-                    </div>
-                </div>
-            </div>`;
-    }
 }
 
 // --- 3. CORE FUNCTIONALITIES ---
@@ -379,7 +334,7 @@ function showExtra(page) {
     document.getElementById("extraScreens").classList.remove("d-none");
     const content = document.getElementById("extraContent");
 
-    if (page === "about") {
+    if (page === 'about') {
         content.innerHTML = `
             <h2 class="fw-bold text-primary mb-4">About SwiftTool Pro</h2>
             <p>SwiftTool Pro is your all-in-one digital companion designed to simplify repetitive daily tasks. From managing cash to converting documents, we bring professional-grade tools directly to your browser.</p>
@@ -387,7 +342,8 @@ function showExtra(page) {
                 <div class="col-md-6"><h5><i class="fas fa-user-shield text-success me-2"></i> 100% Secure</h5><p>All processing happens locally in your browser. Your data never leaves your device.</p></div>
                 <div class="col-md-6"><h5><i class="fas fa-bolt text-warning me-2"></i> Lightning Fast</h5><p>Optimized for speed, no server-side waiting time.</p></div>
             </div>`;
-    } else if (page === "how") {
+    }
+    else if (page === 'how') {
         content.innerHTML = `
             <h2 class="fw-bold text-info mb-4">How It Works</h2>
             <div class="list-group list-group-flush">
@@ -401,7 +357,8 @@ function showExtra(page) {
                     <span class="badge bg-info rounded-pill me-2">3</span> Click the action button to process and download your results instantly.
                 </div>
             </div>`;
-    } else if (page === "contact") {
+    }
+    else if (page === 'contact') {
         content.innerHTML = `
         <h2 class="fw-bold text-danger mb-4">Contact Us</h2>
         <p class="text-muted">Have a query or need a new tool? Fill out the form and our team will get back to you shortly.</p>
@@ -441,53 +398,45 @@ function showExtra(page) {
         </div>`;
 
         // Form Submission Handling (AJAX)
-        const form = document.getElementById("contact-form");
+        const form = document.getElementById('contact-form');
         form.onsubmit = async (e) => {
             e.preventDefault();
-            const btn = document.getElementById("form-submit");
+            const btn = document.getElementById('form-submit');
 
             // Form ID Check (Taki aap bhul na jao)
             // --- Is hisse ko dhyan se replace karein ---
 
             // Form ID Check (Ab ye sirf tab error dega jab aapki ID missing hogi)
-            if (
-                form.action.includes("YOUR_FORM_ID_HERE") ||
-                !form.action.includes("f/")
-            ) {
-                return Swal.fire(
-                    "Setup Required",
-                    "Please add your valid Formspree ID in script.js",
-                    "warning",
-                );
+            if (form.action.includes("YOUR_FORM_ID_HERE") || !form.action.includes("f/")) {
+                return Swal.fire('Setup Required', 'Please add your valid Formspree ID in script.js', 'warning');
             }
 
             btn.disabled = true;
-            btn.innerHTML =
-                '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
 
             try {
                 const formData = new FormData(form);
                 const response = await fetch(form.action, {
-                    method: "POST",
+                    method: 'POST',
                     body: formData,
-                    headers: { Accept: "application/json" },
+                    headers: { 'Accept': 'application/json' }
                 });
 
                 if (response.ok) {
-                    showNotify("success", "Thank you! Your message has been received.");
+                    showNotify('success', 'Thank you! Your message has been received.');
                     form.reset();
                 } else {
-                    showNotify("error", "Message could not be sent. Please try again.");
+                    showNotify('error', 'Message could not be sent. Please try again.');
                 }
             } catch (error) {
-                showNotify("error", "Network error. Check your connection.");
+                showNotify('error', 'Network error. Check your connection.');
             }
 
             btn.disabled = false;
-            btn.innerHTML =
-                '<i class="fas fa-paper-plane me-2"></i> Send Message Now';
+            btn.innerHTML = '<i class="fas fa-paper-plane me-2"></i> Send Message Now';
         };
-    } else if (page === "terms") {
+    }
+    else if (page === 'terms') {
         content.innerHTML = `
             <h2 class="fw-bold text-dark mb-4">Terms & Privacy Policy</h2>
             <div style="max-height: 300px; overflow-y: auto;" class="pe-3 text-muted">
@@ -500,138 +449,6 @@ function showExtra(page) {
             </div>`;
     }
 }
-
-// --- Background Remover Logic ---
-let bgCanvas, bgCtx, isPainting = false;
-let historyStack = []; // Undo ke liye
-let originalImg = null;
-
-async function initAdvancedBG(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        originalImg = new Image();
-        originalImg.onload = function() {
-            bgCanvas = document.getElementById('bgCanvas');
-            bgCtx = bgCanvas.getContext('2d');
-            bgCanvas.width = originalImg.width;
-            bgCanvas.height = originalImg.height;
-            
-            saveState(); // Initial state save karein
-            renderImage();
-            
-            document.getElementById('bgControls').classList.remove('d-none');
-            setupBGDrawing();
-        }
-        originalImg.src = e.target.result;
-    }
-    reader.readAsDataURL(file);
-}
-
-function renderImage() {
-    bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-    bgCtx.drawImage(originalImg, 0, 0);
-}
-
-// --- Undo Functionality ---
-function saveState() {
-    if (historyStack.length > 10) historyStack.shift(); // Memory bachane ke liye limit
-    historyStack.push(bgCanvas.toDataURL());
-}
-
-function undoBG() {
-    if (historyStack.length > 1) {
-        historyStack.pop(); // Current state hatao
-        let prevState = historyStack[historyStack.length - 1];
-        let img = new Image();
-        img.onload = () => {
-            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-            bgCtx.drawImage(img, 0, 0);
-        };
-        img.src = prevState;
-        showNotify("info", "Undo Successful");
-    } else {
-        showNotify("error", "No more steps to undo!");
-    }
-}
-
-// --- AI Auto Removal ---
-async function autoRemoveBG() {
-    const loader = document.getElementById('loadingOverlay');
-    const btn = document.getElementById('autoBtn');
-    loader.classList.remove('d-none');
-    btn.disabled = true;
-
-    try {
-        const net = await bodyPix.load();
-        const segmentation = await net.segmentPerson(bgCanvas, {
-            internalResolution: 'high',
-            segmentationThreshold: 0.7
-        });
-
-        const imageData = bgCtx.getImageData(0, 0, bgCanvas.width, bgCanvas.height);
-        const pixelData = imageData.data;
-
-        for (let i = 0; i < pixelData.length; i += 4) {
-            // Agar pixel 'person' ka hissa nahi hai toh transparent kar do
-            if (segmentation.data[i / 4] === 0) {
-                pixelData[i + 3] = 0; // Alpha channel to 0
-            }
-        }
-
-        saveState(); // AI action se pehle save
-        bgCtx.putImageData(imageData, 0, 0);
-        showNotify("success", "Background removed by AI!");
-    } catch (err) {
-        console.error(err);
-        showNotify("error", "AI failed to process. Try manual.");
-    } finally {
-        loader.classList.add('d-none');
-        btn.disabled = false;
-    }
-}
-
-// --- Manual Logic (Improved) ---
-function enableManual() {
-    document.getElementById('manualSettings').style.display = 'block';
-    showNotify("info", "Manual Erase Enabled");
-}
-
-function drawBG(e) {
-    if (!isPainting) return;
-    const rect = bgCanvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left) * (bgCanvas.width / rect.width);
-    const y = (e.clientY - rect.top) * (bgCanvas.height / rect.height);
-    
-    bgCtx.globalCompositeOperation = 'destination-out'; // Erasing mode
-    bgCtx.lineWidth = document.getElementById('brushSize').value;
-    bgCtx.lineCap = 'round';
-    bgCtx.lineTo(x, y);
-    bgCtx.stroke();
-    bgCtx.beginPath();
-    bgCtx.moveTo(x, y);
-}
-
-// Setup drawing events (Mouse + Touch)
-function setupBGDrawing() {
-    const start = () => { isPainting = true; };
-    const end = () => { 
-        if(isPainting) saveState(); // Har brush stroke ke baad save
-        isPainting = false; 
-        bgCtx.beginPath(); 
-    };
-
-    bgCanvas.onmousedown = start;
-    bgCanvas.onmouseup = end;
-    bgCanvas.onmousemove = (e) => drawBG(e);
-
-    bgCanvas.ontouchstart = (e) => { e.preventDefault(); start(); };
-    bgCanvas.ontouchend = end;
-    bgCanvas.ontouchmove = (e) => { e.preventDefault(); drawBG(e.touches[0]); };
-}
-
 
 // Update goBack function to handle extra screens too
 function goBack() {
