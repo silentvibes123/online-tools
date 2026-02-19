@@ -119,30 +119,46 @@ function openTool(toolName) {
     else if (toolName === "bgremover") {
         toolUI.innerHTML = `
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3><i class="fas fa-eraser me-2 text-primary"></i>BG Remover</h3>
-                <button class="btn btn-sm btn-outline-danger" onclick="resetBGTool()"><i class="fas fa-redo me-1"></i> Reset</button>
+                <h3><i class="fas fa-magic me-2 text-primary"></i>Advanced BG Remover</h3>
+                <div>
+                    <button class="btn btn-sm btn-outline-secondary me-2" onclick="undoBG()"><i class="fas fa-undo"></i> Undo</button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="resetBGTool()"><i class="fas fa-redo"></i> Reset All</button>
+                </div>
             </div><hr>
             <div class="text-center">
-                <input type="file" id="bgInput" class="form-control mb-3" accept="image/*" onchange="initBGPainter(event)">
+                <input type="file" id="bgInput" class="form-control mb-3" accept="image/*" onchange="initAdvancedBG(event)">
                 
                 <div id="bgControls" class="d-none mb-3 p-3 bg-light rounded border">
-                    <div class="row align-items-center">
-                        <div class="col-md-4">
-                            <label class="form-label small fw-bold">Brush Size</label>
-                            <input type="range" id="brushSize" min="5" max="50" value="20" class="form-range">
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <button class="btn btn-primary w-100" id="autoBtn" onclick="autoRemoveBG()">
+                                <i class="fas fa-robot me-2"></i> AI Auto Remove
+                            </button>
                         </div>
-                        <div class="col-md-8 mt-2 mt-md-0">
-                            <button class="btn btn-success w-100 fw-bold" onclick="downloadBG()">
-                                <i class="fas fa-download me-2"></i> Download Transparent PNG
+                        <div class="col-md-6">
+                            <button class="btn btn-outline-dark w-100" onclick="enableManual()">
+                                <i class="fas fa-paint-brush me-2"></i> Manual Erase
+                            </button>
+                        </div>
+                        <div class="col-12 mt-3" id="manualSettings" style="display:none;">
+                            <label class="form-label small fw-bold">Brush Size</label>
+                            <input type="range" id="brushSize" min="2" max="50" value="15" class="form-range">
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button class="btn btn-success btn-lg w-100 fw-bold" onclick="downloadBG()">
+                                <i class="fas fa-download me-2"></i> Download Result
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="canvas-wrapper mt-3" style="overflow: auto; max-width: 100%; border: 2px dashed #ddd; background: url('https://www.transparenttextures.com/patterns/checkerboard.png');">
+                <div class="canvas-wrapper mt-3 position-relative" style="overflow: auto; max-width: 100%; border: 2px dashed #ddd; background: url('https://www.transparenttextures.com/patterns/checkerboard.png');">
                     <canvas id="bgCanvas" style="cursor: crosshair;"></canvas>
+                    <div id="loadingOverlay" class="d-none position-absolute top-50 start-50 translate-middle">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="mt-2 fw-bold">AI is thinking...</p>
+                    </div>
                 </div>
-                <p class="text-muted small mt-2"><i class="fas fa-info-circle me-1"></i> Use your mouse/touch to erase the background manually.</p>
             </div>`;
     }
 }
@@ -487,41 +503,100 @@ function showExtra(page) {
 
 // --- Background Remover Logic ---
 let bgCanvas, bgCtx, isPainting = false;
+let historyStack = []; // Undo ke liye
+let originalImg = null;
 
-function initBGPainter(event) {
+async function initAdvancedBG(event) {
     const file = event.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = function(e) {
-        const img = new Image();
-        img.onload = function() {
+        originalImg = new Image();
+        originalImg.onload = function() {
             bgCanvas = document.getElementById('bgCanvas');
             bgCtx = bgCanvas.getContext('2d');
+            bgCanvas.width = originalImg.width;
+            bgCanvas.height = originalImg.height;
             
-            // Image size ke hisaab se canvas set karein
-            bgCanvas.width = img.width;
-            bgCanvas.height = img.height;
-            bgCtx.drawImage(img, 0, 0);
+            saveState(); // Initial state save karein
+            renderImage();
             
             document.getElementById('bgControls').classList.remove('d-none');
             setupBGDrawing();
         }
-        img.src = e.target.result;
+        originalImg.src = e.target.result;
     }
     reader.readAsDataURL(file);
 }
 
-function setupBGDrawing() {
-    // Mouse Events
-    bgCanvas.onmousedown = () => isPainting = true;
-    bgCanvas.onmouseup = () => { isPainting = false; bgCtx.beginPath(); };
-    bgCanvas.onmousemove = (e) => drawBG(e);
+function renderImage() {
+    bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+    bgCtx.drawImage(originalImg, 0, 0);
+}
 
-    // Touch Events for Mobile
-    bgCanvas.ontouchstart = (e) => { e.preventDefault(); isPainting = true; };
-    bgCanvas.ontouchend = () => { isPainting = false; bgCtx.beginPath(); };
-    bgCanvas.ontouchmove = (e) => { e.preventDefault(); drawBG(e.touches[0]); };
+// --- Undo Functionality ---
+function saveState() {
+    if (historyStack.length > 10) historyStack.shift(); // Memory bachane ke liye limit
+    historyStack.push(bgCanvas.toDataURL());
+}
+
+function undoBG() {
+    if (historyStack.length > 1) {
+        historyStack.pop(); // Current state hatao
+        let prevState = historyStack[historyStack.length - 1];
+        let img = new Image();
+        img.onload = () => {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            bgCtx.drawImage(img, 0, 0);
+        };
+        img.src = prevState;
+        showNotify("info", "Undo Successful");
+    } else {
+        showNotify("error", "No more steps to undo!");
+    }
+}
+
+// --- AI Auto Removal ---
+async function autoRemoveBG() {
+    const loader = document.getElementById('loadingOverlay');
+    const btn = document.getElementById('autoBtn');
+    loader.classList.remove('d-none');
+    btn.disabled = true;
+
+    try {
+        const net = await bodyPix.load();
+        const segmentation = await net.segmentPerson(bgCanvas, {
+            internalResolution: 'high',
+            segmentationThreshold: 0.7
+        });
+
+        const imageData = bgCtx.getImageData(0, 0, bgCanvas.width, bgCanvas.height);
+        const pixelData = imageData.data;
+
+        for (let i = 0; i < pixelData.length; i += 4) {
+            // Agar pixel 'person' ka hissa nahi hai toh transparent kar do
+            if (segmentation.data[i / 4] === 0) {
+                pixelData[i + 3] = 0; // Alpha channel to 0
+            }
+        }
+
+        saveState(); // AI action se pehle save
+        bgCtx.putImageData(imageData, 0, 0);
+        showNotify("success", "Background removed by AI!");
+    } catch (err) {
+        console.error(err);
+        showNotify("error", "AI failed to process. Try manual.");
+    } finally {
+        loader.classList.add('d-none');
+        btn.disabled = false;
+    }
+}
+
+// --- Manual Logic (Improved) ---
+function enableManual() {
+    document.getElementById('manualSettings').style.display = 'block';
+    showNotify("info", "Manual Erase Enabled");
 }
 
 function drawBG(e) {
@@ -529,36 +604,32 @@ function drawBG(e) {
     const rect = bgCanvas.getBoundingClientRect();
     const x = (e.clientX - rect.left) * (bgCanvas.width / rect.width);
     const y = (e.clientY - rect.top) * (bgCanvas.height / rect.height);
-    const size = document.getElementById('brushSize').value;
-
-    bgCtx.lineWidth = size;
+    
+    bgCtx.globalCompositeOperation = 'destination-out'; // Erasing mode
+    bgCtx.lineWidth = document.getElementById('brushSize').value;
     bgCtx.lineCap = 'round';
-    bgCtx.globalCompositeOperation = 'destination-out'; // Ye transparency create karta hai
-
     bgCtx.lineTo(x, y);
     bgCtx.stroke();
     bgCtx.beginPath();
     bgCtx.moveTo(x, y);
 }
 
-function downloadBG() {
-    const link = document.createElement('a');
-    link.download = 'SwiftTool-Transparent.png';
-    link.href = bgCanvas.toDataURL("image/png");
-    link.click();
-    showNotify("success", "Background removed image saved!");
-}
+// Setup drawing events (Mouse + Touch)
+function setupBGDrawing() {
+    const start = () => { isPainting = true; };
+    const end = () => { 
+        if(isPainting) saveState(); // Har brush stroke ke baad save
+        isPainting = false; 
+        bgCtx.beginPath(); 
+    };
 
-function resetBGTool() {
-    const input = document.getElementById('bgInput');
-    if(input) input.value = "";
-    const canvas = document.getElementById('bgCanvas');
-    if(canvas) {
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-    document.getElementById('bgControls').classList.add('d-none');
-    showNotify("info", "Tool Reset");
+    bgCanvas.onmousedown = start;
+    bgCanvas.onmouseup = end;
+    bgCanvas.onmousemove = (e) => drawBG(e);
+
+    bgCanvas.ontouchstart = (e) => { e.preventDefault(); start(); };
+    bgCanvas.ontouchend = end;
+    bgCanvas.ontouchmove = (e) => { e.preventDefault(); drawBG(e.touches[0]); };
 }
 
 
