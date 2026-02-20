@@ -103,7 +103,7 @@ function openTool(toolName) {
                 <button class="btn btn-sm btn-outline-danger" onclick="resetQR()"><i class="fas fa-trash me-1"></i> Reset</button>
             </div><hr>
             <input type="text" id="qrText" class="form-control mb-3" placeholder="Enter text or URL">
-            <button class="btn btn-dark w-100" onclick="generateQR()">Generate QR Code</button>
+            <button class="btn btn-dark w-100" onclick="openAd(); generateQR()">Generate QR Code</button>
             <div id="qrResult" class="text-center mt-4"></div>`;
     } else if (toolName === "voice") {
         toolUI.innerHTML = `
