@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://swifttoolpro.netlify.app/sitemap.xml
+
+Sitemap: https://swifttoolpro.pages.dev/sitemap.xml
