@@ -1,6 +1,6 @@
 const openAd = () =>
     window.open(
-        "https://www.effectivegatecpm.com/jvaifcfvy?key=14ca5c3c0234f1c1cf814b33617e8fad",
+        "https://www.effectivegatecpm.com/uhv7f7jam?key=621c144ec67a64c9e4ccf13b92fb867b",
         "_blank",
     );
 
