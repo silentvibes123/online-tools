@@ -227,18 +227,17 @@ async function generatePDF() {
 // --- PDF to Word Logic ---
 async function convertPdfToWord() {
     const file = document.getElementById("pdfWordInput").files[0];
-    if (!file) return showNotify("error", "Please select a PDF file!");
+    if (!file) return showNotify("error", "File select karein!");
 
     const btn = document.getElementById("pdfWordBtn");
     btn.disabled = true;
-    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Extracting...`;
+    btn.innerHTML = "Processing Layout...";
 
-    await openAd(); // Revenue simulation
+    await openAd();
 
     try {
         const arrayBuffer = await file.arrayBuffer();
         const pdfjsLib = window["pdfjs-dist/build/pdf"];
-        // Worker path ensure karein
         pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
         
         const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
@@ -247,48 +246,36 @@ async function convertPdfToWord() {
         for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
             const textContent = await page.getTextContent();
-            
-            // Text ko lines mein arrange karna (Better Formatting)
-            let lastY, text = "";
-            for (let item of textContent.items) {
-                if (lastY !== item.transform[5] && lastY !== undefined) {
-                    text += "<br>";
-                }
-                text += item.str + " ";
-                lastY = item.transform[5];
-            }
-            
-            htmlContent += `<div class="page" style="margin-bottom: 50px; font-family: Arial;">
-                                <h4 style="color: #666;">--- Page ${i} ---</h4>
-                                <p style="line-height: 1.6; font-size: 12pt;">${text}</p>
-                            </div>`;
+            const viewport = page.getViewport({ scale: 1.0 });
+
+            // Har page ko ek relative container banao
+            htmlContent += `<div style="position:relative; width:${viewport.width}px; height:${viewport.height}px; border:1px solid #eee; margin-bottom:20px; background:white;">`;
+
+            textContent.items.forEach(item => {
+                const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
+                const style = `position:absolute; left:${tx[4]}px; top:${viewport.height - tx[5]}px; font-size:${item.height}px; font-family:sans-serif; white-space:nowrap;`;
+                htmlContent += `<span style="${style}">${item.str}</span>`;
+            });
+
+            htmlContent += `</div><br clear="all" style="page-break-after:always;">`;
         }
 
-        // Professional Word Document Template
-        const header = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-                        <head><meta charset='utf-8'><style>
-                            body { font-family: 'Calibri', sans-serif; }
-                            p { margin: 0; padding: 0; }
-                        </style></head><body>`;
-        const footer = "</body></html>";
-        const finalHTML = header + htmlContent + footer;
+        // Professional Word wrapper with Layout preservation
+        const header = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'></head><body>`;
+        const blob = new Blob(['\ufeff', header + htmlContent + "</body></html>"], { type: 'application/msword' });
         
-        const blob = new Blob(['\ufeff', finalHTML], { type: 'application/msword' });
-        const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
-        link.href = url;
-        link.download = file.name.replace(".pdf", "") + "_SwiftTool.doc";
+        link.href = URL.createObjectURL(blob);
+        link.download = "Formatted_Doc.doc";
         link.click();
 
-        showNotify("success", "Successfully converted to editable Word file!");
+        showNotify("success", "Layout extracted successfully!");
     } catch (e) {
-        console.error(e);
-        showNotify("error", "Conversion failed. File might be too complex.");
+        showNotify("error", "Error processing layout.");
     }
     btn.disabled = false;
-    btn.innerHTML = `<i class="fas fa-file-word me-2"></i> Convert to Word`;
+    btn.innerHTML = "Convert to Word";
 }
-
 // Image Compressor
 async function compressImage() {
   const file = document.getElementById("compressInput").files[0];
