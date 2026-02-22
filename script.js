@@ -74,15 +74,15 @@ function openTool(toolName) {
             <div class="row">
                 <div class="col-md-6">
                     ${[2000, 500, 200, 100, 50, 20, 10, 5, 2, 1]
-                      .map(
-                        (note) => `
+        .map(
+          (note) => `
                         <div class="d-flex align-items-center mb-2">
                             <span class="fw-bold w-25">₹${note}</span>
                             <input type="number" class="form-control note-input me-3" id="note-${note}" oninput="calcCash()" placeholder="0" min="0">
                             <span class="ms-3 fw-bold text-end" style="min-width:80px" id="res-${note}">₹0</span>
                         </div>`,
-                      )
-                      .join("")}
+        )
+        .join("")}
                 </div>
                 <div class="col-md-6 text-center border-start d-flex flex-column justify-content-center">
                     <h4 class="text-muted">Total Amount</h4>
@@ -147,7 +147,7 @@ function openTool(toolName) {
             <div id="pdfPreview" class="row g-3 mt-4"></div>`;
   }
   // --- Word to PDF ---
-else if (toolName === "wordToPdf") {
+  else if (toolName === "wordToPdf") {
     toolUI.innerHTML = `
         <div class="text-center">
             <h3><i class="fas fa-file-word me-2 text-primary"></i>Word to PDF</h3>
@@ -158,10 +158,10 @@ else if (toolName === "wordToPdf") {
                 <i class="fas fa-file-export me-2"></i> Convert to PDF
             </button>
         </div>`;
-}
+  }
 
-// --- PDF to Word (Text Based) ---
-else if (toolName === "pdfToWord") {
+  // --- PDF to Word (Text Based) ---
+  else if (toolName === "pdfToWord") {
     toolUI.innerHTML = `
         <div class="text-center">
             <h3><i class="fas fa-file-alt me-2 text-info"></i>PDF to Word</h3>
@@ -172,7 +172,7 @@ else if (toolName === "pdfToWord") {
                 <i class="fas fa-file-word me-2"></i> Convert to Word
             </button>
         </div>`;
-}
+  }
 }
 
 // --- 3. CORE FUNCTIONALITIES ---
@@ -215,7 +215,7 @@ async function generatePDF() {
       doc.addImage(data, "JPEG", 10, 10, 190, 277);
     }
     doc.save("Converted.pdf");
-  showNotify("success", "PDF Downloaded Successfully!");
+    showNotify("success", "PDF Downloaded Successfully!");
   } catch (e) {
     showNotify("error", "Failed to generate PDF.");
   }
@@ -227,45 +227,66 @@ async function generatePDF() {
 // --- PDF to Word Logic ---
 async function convertPdfToWord() {
     const file = document.getElementById("pdfWordInput").files[0];
-    if (!file) return showNotify("error", "PDF file select karein!");
+    if (!file) return showNotify("error", "Please select a PDF file!");
 
     const btn = document.getElementById("pdfWordBtn");
     btn.disabled = true;
-    btn.innerHTML = "Extracting Text...";
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Extracting...`;
 
-    await openAd(); // Revenue Booster
+    await openAd(); // Revenue simulation
 
     try {
         const arrayBuffer = await file.arrayBuffer();
         const pdfjsLib = window["pdfjs-dist/build/pdf"];
-        const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+        // Worker path ensure karein
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
         
-        let fullText = "";
+        const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+        let htmlContent = "";
+
         for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
-            const content = await page.getTextContent();
-            const strings = content.items.map(item => item.str);
-            fullText += strings.join(" ") + "\n\n";
+            const textContent = await page.getTextContent();
+            
+            // Text ko lines mein arrange karna (Better Formatting)
+            let lastY, text = "";
+            for (let item of textContent.items) {
+                if (lastY !== item.transform[5] && lastY !== undefined) {
+                    text += "<br>";
+                }
+                text += item.str + " ";
+                lastY = item.transform[5];
+            }
+            
+            htmlContent += `<div class="page" style="margin-bottom: 50px; font-family: Arial;">
+                                <h4 style="color: #666;">--- Page ${i} ---</h4>
+                                <p style="line-height: 1.6; font-size: 12pt;">${text}</p>
+                            </div>`;
         }
 
-        // Word file create karna (Blob method)
-        const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'></head><body>";
+        // Professional Word Document Template
+        const header = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                        <head><meta charset='utf-8'><style>
+                            body { font-family: 'Calibri', sans-serif; }
+                            p { margin: 0; padding: 0; }
+                        </style></head><body>`;
         const footer = "</body></html>";
-        const sourceHTML = header + "<p>" + fullText.replace(/\n/g, "</p><p>") + "</p>" + footer;
+        const finalHTML = header + htmlContent + footer;
         
-        const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword' });
+        const blob = new Blob(['\ufeff', finalHTML], { type: 'application/msword' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "Converted_Document.doc";
+        link.download = file.name.replace(".pdf", "") + "_SwiftTool.doc";
         link.click();
 
-        showNotify("success", "Word file downloaded!");
+        showNotify("success", "Successfully converted to editable Word file!");
     } catch (e) {
-        showNotify("error", "Conversion failed!");
+        console.error(e);
+        showNotify("error", "Conversion failed. File might be too complex.");
     }
     btn.disabled = false;
-    btn.innerHTML = "Convert to Word";
+    btn.innerHTML = `<i class="fas fa-file-word me-2"></i> Convert to Word`;
 }
 
 // Image Compressor
