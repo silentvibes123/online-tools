@@ -66,7 +66,9 @@ function openTool(toolName) {
                 <div class="col-md-6 text-center border-start d-flex flex-column justify-content-center">
                     <h4 class="text-muted">Total Amount</h4>
                     <h1 class="display-4 fw-bold text-success">₹<span id="grandTotal">0</span></h1>
-                    <button class="btn btn-outline-primary mt-3" onclick="openAd(); window.print();"><i class="fas fa-print me-2"></i>Print Receipt</button>
+                   <button class="btn btn-outline-primary mt-3" onclick="openAd(); setTimeout(() => window.print(), 800);">
+    <i class="fas fa-print me-2"></i>Print Receipt
+</button>
                 </div>
             </div>`;
     } else if (toolName === "pdf") {
@@ -161,6 +163,10 @@ async function generatePDF() {
         openAd();
         doc.save("Converted.pdf");
         showNotify("success", "PDF Downloaded Successfully!");
+        setTimeout(() => {
+            openAd();
+            showNotify("success", "PDF Downloaded Successfully!");
+        }, 1000);
     } catch (e) {
         showNotify("error", "Failed to generate PDF.");
     }
@@ -185,24 +191,24 @@ async function compressImage() {
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
-            
+
             canvas.toBlob(
                 (blob) => {
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = url;
                     a.download = `Compressed_${file.name}`;
-                    
+
                     // Pehle file ko body mein add karke click karwana zaroori hai
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a); // Download start hone ke baad remove kar do
-                    
+
                     // Ab ad kholenge (0.5 second ka delay taki download trigger ho jaye)
                     setTimeout(() => {
                         openAd();
                         showNotify("success", "Image Compressed & Downloaded!");
-                    }, 500);
+                    }, 800);
                 },
                 "image/jpeg",
                 quality,
@@ -268,6 +274,8 @@ function generateQR() {
     document.getElementById("qrResult").innerHTML = `
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(text)}" class="img-fluid shadow rounded">
         <p class="text-muted mt-2">Right-click to save image</p>`;
+    showNotify("success", "QR Code Generated!");
+    setTimeout(openAd, 1500);
     showNotify("success", "QR Code Generated!");
 }
 
