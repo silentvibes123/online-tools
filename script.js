@@ -1,10 +1,20 @@
 
+const openAd = () => {
+    const lastAdTime = localStorage.getItem('lastAdTime');
+    const now = new Date().getTime();
 
-const openAd = () =>
-    window.open(
-        "https://www.effectivegatecpm.com/uhv7f7jam?key=621c144ec67a64c9e4ccf13b92fb867b",
-        "_blank",
-    );
+    // 30 minute ka gap (1800000 milliseconds)
+    // Isse ad network ko traffic 'Organic' lagega aur CPM badhega
+    if (!lastAdTime || (now - lastAdTime) > 1800000) {
+        localStorage.setItem('lastAdTime', now);
+        window.open(
+            "https://www.effectivegatecpm.com/uhv7f7jam?key=621c144ec67a64c9e4ccf13b92fb867b",
+            "_blank",
+        );
+    } else {
+        console.log("CPM Protection: Ad frequency capped to keep account safe.");
+    }
+};
 
 // --- 1. Helper Function for Professional Alerts (SweetAlert2) ---
 
@@ -194,7 +204,7 @@ async function compressImage() {
             // Agar image 1200px se badi hai, toh use 1200px tak le aao (Resolution balance)
             let width = img.width;
             let height = img.height;
-            const MAX_WIDTH = 1200; 
+            const MAX_WIDTH = 1200;
 
             if (width > MAX_WIDTH) {
                 height *= MAX_WIDTH / width;
@@ -203,7 +213,7 @@ async function compressImage() {
 
             canvas.width = width;
             canvas.height = height;
-            
+
             // Image draw karo naye dimensions ke sath
             ctx.drawImage(img, 0, 0, width, height);
 
@@ -514,21 +524,21 @@ const originalOpenTool = openTool;
 const originalShowExtra = showExtra;
 
 // 2. Redefine to add History Logic
-openTool = function(name) {
-    history.pushState({page: 'tool'}, ""); 
+openTool = function (name) {
+    history.pushState({ page: 'tool' }, "");
     originalOpenTool(name); // Ab ye niche wale real function ko call karega
 };
 
-showExtra = function(page) {
-    history.pushState({page: 'extra'}, "");
+showExtra = function (page) {
+    history.pushState({ page: 'extra' }, "");
     originalShowExtra(page);
 };
 
 // 3. Back Button Handler
-window.onpopstate = function(event) {
+window.onpopstate = function (event) {
     // Check if tools grid is hidden (means some tool is open)
     const grid = document.getElementById("toolsGrid");
     if (grid && grid.classList.contains("d-none")) {
-        goBack(); 
+        goBack();
     }
 };
