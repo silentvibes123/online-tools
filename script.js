@@ -1,3 +1,26 @@
+// --- System Back Button Fix ---
+window.onpopstate = function(event) {
+    // Agar koi tool ya extra screen khuli hai, toh use band karo
+    const toolsGrid = document.getElementById("toolsGrid");
+    if (toolsGrid.classList.contains("d-none")) {
+        goBack(); // Ye aapka purana function hai jo screens switch karta hai
+    }
+};
+
+// Tool open karte waqt history mein ek "state" push karo
+const originalOpenTool = openTool;
+openTool = function(name) {
+    history.pushState({page: 'tool'}, ""); // History mein entry add ki
+    originalOpenTool(name);
+};
+
+// Extra screens ke liye bhi same logic
+const originalShowExtra = showExtra;
+showExtra = function(page) {
+    history.pushState({page: 'extra'}, "");
+    originalShowExtra(page);
+};
+
 const openAd = () =>
     window.open(
         "https://www.effectivegatecpm.com/uhv7f7jam?key=621c144ec67a64c9e4ccf13b92fb867b",
