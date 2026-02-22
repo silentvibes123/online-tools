@@ -74,15 +74,15 @@ function openTool(toolName) {
             <div class="row">
                 <div class="col-md-6">
                     ${[2000, 500, 200, 100, 50, 20, 10, 5, 2, 1]
-        .map(
-          (note) => `
+                      .map(
+                        (note) => `
                         <div class="d-flex align-items-center mb-2">
                             <span class="fw-bold w-25">₹${note}</span>
                             <input type="number" class="form-control note-input me-3" id="note-${note}" oninput="calcCash()" placeholder="0" min="0">
                             <span class="ms-3 fw-bold text-end" style="min-width:80px" id="res-${note}">₹0</span>
                         </div>`,
-        )
-        .join("")}
+                      )
+                      .join("")}
                 </div>
                 <div class="col-md-6 text-center border-start d-flex flex-column justify-content-center">
                     <h4 class="text-muted">Total Amount</h4>
@@ -147,20 +147,23 @@ function openTool(toolName) {
             <div id="pdfPreview" class="row g-3 mt-4"></div>`;
   }
   // --- Tool UI logic inside openTool() ---
-else if (toolName === "pdfPass") {
+  // openTool function ke andar pdfPass wala hissa replace karein:
+  else if (toolName === "pdfPass") {
     toolUI.innerHTML = `
         <div class="text-center">
-            <h3><i class="fas fa-lock-open me-2 text-dark"></i>PDF Password Tool</h3>
-            <p class="text-muted">PDF se password hatayein ya naya lagayein</p><hr>
+            <h3><i class="fas fa-lock me-2 text-dark"></i>PDF Security</h3>
+            <p class="text-muted small">
+                <b>Add:</b> Naya password lagayein.<br>
+                <b>Remove:</b> Pehle wala password enter karke lock hatayein.
+            </p><hr>
             <input type="file" id="passPdfInput" accept="application/pdf" class="form-control mb-3">
-            <input type="password" id="pdfPassword" class="form-control mb-3" placeholder="Enter Password">
+            <input type="password" id="pdfPassword" class="form-control mb-3" placeholder="Enter Password Here">
             <div class="d-flex gap-2">
-                <button class="btn btn-danger w-50" onclick="handlePassword('remove')">Remove Pass</button>
-                <button class="btn btn-dark w-50" onclick="handlePassword('add')">Add Pass</button>
+                <button class="btn btn-danger w-50 fw-bold" onclick="handlePassword('remove')">Remove Lock</button>
+                <button class="btn btn-dark w-50 fw-bold" onclick="handlePassword('add')">Add Lock</button>
             </div>
         </div>`;
-}
-else if (toolName === "resizer") {
+  } else if (toolName === "resizer") {
     toolUI.innerHTML = `
         <div class="text-center">
             <h3><i class="fas fa-expand-arrows-alt me-2 text-warning"></i>Exam Photo Resizer</h3>
@@ -174,116 +177,144 @@ else if (toolName === "resizer") {
             </select>
             <button class="btn btn-warning w-100 fw-bold" onclick="smartResize()">Download Perfect Size</button>
         </div>`;
+  }
 }
- 
-}
-
-
 
 // --- Smart Resizer Logic ---
 async function smartResize() {
-    const file = document.getElementById("resizeInput").files[0];
-    const targetKB = parseInt(document.getElementById("targetSize").value);
-    if(!file) return showNotify("error", "Photo select karein!");
+  const file = document.getElementById("resizeInput").files[0];
+  const targetKB = parseInt(document.getElementById("targetSize").value);
+  if (!file) return showNotify("error", "Photo select karein!");
 
-    await openAd();
-    
-    let quality = 0.9;
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (e) => {
-        const img = new Image();
-        img.src = e.target.result;
-        img.onload = () => {
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
-            
-            // Govt Exam standard size
-            canvas.width = 350; 
-            canvas.height = 450;
-            ctx.drawImage(img, 0, 0, 350, 450);
+  await openAd();
 
-            function attemptDownload(q) {
-                canvas.toBlob((blob) => {
-                    if (blob.size / 1024 > targetKB && q > 0.1) {
-                        attemptDownload(q - 0.1); // Quality ghatate raho jab tak target na mile
-                    } else {
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement("a");
-                        a.href = url;
-                        a.download = `Exam_Ready_${targetKB}KB.jpg`;
-                        a.click();
-                        showNotify("success", `Success! Final Size: ${(blob.size/1024).toFixed(1)}KB`);
-                    }
-                }, "image/jpeg", q);
+  let quality = 0.9;
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = (e) => {
+    const img = new Image();
+    img.src = e.target.result;
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      // Govt Exam standard size
+      canvas.width = 350;
+      canvas.height = 450;
+      ctx.drawImage(img, 0, 0, 350, 450);
+
+      function attemptDownload(q) {
+        canvas.toBlob(
+          (blob) => {
+            if (blob.size / 1024 > targetKB && q > 0.1) {
+              attemptDownload(q - 0.1); // Quality ghatate raho jab tak target na mile
+            } else {
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `Exam_Ready_${targetKB}KB.jpg`;
+              a.click();
+              showNotify(
+                "success",
+                `Success! Final Size: ${(blob.size / 1024).toFixed(1)}KB`,
+              );
             }
-            attemptDownload(quality);
-        };
+          },
+          "image/jpeg",
+          q,
+        );
+      }
+      attemptDownload(quality);
     };
+  };
 }
 
 async function handlePassword(action) {
-    const fileInput = document.getElementById("passPdfInput");
-    const password = document.getElementById("pdfPassword").value;
-    
-    if (!fileInput.files[0]) return showNotify("error", "Please select a PDF file!");
-    if (!password) return showNotify("error", "Please enter a password!");
+  const fileInput = document.getElementById("passPdfInput");
+  const password = document.getElementById("pdfPassword").value;
 
-    const btn = event.target;
-    const originalText = btn.innerText;
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Processing...';
+  if (!fileInput.files[0])
+    return showNotify("error", "Please select a PDF file!");
+  if (!password) return showNotify("error", "Please enter a password!");
 
-    await openAd(); // Revenue Booster
+  const btn = event.target;
+  const originalText = btn.innerText;
+  btn.disabled = true;
+  btn.innerHTML =
+    '<span class="spinner-border spinner-border-sm"></span> Processing...';
 
-    try {
-        const fileArrayBuffer = await fileInput.files[0].arrayBuffer();
-        const { PDFDocument } = PDFLib;
+  await openAd();
 
-        let pdfDoc;
-        
-        if (action === 'remove') {
-            // Password hatane ke liye pehle protected PDF load karo
-            pdfDoc = await PDFDocument.load(fileArrayBuffer, { password });
-        } else {
-            // Password lagane ke liye simple PDF load karo
-            pdfDoc = await PDFDocument.load(fileArrayBuffer);
-        }
+  try {
+    const fileArrayBuffer = await fileInput.files[0].arrayBuffer();
+    const { PDFDocument } = PDFLib;
 
-        // Action: Encrypt (Add Password)
-        if (action === 'add') {
-            // Note: Browser-side encryption support varies, 
-            // pdf-lib adds protection metadata
-            const encryptedBytes = await pdfDoc.save({ 
-                userPassword: password, 
-                ownerPassword: password,
-                permissions: { printing: 'highResolution', modifying: false }
-            });
-            downloadBlob(encryptedBytes, "Protected_SwiftTool.pdf");
-        } 
-        else if (action === 'remove') {
-            // Decrypt: Naya PDF save karo bina password ke
-            const decryptedBytes = await pdfDoc.save();
-            downloadBlob(decryptedBytes, "Unlocked_SwiftTool.pdf");
-        }
+    let pdfDoc;
 
-        showNotify("success", `Password ${action === 'add' ? 'added' : 'removed'} successfully!`);
-    } catch (e) {
-        console.error(e);
-        showNotify("error", "Wrong password or corrupted file!");
-    } finally {
-        btn.disabled = false;
-        btn.innerText = originalText;
+    if (action === "remove") {
+      try {
+        // BUG FIX: Protected PDF ko password ke sath load karne ka sahi tarika
+        pdfDoc = await PDFDocument.load(fileArrayBuffer, {
+          password: password,
+          ignoreEncryption: false, // Ye compulsory hai password bypass rokne ke liye
+        });
+      } catch (err) {
+        throw new Error("Incorrect Password");
+      }
+    } else {
+      // Normal PDF load karo
+      pdfDoc = await PDFDocument.load(fileArrayBuffer);
     }
+
+    let finalBytes;
+
+    if (action === "add") {
+      // BUG FIX: Kuch browsers standard save par password skip kar dete hain
+      // Hum explicitly security permissions set kar rahe hain
+      finalBytes = await pdfDoc.save({
+        userPassword: password,
+        ownerPassword: password,
+        permissions: {
+          printing: "highResolution",
+          modifying: false,
+          copying: false,
+          annotating: false,
+          fillingForms: false,
+          contentAccessibility: true,
+          documentAssembly: false,
+        },
+      });
+      downloadBlob(finalBytes, "Protected_By_SwiftTool.pdf");
+    } else if (action === "remove") {
+      // Decrypt: Load hone ke baad sirf save karne se password hat jata hai
+      finalBytes = await pdfDoc.save();
+      downloadBlob(finalBytes, "Unlocked_By_SwiftTool.pdf");
+    }
+
+    showNotify(
+      "success",
+      `Success! Password ${action === "add" ? "added" : "removed"}.`,
+    );
+  } catch (e) {
+    console.error("PDF Error:", e);
+    if (e.message.includes("Incorrect Password")) {
+      showNotify("error", "Galat Password! Dubara check karein.");
+    } else {
+      showNotify("error", "Corrupted file ya format issue!");
+    }
+  } finally {
+    btn.disabled = false;
+    btn.innerText = originalText;
+  }
 }
 
 // Helper for downloading
 function downloadBlob(data, fileName) {
-    const blob = new Blob([data], { type: "application/pdf" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = fileName;
-    link.click();
+  const blob = new Blob([data], { type: "application/pdf" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = fileName;
+  link.click();
 }
 // --- 3. CORE FUNCTIONALITIES ---
 
@@ -332,7 +363,6 @@ async function generatePDF() {
   btn.disabled = false;
   btn.innerHTML = "Generate PDF";
 }
-
 
 // Image Compressor
 async function compressImage() {
