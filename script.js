@@ -146,33 +146,7 @@ function openTool(toolName) {
             <button class="btn btn-info w-100 fw-bold" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
             <div id="pdfPreview" class="row g-3 mt-4"></div>`;
   }
-  // --- Word to PDF ---
-  else if (toolName === "wordToPdf") {
-    toolUI.innerHTML = `
-        <div class="text-center">
-            <h3><i class="fas fa-file-word me-2 text-primary"></i>Word to PDF</h3>
-            <p class="text-muted small">DOCX file ko PDF mein badlein</p>
-            <hr>
-            <input type="file" id="wordInput" accept=".docx" class="form-control mb-3">
-            <button class="btn btn-primary w-100 fw-bold" id="wordBtn" onclick="convertWordToPdf()">
-                <i class="fas fa-file-export me-2"></i> Convert to PDF
-            </button>
-        </div>`;
-  }
-
-  // --- PDF to Word (Text Based) ---
-  else if (toolName === "pdfToWord") {
-    toolUI.innerHTML = `
-        <div class="text-center">
-            <h3><i class="fas fa-file-alt me-2 text-info"></i>PDF to Word</h3>
-            <p class="text-muted small">PDF ka text editable Word file mein badlein</p>
-            <hr>
-            <input type="file" id="pdfWordInput" accept="application/pdf" class="form-control mb-3">
-            <button class="btn btn-info w-100 fw-bold" id="pdfWordBtn" onclick="convertPdfToWord()">
-                <i class="fas fa-file-word me-2"></i> Convert to Word
-            </button>
-        </div>`;
-  }
+ 
 }
 
 // --- 3. CORE FUNCTIONALITIES ---
@@ -224,58 +198,6 @@ async function generatePDF() {
 }
 
 
-// --- PDF to Word Logic ---
-async function convertPdfToWord() {
-    const file = document.getElementById("pdfWordInput").files[0];
-    if (!file) return showNotify("error", "File select karein!");
-
-    const btn = document.getElementById("pdfWordBtn");
-    btn.disabled = true;
-    btn.innerHTML = "Processing Layout...";
-
-    await openAd();
-
-    try {
-        const arrayBuffer = await file.arrayBuffer();
-        const pdfjsLib = window["pdfjs-dist/build/pdf"];
-        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
-        
-        const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
-        let htmlContent = "";
-
-        for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const textContent = await page.getTextContent();
-            const viewport = page.getViewport({ scale: 1.0 });
-
-            // Har page ko ek relative container banao
-            htmlContent += `<div style="position:relative; width:${viewport.width}px; height:${viewport.height}px; border:1px solid #eee; margin-bottom:20px; background:white;">`;
-
-            textContent.items.forEach(item => {
-                const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
-                const style = `position:absolute; left:${tx[4]}px; top:${viewport.height - tx[5]}px; font-size:${item.height}px; font-family:sans-serif; white-space:nowrap;`;
-                htmlContent += `<span style="${style}">${item.str}</span>`;
-            });
-
-            htmlContent += `</div><br clear="all" style="page-break-after:always;">`;
-        }
-
-        // Professional Word wrapper with Layout preservation
-        const header = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'></head><body>`;
-        const blob = new Blob(['\ufeff', header + htmlContent + "</body></html>"], { type: 'application/msword' });
-        
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "Formatted_Doc.doc";
-        link.click();
-
-        showNotify("success", "Layout extracted successfully!");
-    } catch (e) {
-        showNotify("error", "Error processing layout.");
-    }
-    btn.disabled = false;
-    btn.innerHTML = "Convert to Word";
-}
 // Image Compressor
 async function compressImage() {
   const file = document.getElementById("compressInput").files[0];
