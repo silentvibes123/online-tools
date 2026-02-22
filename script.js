@@ -1,25 +1,4 @@
-// --- System Back Button Fix ---
-window.onpopstate = function(event) {
-    // Agar koi tool ya extra screen khuli hai, toh use band karo
-    const toolsGrid = document.getElementById("toolsGrid");
-    if (toolsGrid.classList.contains("d-none")) {
-        goBack(); // Ye aapka purana function hai jo screens switch karta hai
-    }
-};
 
-// Tool open karte waqt history mein ek "state" push karo
-const originalOpenTool = openTool;
-openTool = function(name) {
-    history.pushState({page: 'tool'}, ""); // History mein entry add ki
-    originalOpenTool(name);
-};
-
-// Extra screens ke liye bhi same logic
-const originalShowExtra = showExtra;
-showExtra = function(page) {
-    history.pushState({page: 'extra'}, "");
-    originalShowExtra(page);
-};
 
 const openAd = () =>
     window.open(
@@ -185,7 +164,6 @@ async function generatePDF() {
         }
         openAd();
         doc.save("Converted.pdf");
-        showNotify("success", "PDF Downloaded Successfully!");
         setTimeout(() => {
             openAd();
             showNotify("success", "PDF Downloaded Successfully!");
@@ -211,30 +189,43 @@ async function compressImage() {
         img.onload = () => {
             const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
+
+            // --- SMART RESIZE LOGIC ---
+            // Agar image 1200px se badi hai, toh use 1200px tak le aao (Resolution balance)
+            let width = img.width;
+            let height = img.height;
+            const MAX_WIDTH = 1200; 
+
+            if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width;
+                width = MAX_WIDTH;
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Image draw karo naye dimensions ke sath
+            ctx.drawImage(img, 0, 0, width, height);
 
             canvas.toBlob(
                 (blob) => {
+                    // Final check: Agar file abhi bhi badi hai, toh automatic download trigger
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = url;
-                    a.download = `Compressed_${file.name}`;
+                    a.download = `SwiftTool_${quality * 100}kb_${file.name}`;
 
-                    // Pehle file ko body mein add karke click karwana zaroori hai
                     document.body.appendChild(a);
                     a.click();
-                    document.body.removeChild(a); // Download start hone ke baad remove kar do
+                    document.body.removeChild(a);
 
-                    // Ab ad kholenge (0.5 second ka delay taki download trigger ho jaye)
                     setTimeout(() => {
                         openAd();
-                        showNotify("success", "Image Compressed & Downloaded!");
+                        showNotify("success", `Compressed to approx ${(blob.size / 1024).toFixed(2)} KB`);
                     }, 800);
                 },
                 "image/jpeg",
-                quality,
+                quality // User ka quality slider
             );
         };
     };
@@ -514,3 +505,30 @@ function goBack() {
     document.getElementById("toolsGrid").classList.remove("d-none");
     window.scrollTo(0, 0);
 }
+
+
+// --- Sabse Niche (End of File) ---
+
+// 1. Save original functions (Jo niche define ho chuke hain)
+const originalOpenTool = openTool;
+const originalShowExtra = showExtra;
+
+// 2. Redefine to add History Logic
+openTool = function(name) {
+    history.pushState({page: 'tool'}, ""); 
+    originalOpenTool(name); // Ab ye niche wale real function ko call karega
+};
+
+showExtra = function(page) {
+    history.pushState({page: 'extra'}, "");
+    originalShowExtra(page);
+};
+
+// 3. Back Button Handler
+window.onpopstate = function(event) {
+    // Check if tools grid is hidden (means some tool is open)
+    const grid = document.getElementById("toolsGrid");
+    if (grid && grid.classList.contains("d-none")) {
+        goBack(); 
+    }
+};
