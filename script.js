@@ -185,16 +185,24 @@ async function compressImage() {
             canvas.width = img.width;
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
+            
             canvas.toBlob(
                 (blob) => {
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.href = url;
                     a.download = `Compressed_${file.name}`;
+                    
+                    // Pehle file ko body mein add karke click karwana zaroori hai
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a); // Download start hone ke baad remove kar do
+                    
+                    // Ab ad kholenge (0.5 second ka delay taki download trigger ho jaye)
                     setTimeout(() => {
                         openAd();
-                    }, 100);
-                    showNotify("success", "Image Compressed & Downloaded!");
+                        showNotify("success", "Image Compressed & Downloaded!");
+                    }, 500);
                 },
                 "image/jpeg",
                 quality,
