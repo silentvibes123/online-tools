@@ -146,6 +146,33 @@ function openTool(toolName) {
             <button class="btn btn-info w-100 fw-bold" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
             <div id="pdfPreview" class="row g-3 mt-4"></div>`;
   }
+  // --- Word to PDF ---
+else if (toolName === "wordToPdf") {
+    toolUI.innerHTML = `
+        <div class="text-center">
+            <h3><i class="fas fa-file-word me-2 text-primary"></i>Word to PDF</h3>
+            <p class="text-muted small">DOCX file ko PDF mein badlein</p>
+            <hr>
+            <input type="file" id="wordInput" accept=".docx" class="form-control mb-3">
+            <button class="btn btn-primary w-100 fw-bold" id="wordBtn" onclick="convertWordToPdf()">
+                <i class="fas fa-file-export me-2"></i> Convert to PDF
+            </button>
+        </div>`;
+}
+
+// --- PDF to Word (Text Based) ---
+else if (toolName === "pdfToWord") {
+    toolUI.innerHTML = `
+        <div class="text-center">
+            <h3><i class="fas fa-file-alt me-2 text-info"></i>PDF to Word</h3>
+            <p class="text-muted small">PDF ka text editable Word file mein badlein</p>
+            <hr>
+            <input type="file" id="pdfWordInput" accept="application/pdf" class="form-control mb-3">
+            <button class="btn btn-info w-100 fw-bold" id="pdfWordBtn" onclick="convertPdfToWord()">
+                <i class="fas fa-file-word me-2"></i> Convert to Word
+            </button>
+        </div>`;
+}
 }
 
 // --- 3. CORE FUNCTIONALITIES ---
@@ -194,6 +221,51 @@ async function generatePDF() {
   }
   btn.disabled = false;
   btn.innerHTML = "Generate PDF";
+}
+
+
+// --- PDF to Word Logic ---
+async function convertPdfToWord() {
+    const file = document.getElementById("pdfWordInput").files[0];
+    if (!file) return showNotify("error", "PDF file select karein!");
+
+    const btn = document.getElementById("pdfWordBtn");
+    btn.disabled = true;
+    btn.innerHTML = "Extracting Text...";
+
+    await openAd(); // Revenue Booster
+
+    try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdfjsLib = window["pdfjs-dist/build/pdf"];
+        const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+        
+        let fullText = "";
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            const strings = content.items.map(item => item.str);
+            fullText += strings.join(" ") + "\n\n";
+        }
+
+        // Word file create karna (Blob method)
+        const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'></head><body>";
+        const footer = "</body></html>";
+        const sourceHTML = header + "<p>" + fullText.replace(/\n/g, "</p><p>") + "</p>" + footer;
+        
+        const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "Converted_Document.doc";
+        link.click();
+
+        showNotify("success", "Word file downloaded!");
+    } catch (e) {
+        showNotify("error", "Conversion failed!");
+    }
+    btn.disabled = false;
+    btn.innerHTML = "Convert to Word";
 }
 
 // Image Compressor
