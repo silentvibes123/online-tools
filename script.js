@@ -1,19 +1,28 @@
-
 const openAd = () => {
-    const lastAdTime = localStorage.getItem('lastAdTime');
-    const now = new Date().getTime();
+    return new Promise((resolve) => {
+        const loader = document.getElementById("loaderOverlay");
+        const lastAdTime = localStorage.getItem('lastAdTime');
+        const now = new Date().getTime();
+        
+        // Loader dikhao
+        loader.classList.remove("d-none");
 
-    // 30 minute ka gap (1800000 milliseconds)
-    // Isse ad network ko traffic 'Organic' lagega aur CPM badhega
-    if (!lastAdTime || (now - lastAdTime) > 1800000) {
-        localStorage.setItem('lastAdTime', now);
-        window.open(
-            "https://www.effectivegatecpm.com/uhv7f7jam?key=621c144ec67a64c9e4ccf13b92fb867b",
-            "_blank",
-        );
-    } else {
-        console.log("CPM Protection: Ad frequency capped to keep account safe.");
-    }
+        // 3 second ka wait (Simulation)
+        setTimeout(() => {
+            loader.classList.add("d-none");
+
+            // 15 minute ka gap (900000 ms) CPM maintain karne ke liye
+            if (!lastAdTime || (now - lastAdTime) > 900000) {
+                localStorage.setItem('lastAdTime', now);
+                window.open(
+                    "https://www.effectivegatecpm.com/uhv7f7jam?key=621c144ec67a64c9e4ccf13b92fb867b",
+                    "_blank"
+                );
+            }
+            
+            resolve(); // Tool ka main kaam aage badhne do
+        }, 3000); 
+    });
 };
 
 // --- 1. Helper Function for Professional Alerts (SweetAlert2) ---

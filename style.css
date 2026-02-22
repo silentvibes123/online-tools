@@ -150,3 +150,7 @@ input[type="file"] {
         background: #eee;
         transform: translateX(-5px);
       }
+
+      #loaderOverlay:not(.d-none) {
+    display: flex !important;
+}
