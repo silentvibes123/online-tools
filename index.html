@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
   <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -134,6 +135,25 @@
         </div>
       </div>
 
+      <div class="col-md-4 col-sm-6 mb-4">
+    <div class="card tool-card p-4 h-100 shadow-sm" onclick="openTool('pdfPass')">
+        <div class="icon-box bg-dark text-white mb-3">
+            <i class="fas fa-lock"></i>
+        </div>
+        <h5>PDF Password</h5>
+        <p class="small text-muted">Add or remove password protection from PDFs.</p>
+    </div>
+</div>
+
+<div class="col-md-4 col-sm-6 mb-4">
+    <div class="card tool-card p-4 h-100 shadow-sm" onclick="openTool('resizer')">
+        <div class="icon-box bg-warning text-dark mb-3">
+            <i class="fas fa-id-card"></i>
+        </div>
+        <h5>Exam Photo Resizer</h5>
+        <p class="small text-muted">Resize photo exactly to 20KB or 50KB for forms.</p>
+    </div>
+</div>
      
 
 
