@@ -56,9 +56,11 @@ function showNotify(type, message) {
 
 // --- 2. Tool Opening Logic ---
 function openTool(toolName) {
+  history.pushState({ page: "tool" }, "");
   const grid = document.getElementById("toolsGrid");
   const active = document.getElementById("activeTool");
   const toolUI = document.getElementById("toolUI");
+  document.getElementById('seoSection').classList.add('d-none');
 
   // Smooth Transition
   grid.classList.add("d-none");
@@ -427,9 +429,15 @@ function resetPdfToImg() {
 }
 
 function goBack() {
-  document.getElementById("toolUI").innerHTML = "";
   document.getElementById("activeTool").classList.add("d-none");
+  document.getElementById("extraScreens").classList.add("d-none");
   document.getElementById("toolsGrid").classList.remove("d-none");
+  
+  // Ye line zaroori hai description wapas dikhane ke liye
+  if(document.getElementById('seoSection')) {
+    document.getElementById('seoSection').classList.remove('d-none');
+  }
+  
   window.scrollTo(0, 0);
 }
 
@@ -458,6 +466,7 @@ function previewImage() {
 }
 
 function showExtra(page) {
+  history.pushState({ page: "extra" }, "");
   document.getElementById("toolsGrid").classList.add("d-none");
   document.getElementById("activeTool").classList.add("d-none");
   document.getElementById("extraScreens").classList.remove("d-none");
@@ -590,25 +599,15 @@ function goBack() {
   document.getElementById("activeTool").classList.add("d-none");
   document.getElementById("extraScreens").classList.add("d-none");
   document.getElementById("toolsGrid").classList.remove("d-none");
+  
+  // SEO section ko wapas dikhane ke liye
+  const seo = document.getElementById('seoSection');
+  if(seo) seo.classList.remove('d-none');
+  
   window.scrollTo(0, 0);
 }
 
-// --- Sabse Niche (End of File) ---
 
-// 1. Save original functions (Jo niche define ho chuke hain)
-const originalOpenTool = openTool;
-const originalShowExtra = showExtra;
-
-// 2. Redefine to add History Logic
-openTool = function (name) {
-  history.pushState({ page: "tool" }, "");
-  originalOpenTool(name); // Ab ye niche wale real function ko call karega
-};
-
-showExtra = function (page) {
-  history.pushState({ page: "extra" }, "");
-  originalShowExtra(page);
-};
 
 // 3. Back Button Handler
 window.onpopstate = function (event) {
@@ -618,3 +617,18 @@ window.onpopstate = function (event) {
     goBack();
   }
 };
+
+function previewResize() {
+  const file = document.getElementById("resizeInput").files[0];
+  const previewArea = document.getElementById("resPreview");
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      previewArea.innerHTML = `
+        <img src="${e.target.result}" class="img-fluid rounded shadow-sm border" style="max-height:150px">
+        <p class="small text-muted mt-2">Original Size: ${(file.size / 1024).toFixed(2)} KB</p>
+      `;
+    };
+    reader.readAsDataURL(file);
+  }
+}
