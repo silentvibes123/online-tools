@@ -246,8 +246,7 @@ async function handlePrint() {
 // Images to PDF
 async function generatePDF() {
   const files = document.getElementById("imageInput").files;
-  if (files.length === 0)
-    return showNotify("error", "Please select images first!");
+  if (files.length === 0) return showNotify("error", "Please select images first!");
 
   const btn = document.getElementById("pdfBtn");
   btn.disabled = true;
@@ -255,17 +254,44 @@ async function generatePDF() {
 
   try {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    // 'p' (portrait), 'mm' (millimeters), 'a4' (standard size)
+    const doc = new jsPDF('p', 'mm', 'a4'); 
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
 
     await openAd();
+
     for (let i = 0; i < files.length; i++) {
       const data = await readFileAsDataURL(files[i]);
+      
+      // Image ki original dimensions nikalne ke liye
+      const img = new Image();
+      img.src = data;
+      await new Promise(resolve => img.onload = resolve);
+
       if (i > 0) doc.addPage();
-      doc.addImage(data, "JPEG", 10, 10, 190, 277);
+
+      // --- Calculation for Original Aspect Ratio ---
+      let imgWidth = pageWidth - 20; // 10mm margin dono side se
+      let imgHeight = (img.height * imgWidth) / img.width;
+
+      // Agar height page se bahar ja rahi ho toh use adjust karein
+      if (imgHeight > (pageHeight - 20)) {
+        imgHeight = pageHeight - 20;
+        imgWidth = (img.width * imgHeight) / img.height;
+      }
+
+      // Image ko center mein set karna
+      const xOffset = (pageWidth - imgWidth) / 2;
+      const yOffset = (pageHeight - imgHeight) / 2;
+
+      doc.addImage(data, "JPEG", xOffset, yOffset, imgWidth, imgHeight);
     }
-    doc.save("Converted.pdf");
+
+    doc.save("SwiftTool_Converted.pdf");
     showNotify("success", "PDF Downloaded Successfully!");
   } catch (e) {
+    console.error(e);
     showNotify("error", "Failed to generate PDF.");
   }
   btn.disabled = false;
