@@ -1,4 +1,5 @@
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
 
 const openAd = () => {
   return new Promise((resolve) => {
@@ -90,15 +91,15 @@ function openTool(toolName) {
             <div class="row">
                 <div class="col-md-6">
                     ${[2000, 500, 200, 100, 50, 20, 10, 5, 2, 1]
-        .map(
-          (note) => `
+                      .map(
+                        (note) => `
                         <div class="d-flex align-items-center mb-2">
                             <span class="fw-bold w-25">₹${note}</span>
                             <input type="number" class="form-control note-input me-3" id="note-${note}" oninput="calcCash()" placeholder="0" min="0">
                             <span class="ms-3 fw-bold text-end" style="min-width:80px" id="res-${note}">₹0</span>
                         </div>`,
-        )
-        .join("")}
+                      )
+                      .join("")}
                 </div>
                 <div class="col-md-6 text-center border-start d-flex flex-column justify-content-center">
                     <h4 class="text-muted">Total Amount</h4>
@@ -107,6 +108,10 @@ function openTool(toolName) {
     <i class="fas fa-print me-2"></i>Print Receipt
 </button>
                 </div>
+                <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-success"><i class="fas fa-info-circle me-2"></i> How to use Cash Counter?</h5>
+    <p class="small text-muted">SwiftTool Pro's Cash Counter helps you calculate total currency fast. Simply enter the number of notes for each denomination (₹2000 to ₹1), and the tool will show the grand total in real-time. You can also print a professional receipt for your records.</p>
+</div>
             </div>`;
   } else if (toolName === "pdf") {
     toolUI.innerHTML = `
@@ -117,6 +122,10 @@ function openTool(toolName) {
             <div class="text-center p-5 border border-dashed rounded bg-light">
                 <input type="file" id="imageInput" multiple accept="image/*" class="form-control mb-3">
                 <button class="btn btn-danger btn-lg w-100" id="pdfBtn" onclick="generatePDF()"><i class="fas fa-magic me-2"></i>Generate PDF</button>
+                <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-danger"><i class="fas fa-file-pdf me-2"></i> Professional Image to PDF Converter</h5>
+    <p class="small text-muted">Convert JPG, PNG, or WEBP images into a single high-quality PDF document instantly. Perfect for creating college assignments or office documents. Our tool maintains the original quality of your photos without any server upload.</p>
+</div>
             </div>`;
   } else if (toolName === "compress") {
     toolUI.innerHTML = `
@@ -134,6 +143,10 @@ function openTool(toolName) {
                     <div id="previewArea" class="mb-3 border rounded p-2" style="min-height:150px">Preview</div>
                     <button class="btn btn-primary w-100" onclick="compressImage()">Compress & Download</button>
                 </div>
+                <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-primary"><i class="fas fa-compress-arrows-alt me-2"></i> Fast Online Image Compressor</h5>
+    <p class="small text-muted">Reduce image file size instantly without losing quality. This tool is essential for uploading photos on government portals where specific size limits (like under 100KB) are required.</p>
+</div>
             </div>`;
   } else if (toolName === "qrcode") {
     toolUI.innerHTML = `
@@ -143,7 +156,12 @@ function openTool(toolName) {
             </div><hr>
             <input type="text" id="qrText" class="form-control mb-3" placeholder="Enter text or URL">
             <button class="btn btn-dark w-100" onclick="openAd(); generateQR()">Generate QR Code</button>
-            <div id="qrResult" class="text-center mt-4"></div>`;
+            <div id="qrResult" class="text-center mt-4">
+            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-dark"><i class="fas fa-qrcode me-2"></i> Free Instant QR Code Generator</h5>
+    <p class="small text-muted">Create custom QR codes for your website URLs, text, or contact info. SwiftTool Pro provides a high-resolution QR generator that is 100% free and works instantly. Simply enter your text, and your QR code is ready to save.</p>
+</div>
+            </div>`;
   } else if (toolName === "voice") {
     toolUI.innerHTML = `
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -151,12 +169,17 @@ function openTool(toolName) {
                 <button class="btn btn-sm btn-outline-danger" onclick="resetVoice()"><i class="fas fa-trash me-1"></i> Clear</button>
             </div><hr>
             <textarea id="speechText" class="form-control mb-3" rows="4" placeholder="Type text here..."></textarea>
-            <button class="btn btn-warning w-100 fw-bold" onclick="speakText()">Speak Now</button>`;
- } else if (toolName === "pdfToImg") {
+            <button class="btn btn-warning w-100 fw-bold" onclick="speakText()">Speak Now</button>
+            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-warning"><i class="fas fa-microphone-alt me-2"></i> AI-Powered Text to Speech</h5>
+    <p class="small text-muted">Convert your written text into a clear AI voice. This tool uses advanced browser-based speech synthesis technology to read your content aloud. It's perfect for proofreading, accessibility, or creating audio snippets for your projects.</p>
+</div>
+            `;
+  } else if (toolName === "pdfToImg") {
     toolUI.innerHTML = `
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-images me-2 text-info"></i>PDF to Image</h3>
-            <button class="btn btn-sm btn-outline-danger" onclick="resetPdfToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
+            <button class="btn btn-sm btn-outline-danger" onclick="resetPdfaToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
         </div><hr>
         <input type="file" id="pdfInput" accept="application/pdf" class="form-control mb-3">
         <button class="btn btn-info w-100 fw-bold mb-2" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
@@ -164,9 +187,13 @@ function openTool(toolName) {
         <button class="btn btn-success w-100 fw-bold d-none" id="downloadAllBtn" onclick="downloadAllAsZip()">
             <i class="fas fa-file-archive me-2"></i>Download All as ZIP
         </button>
+        <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-info"><i class="fas fa-images me-2"></i> High-Quality PDF to Image Extractor</h5>
+    <p class="small text-muted">Extract every page of your PDF document into high-resolution JPG images. Our tool allows you to download pages individually or all at once in a convenient ZIP file. Everything happens locally in your browser, keeping your documents 100% private.</p>
+</div>
 
         <div id="pdfPreview" class="row g-3 mt-4"></div>`;
-}
+  }
   // --- Tool UI logic inside openTool() ---
   // openTool function ke andar pdfPass wala hissa replace karein:
   else if (toolName === "resizer") {
@@ -182,6 +209,10 @@ function openTool(toolName) {
                 <option value="100">Target: Under 100KB</option>
             </select>
             <button class="btn btn-warning w-100 fw-bold" onclick="smartResize()">Download Perfect Size</button>
+            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-warning"><i class="fas fa-id-badge me-2"></i> Online Exam Photo Resizer (SSC, UPSC, IBPS)</h5>
+    <p class="small text-muted">Easily resize your photos for government job applications. Our tool automatically adjusts your photo to 350x450 pixels and ensures the file size stays under 50KB or 20KB as per official guidelines.</p>
+</div>
         </div>`;
   }
 
@@ -190,7 +221,7 @@ function openTool(toolName) {
         <p class="small text-muted mb-2" style="font-size:10px">RECOMMENDED FOR YOU</p>
         <div id="container-b35ebb7fb08b0d4cfa955a277c2007ce"></div>
     </div>
-`;
+  `;
 }
 
 // --- Smart Resizer Logic ---
@@ -367,7 +398,7 @@ async function compressImage() {
           // Example for Compressor Result in script.js
           // Is line ko download logic ke pass daalein
           const previewArea = document.getElementById("previewArea");
-       
+
           setTimeout(() => {
             openAd();
             showNotify(
@@ -387,58 +418,59 @@ async function compressImage() {
 let extractedImages = []; // Global variable images store karne ke liye
 
 async function convertPdfToImg() {
-    const file = document.getElementById("pdfInput").files[0];
-    if (!file) return showNotify("error", "Please select a PDF file!");
-    
-    await openAd();
-    
-    const btn = document.getElementById("pdfImgBtn");
-    const downloadAllBtn = document.getElementById("downloadAllBtn");
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Extracting...';
-    
-    extractedImages = []; // Purani images clear karein
-    const previewArea = document.getElementById("pdfPreview");
-    previewArea.innerHTML = "";
+  const file = document.getElementById("pdfInput").files[0];
+  if (!file) return showNotify("error", "Please select a PDF file!");
 
-    const reader = new FileReader();
-    reader.readAsArrayBuffer(file);
-    reader.onload = async function () {
-        try {
-            const typedarray = new Uint8Array(this.result);
-            const pdfjsLib = window['pdfjs-dist/build/pdf'] || window.pdfjsLib;
-            const pdf = await pdfjsLib.getDocument(typedarray).promise;
+  await openAd();
 
-            for (let i = 1; i <= pdf.numPages; i++) {
-                const page = await pdf.getPage(i);
-                const viewport = page.getViewport({ scale: 2 }); // Quality badhane ke liye scale 2
-                const canvas = document.createElement("canvas");
-                const context = canvas.getContext("2d");
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
+  const btn = document.getElementById("pdfImgBtn");
+  const downloadAllBtn = document.getElementById("downloadAllBtn");
+  btn.disabled = true;
+  btn.innerHTML =
+    '<span class="spinner-border spinner-border-sm me-2"></span>Extracting...';
 
-                await page.render({ canvasContext: context, viewport }).promise;
+  extractedImages = []; // Purani images clear karein
+  const previewArea = document.getElementById("pdfPreview");
+  previewArea.innerHTML = "";
 
-                const imgData = canvas.toDataURL("image/jpeg", 0.9);
-                extractedImages.push({ name: `Page_${i}.jpg`, data: imgData });
+  const reader = new FileReader();
+  reader.readAsArrayBuffer(file);
+  reader.onload = async function () {
+    try {
+      const typedarray = new Uint8Array(this.result);
+      const pdfjsLib = window["pdfjs-dist/build/pdf"] || window.pdfjsLib;
+      const pdf = await pdfjsLib.getDocument(typedarray).promise;
 
-                previewArea.innerHTML += `
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({ scale: 2 }); // Quality badhane ke liye scale 2
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        await page.render({ canvasContext: context, viewport }).promise;
+
+        const imgData = canvas.toDataURL("image/jpeg", 0.9);
+        extractedImages.push({ name: `Page_${i}.jpg`, data: imgData });
+
+        previewArea.innerHTML += `
                     <div class="col-6 col-md-3 text-center">
                         <img src="${imgData}" class="img-fluid border rounded shadow-sm">
                         <a href="${imgData}" download="Page_${i}.jpg" class="btn btn-sm btn-link">Download Page ${i}</a>
                     </div>`;
-            }
-            
-            // Extraction ke baad button dikhao
-            downloadAllBtn.classList.remove("d-none");
-            showNotify("success", `${pdf.numPages} pages extracted!`);
-        } catch (e) {
-            showNotify("error", "Error processing PDF.");
-            console.error(e);
-        }
-        btn.disabled = false;
-        btn.innerHTML = "Extract All Pages";
-    };
+      }
+
+      // Extraction ke baad button dikhao
+      downloadAllBtn.classList.remove("d-none");
+      showNotify("success", `${pdf.numPages} pages extracted!`);
+    } catch (e) {
+      showNotify("error", "Error processing PDF.");
+      console.error(e);
+    }
+    btn.disabled = false;
+    btn.innerHTML = "Extract All Pages";
+  };
 }
 
 // QR Code
@@ -493,11 +525,11 @@ function resetVoice() {
   showNotify("info", "Voice Stopped");
 }
 function resetPdfToImg() {
-    document.getElementById("pdfInput").value = "";
-    document.getElementById("pdfPreview").innerHTML = "";
-    document.getElementById("downloadAllBtn").classList.add("d-none"); // Ye line add karein
-    extractedImages = [];
-    showNotify("info", "PDF Cleared");
+  document.getElementById("pdfInput").value = "";
+  document.getElementById("pdfPreview").innerHTML = "";
+  document.getElementById("downloadAllBtn").classList.add("d-none"); // Ye line add karein
+  extractedImages = [];
+  showNotify("info", "PDF Cleared");
 }
 
 function goBack() {
@@ -536,8 +568,6 @@ function previewImage() {
     reader.readAsDataURL(file);
   }
 }
-
-
 
 function showExtra(page) {
   history.pushState({ page: "extra" }, "");
@@ -611,48 +641,50 @@ function showExtra(page) {
             </div>
             <button type="submit" id="form-submit" class="btn btn-danger w-100 fw-bold py-3">Send Message</button>
         </form>`;
-    
+
     // Yahan Form submission ka logic (AJAX) wapas paste karein jo aapne upar diya tha.
 
-   const form = document.getElementById("contact-form");
-form.onsubmit = async (e) => {
-  e.preventDefault();
-  const btn = document.getElementById("form-submit");
+    const form = document.getElementById("contact-form");
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("form-submit");
 
-  // VALIDATION: Agar aapne abhi tak ID change nahi ki hai, tabhi warning dega
-  // Agar aapne real ID daal di hai toh ye 'if' skip ho jayega
-  if (form.action.includes("YOUR_ID_HERE")) { 
-    return Swal.fire(
-      "Setup Required",
-      "Please add your valid Formspree ID in script.js",
-      "warning",
-    );
-  }
+      // VALIDATION: Agar aapne abhi tak ID change nahi ki hai, tabhi warning dega
+      // Agar aapne real ID daal di hai toh ye 'if' skip ho jayega
+      if (form.action.includes("YOUR_ID_HERE")) {
+        return Swal.fire(
+          "Setup Required",
+          "Please add your valid Formspree ID in script.js",
+          "warning",
+        );
+      }
 
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+      btn.disabled = true;
+      btn.innerHTML =
+        '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
 
-  try {
-    const formData = new FormData(form);
-    const response = await fetch(form.action, {
-      method: "POST",
-      body: formData,
-      headers: { Accept: "application/json" },
-    });
+      try {
+        const formData = new FormData(form);
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: formData,
+          headers: { Accept: "application/json" },
+        });
 
-    if (response.ok) {
-      showNotify("success", "Thank you! Your message has been received.");
-      form.reset();
-    } else {
-      showNotify("error", "Message could not be sent. Please try again.");
-    }
-  } catch (error) {
-    showNotify("error", "Network error. Check your connection.");
-  }
+        if (response.ok) {
+          showNotify("success", "Thank you! Your message has been received.");
+          form.reset();
+        } else {
+          showNotify("error", "Message could not be sent. Please try again.");
+        }
+      } catch (error) {
+        showNotify("error", "Network error. Check your connection.");
+      }
 
-  btn.disabled = false;
-  btn.innerHTML = '<i class="fas fa-paper-plane me-2"></i> Send Message Now';
-};
+      btn.disabled = false;
+      btn.innerHTML =
+        '<i class="fas fa-paper-plane me-2"></i> Send Message Now';
+    };
   }
 }
 
@@ -682,54 +714,55 @@ function previewResize() {
 
 // Jab bhi naya tool khule, ad ko refresh karne ke liye
 function refreshNativeAd() {
-    const containerId = "container-b35ebb7fb08b0d4cfa955a277c2007ce";
-    const container = document.getElementById(containerId);
-    
-    if (container) {
-        // 1. Purani script dhoondo aur delete karo
-        const oldScript = document.querySelector(`script[data-cfasync="false"][src*="invoke.js"]`);
-        if (oldScript) oldScript.remove();
+  const containerId = "container-b35ebb7fb08b0d4cfa955a277c2007ce";
+  const container = document.getElementById(containerId);
 
-        // 2. Container ko khali karo taaki naya ad load ho sake
-        container.innerHTML = "";
+  if (container) {
+    // 1. Purani script dhoondo aur delete karo
+    const oldScript = document.querySelector(
+      `script[data-cfasync="false"][src*="invoke.js"]`,
+    );
+    if (oldScript) oldScript.remove();
 
-        // 3. Nayi script create karo
-        const newScript = document.createElement("script");
-        newScript.async = true;
-        newScript.dataset.cfasync = "false";
-        // Timestamp add karne se browser cache bypass hota hai
-        newScript.src = `//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js?t=${Date.now()}`;
-        
-        // 4. Script ko container ke baad ya body mein append karein
-        document.body.appendChild(newScript);
-    }
+    // 2. Container ko khali karo taaki naya ad load ho sake
+    container.innerHTML = "";
+
+    // 3. Nayi script create karo
+    const newScript = document.createElement("script");
+    newScript.async = true;
+    newScript.dataset.cfasync = "false";
+    // Timestamp add karne se browser cache bypass hota hai
+    newScript.src = `//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js?t=${Date.now()}`;
+
+    // 4. Script ko container ke baad ya body mein append karein
+    document.body.appendChild(newScript);
+  }
 }
 
-
 async function downloadAllAsZip() {
-    if (extractedImages.length === 0) return;
+  if (extractedImages.length === 0) return;
 
-    const zip = new JSZip();
-    const btn = document.getElementById("downloadAllBtn");
-    
-    btn.disabled = true;
-    btn.innerHTML = "Creating ZIP...";
+  const zip = new JSZip();
+  const btn = document.getElementById("downloadAllBtn");
 
-    extractedImages.forEach((img) => {
-        // base64 data se header hatana padta hai ZIP mein dalne ke liye
-        const imgData = img.data.split(",")[1];
-        zip.file(img.name, imgData, { base64: true });
-    });
+  btn.disabled = true;
+  btn.innerHTML = "Creating ZIP...";
 
-    const content = await zip.generateAsync({ type: "blob" });
-    const url = URL.createObjectURL(content);
-    
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "SwiftTool_Images.zip";
-    a.click();
-    
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-file-archive me-2"></i>Download All as ZIP';
-    showNotify("success", "ZIP Downloaded!");
+  extractedImages.forEach((img) => {
+    // base64 data se header hatana padta hai ZIP mein dalne ke liye
+    const imgData = img.data.split(",")[1];
+    zip.file(img.name, imgData, { base64: true });
+  });
+
+  const content = await zip.generateAsync({ type: "blob" });
+  const url = URL.createObjectURL(content);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "SwiftTool_Images.zip";
+  a.click();
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fas fa-file-archive me-2"></i>Download All as ZIP';
+  showNotify("success", "ZIP Downloaded!");
 }
