@@ -179,7 +179,7 @@ function openTool(toolName) {
     toolUI.innerHTML = `
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-images me-2 text-info"></i>PDF to Image</h3>
-            <button class="btn btn-sm btn-outline-danger" onclick="resetPdfaToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
+            <button class="btn btn-sm btn-outline-danger" onclick="resetPdfToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
         </div><hr>
         <input type="file" id="pdfInput" accept="application/pdf" class="form-control mb-3">
         <button class="btn btn-info w-100 fw-bold mb-2" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
@@ -219,7 +219,7 @@ function openTool(toolName) {
   toolUI.innerHTML += `
     <div class="mt-4 pt-3 border-top text-center" id="resultAdSlot">
         <p class="small text-muted mb-2" style="font-size:10px">RECOMMENDED FOR YOU</p>
-        <div id="container-b35ebb7fb08b0d4cfa955a277c2007ce"></div>
+        <div id="container-1f80efc60776ec6b8e8266dae4f5fc1f"></div>
     </div>
   `;
 }
@@ -714,7 +714,7 @@ function previewResize() {
 
 // Jab bhi naya tool khule, ad ko refresh karne ke liye
 function refreshNativeAd() {
-  const containerId = "container-b35ebb7fb08b0d4cfa955a277c2007ce";
+  const containerId = "container-1f80efc60776ec6b8e8266dae4f5fc1f";
   const container = document.getElementById(containerId);
 
   if (container) {
