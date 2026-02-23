@@ -154,3 +154,23 @@ input[type="file"] {
       #loaderOverlay:not(.d-none) {
     display: flex !important;
 }
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    /* Title aur Subtitle ko chota karein */
+    .dashboard-title { font-size: 1.5rem !important; margin-bottom: 5px; }
+    .text-muted { font-size: 0.8rem; }
+
+    /* Tool Card se description chupa dein (space bachane ke liye) */
+    .tool-card p { display: none; } 
+    
+    /* Card ka padding kam karein */
+    .tool-card { padding: 15px !important; }
+    
+    /* Icons thode chote karein */
+    .icon-box { width: 45px; height: 45px; margin: 0 auto 10px; }
+    .icon-box i { font-size: 1.2rem; }
+    
+    /* Text size cards ke liye */
+    .tool-card h5 { font-size: 0.9rem; margin-bottom: 0; }
+}
