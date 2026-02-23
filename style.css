@@ -23,6 +23,24 @@ body {
     border: 1px dashed #cfe2ff !important; /* Ad ko alag dikhane ke liye */
 }
 
+@media print {
+    /* Print ke waqt faltu cheezein chhupane ke liye */
+    .btn, .navbar, footer, #resultAdSlot, #loaderOverlay, hr {
+        display: none !important;
+    }
+    /* Tool UI ko poori screen par dikhane ke liye */
+    #activeTool {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+    /* Background colors ko force karne ke liye */
+    body {
+        -webkit-print-color-adjust: exact;
+    }
+}
+
 /* Adterra ke inner container ko stretch karne ke liye */
 #container-b35ebb7fb08b0d4cfa955a277c2007ce {
     width: 100% !important;
@@ -55,7 +73,8 @@ body {
 
 .tool-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.1) !important;
+    border-color: #0d6efd; /* Blue border on hover */
+    transition: all 0.3s ease;
 }
 
 /* Fixed Back Button for Mobile */

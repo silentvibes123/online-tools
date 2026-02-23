@@ -1,3 +1,5 @@
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+
 const openAd = () => {
   return new Promise((resolve) => {
     const loader = document.getElementById("loaderOverlay");
@@ -150,16 +152,21 @@ function openTool(toolName) {
             </div><hr>
             <textarea id="speechText" class="form-control mb-3" rows="4" placeholder="Type text here..."></textarea>
             <button class="btn btn-warning w-100 fw-bold" onclick="speakText()">Speak Now</button>`;
-  } else if (toolName === "pdfToImg") {
+ } else if (toolName === "pdfToImg") {
     toolUI.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3><i class="fas fa-images me-2 text-info"></i>PDF to Image</h3>
-                <button class="btn btn-sm btn-outline-danger" onclick="resetPdfToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
-            </div><hr>
-            <input type="file" id="pdfInput" accept="application/pdf" class="form-control mb-3">
-            <button class="btn btn-info w-100 fw-bold" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
-            <div id="pdfPreview" class="row g-3 mt-4"></div>`;
-  }
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3><i class="fas fa-images me-2 text-info"></i>PDF to Image</h3>
+            <button class="btn btn-sm btn-outline-danger" onclick="resetPdfToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
+        </div><hr>
+        <input type="file" id="pdfInput" accept="application/pdf" class="form-control mb-3">
+        <button class="btn btn-info w-100 fw-bold mb-2" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
+        
+        <button class="btn btn-success w-100 fw-bold d-none" id="downloadAllBtn" onclick="downloadAllAsZip()">
+            <i class="fas fa-file-archive me-2"></i>Download All as ZIP
+        </button>
+
+        <div id="pdfPreview" class="row g-3 mt-4"></div>`;
+}
   // --- Tool UI logic inside openTool() ---
   // openTool function ke andar pdfPass wala hissa replace karein:
   else if (toolName === "resizer") {
@@ -377,52 +384,61 @@ async function compressImage() {
 }
 
 // PDF to Image (Fully Fixed)
+let extractedImages = []; // Global variable images store karne ke liye
+
 async function convertPdfToImg() {
-  const file = document.getElementById("pdfInput").files[0];
-  if (!file) return showNotify("error", "Please select a PDF file!");
-  await openAd();
+    const file = document.getElementById("pdfInput").files[0];
+    if (!file) return showNotify("error", "Please select a PDF file!");
+    
+    await openAd();
+    
+    const btn = document.getElementById("pdfImgBtn");
+    const downloadAllBtn = document.getElementById("downloadAllBtn");
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Extracting...';
+    
+    extractedImages = []; // Purani images clear karein
+    const previewArea = document.getElementById("pdfPreview");
+    previewArea.innerHTML = "";
 
-  const btn = document.getElementById("pdfImgBtn");
-  btn.disabled = true;
-  btn.innerHTML = "Extracting...";
-  showNotify("info", "Converting PDF... Please wait.");
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onload = async function () {
+        try {
+            const typedarray = new Uint8Array(this.result);
+            const pdfjsLib = window['pdfjs-dist/build/pdf'] || window.pdfjsLib;
+            const pdf = await pdfjsLib.getDocument(typedarray).promise;
 
-  const reader = new FileReader();
-  reader.readAsArrayBuffer(file);
-  reader.onload = async function () {
-    try {
-      const typedarray = new Uint8Array(this.result);
-      const pdfjsLib = window["pdfjs-dist/build/pdf"];
-      pdfjsLib.GlobalWorkerOptions.workerSrc =
-        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const viewport = page.getViewport({ scale: 2 }); // Quality badhane ke liye scale 2
+                const canvas = document.createElement("canvas");
+                const context = canvas.getContext("2d");
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
 
-      const pdf = await pdfjsLib.getDocument(typedarray).promise;
-      const previewArea = document.getElementById("pdfPreview");
-      previewArea.innerHTML = "";
+                await page.render({ canvasContext: context, viewport }).promise;
 
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale: 1.5 });
-        const canvas = document.createElement("canvas");
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-        await page.render({ canvasContext: canvas.getContext("2d"), viewport })
-          .promise;
+                const imgData = canvas.toDataURL("image/jpeg", 0.9);
+                extractedImages.push({ name: `Page_${i}.jpg`, data: imgData });
 
-        const imgData = canvas.toDataURL("image/jpeg");
-        previewArea.innerHTML += `
+                previewArea.innerHTML += `
                     <div class="col-6 col-md-3 text-center">
                         <img src="${imgData}" class="img-fluid border rounded shadow-sm">
                         <a href="${imgData}" download="Page_${i}.jpg" class="btn btn-sm btn-link">Download Page ${i}</a>
                     </div>`;
-      }
-      showNotify("success", `Successfully extracted ${pdf.numPages} pages!`);
-    } catch (e) {
-      showNotify("error", "Error reading PDF file.");
-    }
-    btn.disabled = false;
-    btn.innerHTML = "Extract All Pages";
-  };
+            }
+            
+            // Extraction ke baad button dikhao
+            downloadAllBtn.classList.remove("d-none");
+            showNotify("success", `${pdf.numPages} pages extracted!`);
+        } catch (e) {
+            showNotify("error", "Error processing PDF.");
+            console.error(e);
+        }
+        btn.disabled = false;
+        btn.innerHTML = "Extract All Pages";
+    };
 }
 
 // QR Code
@@ -477,9 +493,11 @@ function resetVoice() {
   showNotify("info", "Voice Stopped");
 }
 function resetPdfToImg() {
-  document.getElementById("pdfInput").value = "";
-  document.getElementById("pdfPreview").innerHTML = "";
-  showNotify("info", "PDF Cleared");
+    document.getElementById("pdfInput").value = "";
+    document.getElementById("pdfPreview").innerHTML = "";
+    document.getElementById("downloadAllBtn").classList.add("d-none"); // Ye line add karein
+    extractedImages = [];
+    showNotify("info", "PDF Cleared");
 }
 
 function goBack() {
@@ -519,6 +537,8 @@ function previewImage() {
   }
 }
 
+
+
 function showExtra(page) {
   history.pushState({ page: "extra" }, "");
   document.getElementById("toolsGrid").classList.add("d-none");
@@ -528,137 +548,112 @@ function showExtra(page) {
 
   if (page === "about") {
     content.innerHTML = `
-            <h2 class="fw-bold text-primary mb-4">About SwiftTool Pro</h2>
-            <p>SwiftTool Pro is your all-in-one digital companion designed to simplify repetitive daily tasks. From managing cash to converting documents, we bring professional-grade tools directly to your browser.</p>
-            <div class="row mt-4">
-                <div class="col-md-6"><h5><i class="fas fa-user-shield text-success me-2"></i> 100% Secure</h5><p>All processing happens locally in your browser. Your data never leaves your device.</p></div>
-                <div class="col-md-6"><h5><i class="fas fa-bolt text-warning me-2"></i> Lightning Fast</h5><p>Optimized for speed, no server-side waiting time.</p></div>
-            </div>`;
-  } else if (page === "how") {
-    content.innerHTML = `
-            <h2 class="fw-bold text-info mb-4">How It Works</h2>
-            <div class="list-group list-group-flush">
-                <div class="list-group-item bg-transparent border-0 ps-0 mb-3">
-                    <span class="badge bg-info rounded-pill me-2">1</span> Choose any tool from the dashboard like Cash Counter or PDF Converter.
-                </div>
-                <div class="list-group-item bg-transparent border-0 ps-0 mb-3">
-                    <span class="badge bg-info rounded-pill me-2">2</span> Upload your files or enter the required data in the tool interface.
-                </div>
-                <div class="list-group-item bg-transparent border-0 ps-0">
-                    <span class="badge bg-info rounded-pill me-2">3</span> Click the action button to process and download your results instantly.
-                </div>
-            </div>`;
-  } else if (page === "contact") {
-    content.innerHTML = `
-        <h2 class="fw-bold text-danger mb-4">Contact Us</h2>
-        <p class="text-muted">Have a query or need a new tool? Fill out the form and our team will get back to you shortly.</p>
+      <div class="text-start p-3">
+        <h2 class="fw-bold text-primary mb-4 text-center">About SwiftTool Pro</h2>
+        <p class="lead">Welcome to <b>SwiftTool Pro</b>, a professional platform providing high-quality digital utility tools.</p>
+        <p>Our mission is simple: to make complex digital tasks easy, fast, and secure. We specialize in web-based tools that help students and professionals handle daily tasks like document conversion and image optimization without downloading heavy software.</p>
         
-        <form id="contact-form" action="https://formspree.io/f/xbdayrne" method="POST">
-            <div class="mb-3 mt-4 text-start">
-                <label class="form-label fw-bold">Full Name</label>
-                <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
-            </div>
-            
-            <div class="mb-3 text-start">
-                <label class="form-label fw-bold">Email Address</label>
-                <input type="email" name="email" class="form-control" placeholder="yourname@gmail.com" required>
-            </div>
-            
-            <div class="mb-3 text-start">
-                <label class="form-label fw-bold">Your Message</label>
-                <textarea name="message" class="form-control" rows="4" placeholder="How can we help you?" required></textarea>
-            </div>
-            
-            <button type="submit" id="form-submit" class="btn btn-danger w-100 fw-bold py-3 shadow-sm">
-                <i class="fas fa-paper-plane me-2"></i> Send Message Now
-            </button>
-        </form>
+        <h5 class="mt-4"><i class="fas fa-check-circle text-success me-2"></i>What We Offer:</h5>
+        <ul>
+            <li><b>Exam Ready Tools:</b> Specialized resizers for SSC, UPSC, and Banking exams.</li>
+            <li><b>Document Management:</b> High-speed PDF to Image and Image to PDF conversion.</li>
+            <li><b>Financial Utilities:</b> Simple and accurate Cash Counter for daily accounting.</li>
+            <li><b>AI Powered Features:</b> QR generation and Text-to-Speech (AI Voice) capabilities.</li>
+        </ul>
+
+        <h5 class="mt-4"><i class="fas fa-shield-alt text-primary me-2"></i>Why Trust Us?</h5>
+        <p>At SwiftTool Pro, we prioritize <b>User Privacy</b>. Unlike other online converters, we process all your data <b>locally in your browser</b>. Your photos, documents, and calculations never reach our servers, ensuring 100% data safety.</p>
         
-        <div class="mt-4 pt-3 border-top text-center">
-            <div class="d-flex align-items-center justify-content-center text-success mb-2">
-                <i class="fas fa-shield-alt me-2"></i>
-                <span class="fw-600">Secure & Encrypted Communication</span>
-            </div>
-            <p class="small text-muted mb-0">
-                <i class="far fa-clock me-1"></i> Typical response time: <b>Within 24 hours</b>
-            </p>
-            <p class="x-small text-muted mt-2" style="font-size: 0.8rem;">
-                Note: For security reasons, we only accept inquiries through this official verified form.
-            </p>
-        </div>`;
-
-    // Form Submission Handling (AJAX)
-    const form = document.getElementById("contact-form");
-    form.onsubmit = async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById("form-submit");
-
-      // Form ID Check (Taki aap bhul na jao)
-      // --- Is hisse ko dhyan se replace karein ---
-
-      // Form ID Check (Ab ye sirf tab error dega jab aapki ID missing hogi)
-      if (
-        form.action.includes("YOUR_FORM_ID_HERE") ||
-        !form.action.includes("f/")
-      ) {
-        return Swal.fire(
-          "Setup Required",
-          "Please add your valid Formspree ID in script.js",
-          "warning",
-        );
-      }
-
-      btn.disabled = true;
-      btn.innerHTML =
-        '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
-
-      try {
-        const formData = new FormData(form);
-        const response = await fetch(form.action, {
-          method: "POST",
-          body: formData,
-          headers: { Accept: "application/json" },
-        });
-
-        if (response.ok) {
-          showNotify("success", "Thank you! Your message has been received.");
-          form.reset();
-        } else {
-          showNotify("error", "Message could not be sent. Please try again.");
-        }
-      } catch (error) {
-        showNotify("error", "Network error. Check your connection.");
-      }
-
-      btn.disabled = false;
-      btn.innerHTML =
-        '<i class="fas fa-paper-plane me-2"></i> Send Message Now';
-    };
+        <div class="alert alert-info mt-4">
+            Founded in 2026, we are committed to continuous improvement. For suggestions, visit our Contact page.
+        </div>
+      </div>`;
   } else if (page === "terms") {
     content.innerHTML = `
-            <h2 class="fw-bold text-dark mb-4">Terms & Privacy Policy</h2>
-            <div style="max-height: 300px; overflow-y: auto;" class="pe-3 text-muted">
-                <h6>1. Data Privacy</h6>
-                <p>We do not store your images, PDFs, or any personal data on our servers. All operations are performed using Client-Side JavaScript.</p>
-                <h6>2. Usage License</h6>
-                <p>SwiftTool Pro is free to use for personal and commercial purposes.</p>
-                <h6>3. Limitation of Liability</h6>
-                <p>Tools are provided "as is" without warranty. We are not responsible for data loss due to browser crashes.</p>
-            </div>`;
+      <div class="text-start p-3">
+        <h2 class="fw-bold text-dark mb-4 text-center">Privacy Policy & Terms</h2>
+        <p class="small text-muted">Last Updated: February 2026</p>
+        
+        <h5 class="mt-4 text-primary">1. Privacy Commitment</h5>
+        <p>At SwiftTool Pro, we do not collect, store, or share your personal files. All tools (Image Compressor, PDF Tools, etc.) work using <b>Client-Side JavaScript</b>. This means your files stay on your device.</p>
+
+        <h5 class="mt-4 text-primary">2. Cookies and Ads</h5>
+        <p>We use standard cookies to improve user experience. Our website serves advertisements through partners like <b>Google AdSense</b>. These third-party ad servers may use cookies to serve ads based on your prior visits to our website.</p>
+
+        <h5 class="mt-4 text-primary">3. Terms of Service</h5>
+        <ul>
+            <li>The tools are provided "as-is" without any warranties.</li>
+            <li>Users are responsible for verifying the final output of exam-related tools.</li>
+            <li>SwiftTool Pro is free for personal use. Commercial automated scraping is prohibited.</li>
+        </ul>
+
+        <h5 class="mt-4 text-primary">4. Consent</h5>
+        <p>By using our website, you hereby consent to our Privacy Policy and agree to its terms.</p>
+      </div>`;
+  } else if (page === "contact") {
+    // Aapka Formspree wala contact code ekdum perfect hai, use waisa hi rehne dein
+    // Bas email placeholder ko 'contact@swifttoolpro.com' kar dena professional look ke liye.
+    content.innerHTML = `
+        <h2 class="fw-bold text-danger mb-4">Contact Us</h2>
+        <p class="text-muted">Have a query or need a new tool? Reach out to us.</p>
+        <form id="contact-form" action="https://formspree.io/f/xbdayrne" method="POST">
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold">Full Name</label>
+                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold">Email</label>
+                <input type="email" name="email" class="form-control" placeholder="contact@yourdomain.com" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold">Message</label>
+                <textarea name="message" class="form-control" rows="4" placeholder="How can we help?" required></textarea>
+            </div>
+            <button type="submit" id="form-submit" class="btn btn-danger w-100 fw-bold py-3">Send Message</button>
+        </form>`;
+    
+    // Yahan Form submission ka logic (AJAX) wapas paste karein jo aapne upar diya tha.
+
+   const form = document.getElementById("contact-form");
+form.onsubmit = async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("form-submit");
+
+  // VALIDATION: Agar aapne abhi tak ID change nahi ki hai, tabhi warning dega
+  // Agar aapne real ID daal di hai toh ye 'if' skip ho jayega
+  if (form.action.includes("YOUR_ID_HERE")) { 
+    return Swal.fire(
+      "Setup Required",
+      "Please add your valid Formspree ID in script.js",
+      "warning",
+    );
   }
-}
 
-// Update goBack function to handle extra screens too
-function goBack() {
-  document.getElementById("activeTool").classList.add("d-none");
-  document.getElementById("extraScreens").classList.add("d-none");
-  document.getElementById("toolsGrid").classList.remove("d-none");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
 
-  // SEO section ko wapas dikhane ke liye
-  const seo = document.getElementById("seoSection");
-  if (seo) seo.classList.remove("d-none");
+  try {
+    const formData = new FormData(form);
+    const response = await fetch(form.action, {
+      method: "POST",
+      body: formData,
+      headers: { Accept: "application/json" },
+    });
 
-  window.scrollTo(0, 0);
+    if (response.ok) {
+      showNotify("success", "Thank you! Your message has been received.");
+      form.reset();
+    } else {
+      showNotify("error", "Message could not be sent. Please try again.");
+    }
+  } catch (error) {
+    showNotify("error", "Network error. Check your connection.");
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fas fa-paper-plane me-2"></i> Send Message Now';
+};
+  }
 }
 
 // 3. Back Button Handler
@@ -687,13 +682,54 @@ function previewResize() {
 
 // Jab bhi naya tool khule, ad ko refresh karne ke liye
 function refreshNativeAd() {
-  const scriptTag = document.querySelector('script[src*="invoke.js"]');
-  if (scriptTag) {
-    const newScript = document.createElement("script");
-    // URL ke piche time add karne se ad hamesha fresh load hoga
-    newScript.src = scriptTag.src.split('?')[0] + '?t=' + Date.now();
-    newScript.async = true;
-    newScript.dataset.cfasync = "false";
-    document.body.appendChild(newScript);
-  }
+    const containerId = "container-b35ebb7fb08b0d4cfa955a277c2007ce";
+    const container = document.getElementById(containerId);
+    
+    if (container) {
+        // 1. Purani script dhoondo aur delete karo
+        const oldScript = document.querySelector(`script[data-cfasync="false"][src*="invoke.js"]`);
+        if (oldScript) oldScript.remove();
+
+        // 2. Container ko khali karo taaki naya ad load ho sake
+        container.innerHTML = "";
+
+        // 3. Nayi script create karo
+        const newScript = document.createElement("script");
+        newScript.async = true;
+        newScript.dataset.cfasync = "false";
+        // Timestamp add karne se browser cache bypass hota hai
+        newScript.src = `//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js?t=${Date.now()}`;
+        
+        // 4. Script ko container ke baad ya body mein append karein
+        document.body.appendChild(newScript);
+    }
+}
+
+
+async function downloadAllAsZip() {
+    if (extractedImages.length === 0) return;
+
+    const zip = new JSZip();
+    const btn = document.getElementById("downloadAllBtn");
+    
+    btn.disabled = true;
+    btn.innerHTML = "Creating ZIP...";
+
+    extractedImages.forEach((img) => {
+        // base64 data se header hatana padta hai ZIP mein dalne ke liye
+        const imgData = img.data.split(",")[1];
+        zip.file(img.name, imgData, { base64: true });
+    });
+
+    const content = await zip.generateAsync({ type: "blob" });
+    const url = URL.createObjectURL(content);
+    
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "SwiftTool_Images.zip";
+    a.click();
+    
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-file-archive me-2"></i>Download All as ZIP';
+    showNotify("success", "ZIP Downloaded!");
 }
