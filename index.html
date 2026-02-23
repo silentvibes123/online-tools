@@ -63,37 +63,39 @@
       <p class="text-muted small">All-in-one digital toolkit for daily tasks</p>
     </div>
 
-    <div class="container text-center my-3">
-      <div class="d-none d-md-block" id="desktop-ad">
+    <div class="container text-center my-3" style="min-height: 100px; display: flex; align-items: center; justify-content: center;">
+    
+    <div class="d-none d-md-block" id="desktop-ad" style="width: 728px; min-height: 90px; background: #f8f9fa; border-radius: 8px;">
         <script>
-          atOptions = {
-            key: "59e673dcf67dd9afa0c38dda2e5878ff",
-            format: "iframe",
-            height: 90,
-            width: 728,
-            params: {},
-          };
+            atOptions = {
+                key: "59e673dcf67dd9afa0c38dda2e5878ff",
+                format: "iframe",
+                height: 90,
+                width: 728,
+                params: {},
+            };
         </script>
         <script src="https://www.highperformanceformat.com/59e673dcf67dd9afa0c38dda2e5878ff/invoke.js"></script>
-      </div>
-
-      <div class="d-block d-md-none" id="mobile-ad">
-        <script>
-          atOptions = {
-            key: "00a217387448657392d6e463db6472ba",
-            format: "iframe",
-            height: 50,
-            width: 320,
-            params: {},
-          };
-        </script>
-        <script src="https://www.highperformanceformat.com/00a217387448657392d6e463db6472ba/invoke.js"></script>
-      </div>
     </div>
 
+    <div class="d-block d-md-none" id="mobile-ad" style="width: 320px; min-height: 50px; background: #f8f9fa; border-radius: 8px;">
+        <script>
+            atOptions = {
+                key: "00a217387448657392d6e463db6472ba",
+                format: "iframe",
+                height: 50,
+                width: 320,
+                params: {},
+            };
+        </script>
+        <script src="https://www.highperformanceformat.com/00a217387448657392d6e463db6472ba/invoke.js"></script>
+    </div>
+
+</div>
 
 
-    <div class="row g-4">
+
+    <div class="row g-2">
       <div class="col-6 col-md-4 animate-card" style="animation-delay: 0.1s">
         <div class="card tool-card p-4 h-100" onclick="
               // window.open(
@@ -274,9 +276,6 @@
     </button>
     <div id="extraContent" class="card shadow-lg border-0 rounded-4 p-5 animate__animated animate__fadeIn"></div>
   </div>
-
-
- 
 
   <div
     class="container mt-5 p-4 bg-white shadow-sm rounded border-start border-primary border-4 animate__animated animate__fadeInUp">
