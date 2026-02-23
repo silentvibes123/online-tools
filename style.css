@@ -8,20 +8,54 @@ body {
     flex-direction: column;
 }
 
+
+/* Ad wale card ko control karne ke liye */
+/* Ad card ko responsive aur flexible banane ke liye */
+.ad-card-container {
+    min-height: 220px !important; /* Thodi height badha di hai */
+    height: auto !important; 
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: space-between !important; /* Space distribute karega */
+    padding: 12px !important;
+    background: #f8fbff !important;
+    border: 1px dashed #cfe2ff !important; /* Ad ko alag dikhane ke liye */
+}
+
+/* Adterra ke inner container ko stretch karne ke liye */
+#container-b35ebb7fb08b0d4cfa955a277c2007ce {
+    width: 100% !important;
+    height: 100% !important;
+    overflow: visible !important; /* Text dikhne ke liye visible zaroori hai */
+}
+
+/* Native ad ke images aur text ka fix */
+#container-b35ebb7fb08b0d4cfa955a277c2007ce div {
+    max-width: 100% !important;
+}
+
+/* Mobile par layout ko sambhalne ke liye */
+@media (max-width: 768px) {
+    .ad-card-container {
+        min-height: 180px;
+    }
+}
 /* Glassmorphism Card Effect */
 .tool-card {
-    background: white;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-    cursor: pointer;
-    overflow: hidden;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important; /* Content horizontal center */
+    justify-content: center !important; /* Content vertical center */
+    text-align: center !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(0,0,0,0.05) !important;
+    transition: all 0.3s ease !important;
 }
 
 .tool-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.1) !important;
 }
 
 /* Fixed Back Button for Mobile */
@@ -98,18 +132,17 @@ input[type="file"] {
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
       }
 
-      .icon-box {
-        width: 70px;
-        height: 70px;
-        border-radius: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-        font-size: 1.8rem;
-        color: white;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      }
+    .icon-box {
+    width: 55px;
+    height: 55px;
+    min-height: 55px; /* Fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    font-size: 1.5rem;
+}
 
       .bg-cash {
         background: var(--success-gradient);
@@ -120,9 +153,10 @@ input[type="file"] {
       .bg-compress {
         background: var(--info-gradient);
       }
-      .bg-qr {
-        background: var(--dark-gradient);
-      }
+      .bg-qr { 
+    background-color: #f3e5f5 !important; /* Light Purple background */
+    color: #7b1fa2 !important;          /* Dark Purple icon color */
+}
       .bg-voice {
         background: var(--warning-gradient);
       }

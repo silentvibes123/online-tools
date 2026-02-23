@@ -73,64 +73,70 @@
           </div>
         </div>
 
-        <div class="row g-2">
-          <div class="col-6 col-md-4 animate-card" style="animation-delay: 0.1s">
-            <div class="card tool-card p-4 h-100" onclick="openTool('cash')">
+        <div class="row g-3"> <div class="col-6 col-md-4">
+            <div class="card tool-card p-3 p-md-4 h-100" onclick="openTool('cash')">
               <div class="icon-box bg-cash"><i class="fas fa-calculator"></i></div>
-              <h5>Cash Counter</h5>
-              <p class="d-none d-md-block">Fast Indian currency calculator with receipt printing.</p>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 animate-card" style="animation-delay: 0.2s">
-            <div class="card tool-card p-4 h-100" onclick="openTool('pdf')">
-              <div class="icon-box bg-pdf"><i class="fas fa-file-pdf"></i></div>
-              <h5>Images to PDF</h5>
-              <p>Convert multiple photos into a single professional PDF.</p>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 animate-card" style="animation-delay: 0.3s">
-            <div class="card tool-card p-4 h-100" onclick="openTool('compress')">
-              <div class="icon-box bg-compress"><i class="fas fa-compress-arrows-alt"></i></div>
-              <h5>Image Compressor</h5>
-              <p>Reduce image size without losing quality instantly.</p>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 animate-card" style="animation-delay: 0.4s">
-            <div class="card tool-card p-4 h-100" onclick="openTool('qrcode')">
-              <div class="icon-box bg-qr"><i class="fas fa-qrcode"></i></div>
-              <h5>QR Generator</h5>
-              <p>Create custom QR codes for URLs, text, or payments.</p>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 animate-card" style="animation-delay: 0.5s">
-            <div class="card tool-card p-4 h-100" onclick="openTool('voice')">
-              <div class="icon-box bg-voice"><i class="fas fa-volume-up"></i></div>
-              <h5>AI Voice</h5>
-              <p>Convert any text into clear, natural sounding AI speech.</p>
+              <h5 class="fw-bold w-100">Cash Counter</h5>
+              <p class="small text-muted d-none d-md-block">Fast Indian currency calculator.</p>
             </div>
           </div>
 
-          <div class="col-6 col-md-4 animate-card">
-            <div class="card tool-card p-4 h-100 border-primary" style="background: #f0f7ff;">
-              <p class="small text-muted mb-1" style="font-size: 10px;">SPONSORED</p>
-              <div id="container-b35ebb7fb08b0d4cfa955a277c2007ce"></div>
-              <p class="mt-2 small text-center text-primary fw-bold">Recommended for You</p>
+          <div class="col-6 col-md-4">
+            <div class="card tool-card p-3 p-md-4 h-100" onclick="openTool('pdf')">
+              <div class="icon-box bg-pdf"><i class="fas fa-file-pdf"></i></div>
+              <h5 class="fw-bold w-100">Images to PDF</h5>
+              <p class="small text-muted d-none d-md-block">Convert photos to PDF.</p>
             </div>
           </div>
-          <div class="col-6 col-md-4 animate-card" style="animation-delay: 0.6s">
-            <div class="card tool-card p-4 h-100" onclick="openTool('pdfToImg')">
+
+          <div class="col-6 col-md-4">
+            <div class="card tool-card p-3 p-md-4 h-100" onclick="openTool('compress')">
+              <div class="icon-box bg-compress"><i class="fas fa-compress-arrows-alt"></i></div>
+              <h5 class="fw-bold w-100">Compressor</h5>
+              <p class="small text-muted d-none d-md-block">Reduce image size fast.</p>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-4">
+            <div class="card tool-card p-3 p-md-4 h-100" onclick="openTool('qrcode')">
+              <div class="icon-box bg-qr"><i class="fas fa-qrcode"></i></div>
+              <h5 class="fw-bold w-100">QR Generator</h5>
+              <p class="small text-muted d-none d-md-block">Create custom QR codes.</p>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-4">
+            <div class="card tool-card p-3 p-md-4 h-100" onclick="openTool('voice')">
+              <div class="icon-box bg-voice"><i class="fas fa-volume-up"></i></div>
+              <h5 class="fw-bold w-100">AI Voice</h5>
+              <p class="small text-muted d-none d-md-block">Text to AI speech.</p>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-4">
+            <div class="card tool-card p-3 p-md-4 h-100" onclick="openTool('pdfToImg')">
               <div class="icon-box bg-imgpdf"><i class="fas fa-images"></i></div>
-              <h5>PDF to Image</h5>
-              <p>Extract all pages from a PDF file as high-quality JPEGs.</p>
+              <h5 class="fw-bold w-100">PDF to Image</h5>
+              <p class="small text-muted d-none d-md-block">Extract PDF pages to JPG.</p>
             </div>
           </div>
-          <div class="col-6 col-md-4 animate-card" style="animation-delay: 0.7s">
-            <div class="card tool-card p-4 h-100" onclick="openTool('resizer')">
+
+          <div class="col-6 col-md-4">
+            <div class="card tool-card p-3 p-md-4 h-100" onclick="openTool('resizer')">
               <div class="icon-box bg-warning text-dark"><i class="fas fa-id-card"></i></div>
-              <h5>Exam Photo Resizer</h5>
-              <p>Resize photo exactly to 20KB or 50KB for govt forms.</p>
+              <h5 class="fw-bold w-100">Exam Resizer</h5>
+              <p class="small text-muted d-none d-md-block">Resize to 20KB/50KB.</p>
             </div>
           </div>
+
+          <div class="col-6 col-md-4">
+    <div class="card tool-card ad-card-container h-100">
+        <span class="badge bg-light text-dark mb-2 align-self-start" style="font-size: 0.6rem; opacity: 0.7;">ADVERTISEMENT</span>
+        
+        <div id="container-b35ebb7fb08b0d4cfa955a277c2007ce"></div>
+        </div>
+</div>
+
         </div>
       </div>
 
@@ -213,7 +219,7 @@
     <script src="script.js"></script>
     <script src="https://pl28751484.effectivegatecpm.com/9a/e3/da/9ae3dae589b0a0d52c2a4890ac28aaa3.js"></script>
     <script src="https://pl28751489.effectivegatecpm.com/f7/16/da/f716da4847a2d9fbf61d74c6db49730f.js"></script>
-    <script async="async" data-cfasync="false" src="https://pl28777423.effectivegatecpm.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js"></script>
+   <script async="async" data-cfasync="false" src="https://pl28777423.effectivegatecpm.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js"></script>
 
   </body>
 </html>

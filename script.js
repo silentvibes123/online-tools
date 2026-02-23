@@ -56,7 +56,7 @@ function showNotify(type, message) {
 
 // --- 2. Tool Opening Logic ---
 function openTool(toolName) {
- // 1. Browser history update (Back button ke liye)
+  // 1. Browser history update (Back button ke liye)
   history.pushState({ page: "tool" }, "");
 
   // 2. Elements ko variables mein le lo
@@ -76,6 +76,8 @@ function openTool(toolName) {
 
   // 5. Page ko top par le jao (Most Important)
   window.scrollTo(0, 0);
+
+  setTimeout(refreshNativeAd, 500);
 
   if (toolName === "cash") {
     toolUI.innerHTML = `
@@ -160,7 +162,6 @@ function openTool(toolName) {
   }
   // --- Tool UI logic inside openTool() ---
   // openTool function ke andar pdfPass wala hissa replace karein:
-  
   else if (toolName === "resizer") {
     toolUI.innerHTML = `
         <div class="text-center">
@@ -177,9 +178,13 @@ function openTool(toolName) {
         </div>`;
   }
 
+  toolUI.innerHTML += `
+    <div class="mt-4 pt-3 border-top text-center" id="resultAdSlot">
+        <p class="small text-muted mb-2" style="font-size:10px">RECOMMENDED FOR YOU</p>
+        <div id="container-b35ebb7fb08b0d4cfa955a277c2007ce"></div>
+    </div>
+`;
 }
-
-
 
 // --- Smart Resizer Logic ---
 async function smartResize() {
@@ -205,25 +210,35 @@ async function smartResize() {
       ctx.drawImage(img, 0, 0, 350, 450);
 
       function attemptDownload(q) {
-        canvas.toBlob((blob) => {
-          if (blob.size / 1024 > targetKB && q > 0.1) {
-            attemptDownload(q - 0.1); // Quality ghatate raho jab tak target na mile
-          } else {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `Exam_Ready_${targetKB}KB.jpg`;
-            a.click();
-            showNotify("success", `Success! Final Size: ${(blob.size / 1024).toFixed(1)}KB`);
-          }
-        }, "image/jpeg", q);
+        canvas.toBlob(
+          (blob) => {
+            if (blob.size / 1024 > targetKB && q > 0.1) {
+              attemptDownload(q - 0.1); // Quality ghatate raho jab tak target na mile
+            } else {
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `Exam_Ready_${targetKB}KB.jpg`;
+              a.click();
+              showNotify(
+                "success",
+                `Success! Final Size: ${(blob.size / 1024).toFixed(1)}KB`,
+              );
+            }
+          },
+          "image/jpeg",
+          q,
+        );
       }
       attemptDownload(quality);
     };
   };
 }
 
-
+// Result ke sath ad refresh karne ke liye
+if (window.collectgarbages) {
+  window.collectgarbages();
+} // Reset trigger
 // --- 3. CORE FUNCTIONALITIES ---
 
 // Cash Counter Logic
@@ -246,7 +261,8 @@ async function handlePrint() {
 // Images to PDF
 async function generatePDF() {
   const files = document.getElementById("imageInput").files;
-  if (files.length === 0) return showNotify("error", "Please select images first!");
+  if (files.length === 0)
+    return showNotify("error", "Please select images first!");
 
   const btn = document.getElementById("pdfBtn");
   btn.disabled = true;
@@ -255,7 +271,7 @@ async function generatePDF() {
   try {
     const { jsPDF } = window.jspdf;
     // 'p' (portrait), 'mm' (millimeters), 'a4' (standard size)
-    const doc = new jsPDF('p', 'mm', 'a4'); 
+    const doc = new jsPDF("p", "mm", "a4");
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
 
@@ -263,11 +279,11 @@ async function generatePDF() {
 
     for (let i = 0; i < files.length; i++) {
       const data = await readFileAsDataURL(files[i]);
-      
+
       // Image ki original dimensions nikalne ke liye
       const img = new Image();
       img.src = data;
-      await new Promise(resolve => img.onload = resolve);
+      await new Promise((resolve) => (img.onload = resolve));
 
       if (i > 0) doc.addPage();
 
@@ -276,7 +292,7 @@ async function generatePDF() {
       let imgHeight = (img.height * imgWidth) / img.width;
 
       // Agar height page se bahar ja rahi ho toh use adjust karein
-      if (imgHeight > (pageHeight - 20)) {
+      if (imgHeight > pageHeight - 20) {
         imgHeight = pageHeight - 20;
         imgWidth = (img.width * imgHeight) / img.height;
       }
@@ -297,7 +313,6 @@ async function generatePDF() {
   btn.disabled = false;
   btn.innerHTML = "Generate PDF";
 }
-
 
 // Image Compressor
 async function compressImage() {
@@ -342,7 +357,10 @@ async function compressImage() {
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
-
+          // Example for Compressor Result in script.js
+          // Is line ko download logic ke pass daalein
+          const previewArea = document.getElementById("previewArea");
+       
           setTimeout(() => {
             openAd();
             showNotify(
@@ -468,12 +486,12 @@ function goBack() {
   document.getElementById("activeTool").classList.add("d-none");
   document.getElementById("extraScreens").classList.add("d-none");
   document.getElementById("toolsGrid").classList.remove("d-none");
-  
+
   // Ye line zaroori hai description wapas dikhane ke liye
-  if(document.getElementById('seoSection')) {
-    document.getElementById('seoSection').classList.remove('d-none');
+  if (document.getElementById("seoSection")) {
+    document.getElementById("seoSection").classList.remove("d-none");
   }
-  
+
   window.scrollTo(0, 0);
 }
 
@@ -635,15 +653,13 @@ function goBack() {
   document.getElementById("activeTool").classList.add("d-none");
   document.getElementById("extraScreens").classList.add("d-none");
   document.getElementById("toolsGrid").classList.remove("d-none");
-  
+
   // SEO section ko wapas dikhane ke liye
-  const seo = document.getElementById('seoSection');
-  if(seo) seo.classList.remove('d-none');
-  
+  const seo = document.getElementById("seoSection");
+  if (seo) seo.classList.remove("d-none");
+
   window.scrollTo(0, 0);
 }
-
-
 
 // 3. Back Button Handler
 window.onpopstate = function (event) {
@@ -666,5 +682,18 @@ function previewResize() {
       `;
     };
     reader.readAsDataURL(file);
+  }
+}
+
+// Jab bhi naya tool khule, ad ko refresh karne ke liye
+function refreshNativeAd() {
+  const scriptTag = document.querySelector('script[src*="invoke.js"]');
+  if (scriptTag) {
+    const newScript = document.createElement("script");
+    // URL ke piche time add karne se ad hamesha fresh load hoga
+    newScript.src = scriptTag.src.split('?')[0] + '?t=' + Date.now();
+    newScript.async = true;
+    newScript.dataset.cfasync = "false";
+    document.body.appendChild(newScript);
   }
 }
