@@ -56,16 +56,26 @@ function showNotify(type, message) {
 
 // --- 2. Tool Opening Logic ---
 function openTool(toolName) {
+ // 1. Browser history update (Back button ke liye)
   history.pushState({ page: "tool" }, "");
-  const grid = document.getElementById("toolsGrid");
-  const active = document.getElementById("activeTool");
-  const toolUI = document.getElementById("toolUI");
-  document.getElementById('seoSection').classList.add('d-none');
 
-  // Smooth Transition
-  grid.classList.add("d-none");
-  active.classList.remove("d-none");
-  active.classList.add("animate__animated", "animate__fadeInUp");
+  // 2. Elements ko variables mein le lo
+  const toolsGrid = document.getElementById("toolsGrid");
+  const seoSection = document.getElementById("seoSection");
+  const activeTool = document.getElementById("activeTool");
+  const toolUI = document.getElementById("toolUI");
+
+  // 3. Purana data saaf karo aur Dashboard hide karo
+  toolsGrid.classList.add("d-none");
+  if (seoSection) seoSection.classList.add("d-none");
+  toolUI.innerHTML = ""; // Purane tool ka kachra saaf
+
+  // 4. Tool container dikhao
+  activeTool.classList.remove("d-none");
+  activeTool.classList.add("animate__animated", "animate__fadeInUp");
+
+  // 5. Page ko top par le jao (Most Important)
+  window.scrollTo(0, 0);
 
   if (toolName === "cash") {
     toolUI.innerHTML = `

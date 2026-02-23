@@ -196,3 +196,15 @@ input[type="file"] {
         margin-bottom: 10px !important;
     }
 }
+
+#activeTool, #extraScreens {
+    position: relative;
+    z-index: 10; /* Footer se upar dikhne ke liye */
+    background: #f8f9fa; /* Page background color */
+    min-height: 70vh;
+}
+
+footer {
+    position: relative;
+    z-index: 5;
+}
