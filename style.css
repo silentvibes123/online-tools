@@ -48,6 +48,30 @@ body {
     overflow: visible !important; /* Text dikhne ke liye visible zaroori hai */
 }
 
+
+/* Reset icon rotation animation */
+.spin-animation {
+    animation: fa-spin 0.6s linear;
+}
+
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Button smooth hover */
+.btn {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+/* Button hover effects */
+.btn-primary, .btn-warning {
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover, .btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
 /* Native ad ke images aur text ka fix */
 #container-b35ebb7fb08b0d4cfa955a277c2007ce div {
     max-width: 100% !important;

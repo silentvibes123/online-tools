@@ -215,6 +215,51 @@ function openTool(toolName) {
 </div>
         </div>`;
   }
+  // --- Merge PDF UI ---
+// --- Merge PDF UI ---
+else if (toolName === "merge") {
+    toolUI.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3><i class="fas fa-object-group me-2 text-primary"></i>Merge PDF</h3>
+            <button class="btn btn-sm btn-outline-danger" onclick="resetTool('merge', this)">
+                <i class="fas fa-redo me-1"></i> Reset
+            </button>
+        </div><hr>
+        <p class="text-muted small">Combine multiple PDF files into one secure document.</p>
+        <input type="file" id="mergeInput" accept="application/pdf" multiple class="form-control mb-3">
+        <button class="btn btn-primary w-100 fw-bold" id="mergeBtn" onclick="mergePDFs()">
+            <i class="fas fa-layer-group me-2"></i>Merge & Download PDF
+        </button>
+        
+        <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+            <h5 class="fw-bold text-primary"><i class="fas fa-shield-alt me-2"></i> Private PDF Merger</h5>
+            <p class="small text-muted">SwiftTool Pro merges your PDFs locally. Unlike iLovePDF, we don't upload your files to any server. Your privacy is our priority.</p>
+        </div>`;
+}
+
+// --- Split PDF UI ---
+else if (toolName === "split") {
+    toolUI.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3><i class="fas fa-cut me-2 text-warning"></i>Split PDF</h3>
+            <button class="btn btn-sm btn-outline-danger" onclick="resetTool('split', this)">
+                <i class="fas fa-redo me-1"></i> Reset
+            </button>
+        </div><hr>
+        <input type="file" id="splitInput" accept="application/pdf" class="form-control mb-3">
+        <div class="row mb-3">
+            <div class="col"><label class="small fw-bold">From Page:</label><input type="number" id="startPage" class="form-control" placeholder="1"></div>
+            <div class="col"><label class="small fw-bold">To Page:</label><input type="number" id="endPage" class="form-control" placeholder="3"></div>
+        </div>
+        <button class="btn btn-warning w-100 fw-bold" id="splitBtn" onclick="splitPDF()">
+            <i class="fas fa-file-export me-2"></i>Split & Download
+        </button>
+        
+        <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+            <h5 class="fw-bold text-warning"><i class="fas fa-cut me-2"></i> Fast Offline PDF Splitter</h5>
+            <p class="small text-muted">Extract specific pages from your PDF instantly. All processing happens in your browser for 100% data security.</p>
+        </div>`;
+}
 
   toolUI.innerHTML += `
     <div class="mt-4 pt-3 border-top text-center" id="resultAdSlot">
@@ -271,6 +316,17 @@ async function smartResize() {
       attemptDownload(quality);
     };
   };
+}
+
+
+function resetTool(toolName, btn) {
+    const icon = btn.querySelector('i');
+    icon.classList.add('spin-animation'); // Icon ko ghumao
+    
+    setTimeout(() => {
+        openTool(toolName); // Tool refresh karo
+        showNotify("info", "Tool Reseted!");
+    }, 500); 
 }
 
 // Result ke sath ad refresh karne ke liye
@@ -765,4 +821,92 @@ async function downloadAllAsZip() {
   btn.disabled = false;
   btn.innerHTML = '<i class="fas fa-file-archive me-2"></i>Download All as ZIP';
   showNotify("success", "ZIP Downloaded!");
+}
+
+
+async function mergePDFs() {
+    const files = document.getElementById("mergeInput").files;
+    if (files.length < 2) return showNotify("error", "Kam se kam 2 PDF select karein!");
+
+    const btn = document.getElementById("mergeBtn");
+    const originalText = btn.innerHTML;
+    
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Merging...`;
+
+    await openAd(); // Aapka 3-second loader
+
+    try {
+        // Yahan 'window.PDFLib' use kar rahe hain taaki error na aaye
+        const { PDFDocument } = window.PDFLib; 
+        const mergedPdf = await PDFDocument.create();
+
+        for (const file of files) {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await PDFDocument.load(arrayBuffer);
+            const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+            copiedPages.forEach((page) => mergedPdf.addPage(page));
+        }
+
+        const pdfBytes = await mergedPdf.save();
+        
+        // --- Download Trigger ---
+        const blob = new Blob([pdfBytes], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "SwiftTool_Merged.pdf";
+        document.body.appendChild(link); // Link ko page par add karo (Zaroori hai)
+        link.click();
+        document.body.removeChild(link); // Download ke baad hata do
+        URL.revokeObjectURL(url); // Memory saaf karo
+
+        showNotify("success", "PDF Merged & Downloaded!");
+    } catch (e) {
+        console.error("PDF-Lib Error:", e);
+        showNotify("error", "Merging failed! Console check karein.");
+    }
+    
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+}
+
+async function splitPDF() {
+    const file = document.getElementById("splitInput").files[0];
+    const start = parseInt(document.getElementById("startPage").value);
+    const end = parseInt(document.getElementById("endPage").value);
+
+    if (!file || !start || !end) return showNotify("error", "fills All details!");
+
+    const btn = document.getElementById("splitBtn");
+    btn.disabled = true;
+    await openAd();
+
+    try {
+        const { PDFDocument } = PDFLib;
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await PDFDocument.load(arrayBuffer);
+        const newPdf = await PDFDocument.create();
+
+        const totalPages = pdf.getPageCount();
+        if (start < 1 || end > totalPages || start > end) {
+            throw new Error("Invalid page range");
+        }
+
+        // PDF-Lib uses 0-based indexing
+        const pagesToCopy = Array.from({ length: end - start + 1 }, (_, i) => start - 1 + i);
+        const copiedPages = await newPdf.copyPages(pdf, pagesToCopy);
+        copiedPages.forEach((page) => newPdf.addPage(page));
+
+        const pdfBytes = await newPdf.save();
+        const blob = new Blob([pdfBytes], { type: "application/pdf" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `SwiftTool_Split_${start}_to_${end}.pdf`;
+        link.click();
+        showNotify("success", "PDF Split Successfully!");
+    } catch (e) {
+        showNotify("error", e.message || "Error splitting PDF.");
+    }
+    btn.disabled = false;
 }
