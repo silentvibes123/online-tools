@@ -831,14 +831,15 @@ async function mergePDFs() {
     const btn = document.getElementById("mergeBtn");
     const originalText = btn.innerHTML;
     
+    // 1. Loader aur Ad Trigger
     btn.disabled = true;
-    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Merging...`;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing...`;
 
-    await openAd(); // Aapka 3-second loader
+    // Yahan Ad wait karega (3 seconds)
+    await openAd(); 
 
     try {
-        // Yahan 'window.PDFLib' use kar rahe hain taaki error na aaye
-        const { PDFDocument } = window.PDFLib; 
+        const { PDFDocument } = window.PDFLib;
         const mergedPdf = await PDFDocument.create();
 
         for (const file of files) {
@@ -849,22 +850,19 @@ async function mergePDFs() {
         }
 
         const pdfBytes = await mergedPdf.save();
-        
-        // --- Download Trigger ---
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
         link.download = "SwiftTool_Merged.pdf";
-        document.body.appendChild(link); // Link ko page par add karo (Zaroori hai)
+        document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link); // Download ke baad hata do
-        URL.revokeObjectURL(url); // Memory saaf karo
-
-        showNotify("success", "PDF Merged & Downloaded!");
+        document.body.removeChild(link);
+        
+        showNotify("success", "PDF Merged Successfully!");
     } catch (e) {
-        console.error("PDF-Lib Error:", e);
-        showNotify("error", "Merging failed! Console check karein.");
+        console.error(e);
+        showNotify("error", "Merging failed!");
     }
     
     btn.disabled = false;
@@ -876,24 +874,28 @@ async function splitPDF() {
     const start = parseInt(document.getElementById("startPage").value);
     const end = parseInt(document.getElementById("endPage").value);
 
-    if (!file || !start || !end) return showNotify("error", "fills All details!");
+    if (!file || !start || !end) return showNotify("error", "Details fill karein!");
 
     const btn = document.getElementById("splitBtn");
+    const originalText = btn.innerHTML;
+
     btn.disabled = true;
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing...`;
+    
+    // Yahan Ad Trigger hoga
     await openAd();
 
     try {
-        const { PDFDocument } = PDFLib;
+        const { PDFDocument } = window.PDFLib;
         const arrayBuffer = await file.arrayBuffer();
         const pdf = await PDFDocument.load(arrayBuffer);
         const newPdf = await PDFDocument.create();
 
         const totalPages = pdf.getPageCount();
         if (start < 1 || end > totalPages || start > end) {
-            throw new Error("Invalid page range");
+            throw new Error(`Invalid range! Total pages: ${totalPages}`);
         }
 
-        // PDF-Lib uses 0-based indexing
         const pagesToCopy = Array.from({ length: end - start + 1 }, (_, i) => start - 1 + i);
         const copiedPages = await newPdf.copyPages(pdf, pagesToCopy);
         copiedPages.forEach((page) => newPdf.addPage(page));
@@ -902,11 +904,16 @@ async function splitPDF() {
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `SwiftTool_Split_${start}_to_${end}.pdf`;
+        link.download = `SwiftTool_Split.pdf`;
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
+
         showNotify("success", "PDF Split Successfully!");
     } catch (e) {
-        showNotify("error", e.message || "Error splitting PDF.");
+        showNotify("error", e.message);
     }
+    
     btn.disabled = false;
+    btn.innerHTML = originalText;
 }
