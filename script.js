@@ -270,53 +270,7 @@ else if (toolName === "split") {
 }
 
 // --- Smart Resizer Logic ---
-async function smartResize() {
-  const file = document.getElementById("resizeInput").files[0];
-  const targetKB = parseInt(document.getElementById("targetSize").value);
-  if (!file) return showNotify("error", "Photo select karein!");
 
-  await openAd();
-
-  let quality = 0.9;
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = (e) => {
-    const img = new Image();
-    img.src = e.target.result;
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-
-      // Govt Exam standard size
-      canvas.width = 350;
-      canvas.height = 450;
-      ctx.drawImage(img, 0, 0, 350, 450);
-
-      function attemptDownload(q) {
-        canvas.toBlob(
-          (blob) => {
-            if (blob.size / 1024 > targetKB && q > 0.1) {
-              attemptDownload(q - 0.1); // Quality ghatate raho jab tak target na mile
-            } else {
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement("a");
-              a.href = url;
-              a.download = `Exam_Ready_${targetKB}KB.jpg`;
-              a.click();
-              showNotify(
-                "success",
-                `Success! Final Size: ${(blob.size / 1024).toFixed(1)}KB`,
-              );
-            }
-          },
-          "image/jpeg",
-          q,
-        );
-      }
-      attemptDownload(quality);
-    };
-  };
-}
 
 
 function resetTool(toolName, btn) {
@@ -353,181 +307,11 @@ async function handlePrint() {
   window.print();
 }
 // Images to PDF
-async function generatePDF() {
-  const files = document.getElementById("imageInput").files;
-  if (files.length === 0)
-    return showNotify("error", "Please select images first!");
-
-  const btn = document.getElementById("pdfBtn");
-  btn.disabled = true;
-  btn.innerHTML = "Processing...";
-
-  try {
-    const { jsPDF } = window.jspdf;
-    // 'p' (portrait), 'mm' (millimeters), 'a4' (standard size)
-    const doc = new jsPDF("p", "mm", "a4");
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-
-    await openAd();
-
-    for (let i = 0; i < files.length; i++) {
-      const data = await readFileAsDataURL(files[i]);
-
-      // Image ki original dimensions nikalne ke liye
-      const img = new Image();
-      img.src = data;
-      await new Promise((resolve) => (img.onload = resolve));
-
-      if (i > 0) doc.addPage();
-
-      // --- Calculation for Original Aspect Ratio ---
-      let imgWidth = pageWidth - 20; // 10mm margin dono side se
-      let imgHeight = (img.height * imgWidth) / img.width;
-
-      // Agar height page se bahar ja rahi ho toh use adjust karein
-      if (imgHeight > pageHeight - 20) {
-        imgHeight = pageHeight - 20;
-        imgWidth = (img.width * imgHeight) / img.height;
-      }
-
-      // Image ko center mein set karna
-      const xOffset = (pageWidth - imgWidth) / 2;
-      const yOffset = (pageHeight - imgHeight) / 2;
-
-      doc.addImage(data, "JPEG", xOffset, yOffset, imgWidth, imgHeight);
-    }
-
-    doc.save("SwiftTool_Converted.pdf");
-    showNotify("success", "PDF Downloaded Successfully!");
-  } catch (e) {
-    console.error(e);
-    showNotify("error", "Failed to generate PDF.");
-  }
-  btn.disabled = false;
-  btn.innerHTML = "Generate PDF";
-}
 
 // Image Compressor
-async function compressImage() {
-  const file = document.getElementById("compressInput").files[0];
-  if (!file) return showNotify("error", "Please select an image!");
 
-  const quality = parseFloat(document.getElementById("qualityRange").value);
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = (e) => {
-    const img = new Image();
-    img.src = e.target.result;
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
 
-      // --- SMART RESIZE LOGIC ---
-      // Agar image 1200px se badi hai, toh use 1200px tak le aao (Resolution balance)
-      let width = img.width;
-      let height = img.height;
-      const MAX_WIDTH = 1200;
 
-      if (width > MAX_WIDTH) {
-        height *= MAX_WIDTH / width;
-        width = MAX_WIDTH;
-      }
-
-      canvas.width = width;
-      canvas.height = height;
-
-      // Image draw karo naye dimensions ke sath
-      ctx.drawImage(img, 0, 0, width, height);
-
-      canvas.toBlob(
-        (blob) => {
-          // Final check: Agar file abhi bhi badi hai, toh automatic download trigger
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = `SwiftTool_${quality * 100}kb_${file.name}`;
-
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          // Example for Compressor Result in script.js
-          // Is line ko download logic ke pass daalein
-          const previewArea = document.getElementById("previewArea");
-
-          setTimeout(() => {
-            openAd();
-            showNotify(
-              "success",
-              `Compressed to approx ${(blob.size / 1024).toFixed(2)} KB`,
-            );
-          }, 800);
-        },
-        "image/jpeg",
-        quality, // User ka quality slider
-      );
-    };
-  };
-}
-
-// PDF to Image (Fully Fixed)
-let extractedImages = []; // Global variable images store karne ke liye
-
-async function convertPdfToImg() {
-  const file = document.getElementById("pdfInput").files[0];
-  if (!file) return showNotify("error", "Please select a PDF file!");
-
-  await openAd();
-
-  const btn = document.getElementById("pdfImgBtn");
-  const downloadAllBtn = document.getElementById("downloadAllBtn");
-  btn.disabled = true;
-  btn.innerHTML =
-    '<span class="spinner-border spinner-border-sm me-2"></span>Extracting...';
-
-  extractedImages = []; // Purani images clear karein
-  const previewArea = document.getElementById("pdfPreview");
-  previewArea.innerHTML = "";
-
-  const reader = new FileReader();
-  reader.readAsArrayBuffer(file);
-  reader.onload = async function () {
-    try {
-      const typedarray = new Uint8Array(this.result);
-      const pdfjsLib = window["pdfjs-dist/build/pdf"] || window.pdfjsLib;
-      const pdf = await pdfjsLib.getDocument(typedarray).promise;
-
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale: 2 }); // Quality badhane ke liye scale 2
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-
-        await page.render({ canvasContext: context, viewport }).promise;
-
-        const imgData = canvas.toDataURL("image/jpeg", 0.9);
-        extractedImages.push({ name: `Page_${i}.jpg`, data: imgData });
-
-        previewArea.innerHTML += `
-                    <div class="col-6 col-md-3 text-center">
-                        <img src="${imgData}" class="img-fluid border rounded shadow-sm">
-                        <a href="${imgData}" download="Page_${i}.jpg" class="btn btn-sm btn-link">Download Page ${i}</a>
-                    </div>`;
-      }
-
-      // Extraction ke baad button dikhao
-      downloadAllBtn.classList.remove("d-none");
-      showNotify("success", `${pdf.numPages} pages extracted!`);
-    } catch (e) {
-      showNotify("error", "Error processing PDF.");
-      console.error(e);
-    }
-    btn.disabled = false;
-    btn.innerHTML = "Extract All Pages";
-  };
-}
 
 // QR Code
 async function generateQR() {
@@ -561,15 +345,8 @@ function resetCash() {
   showNotify("info", "Counter Cleared");
 }
 
-function resetPDFTool() {
-  document.getElementById("imageInput").value = "";
-  showNotify("info", "File Cleared");
-}
-function resetCompressor() {
-  document.getElementById("compressInput").value = "";
-  document.getElementById("previewArea").innerHTML = "Preview";
-  showNotify("info", "Cleared");
-}
+
+
 function resetQR() {
   document.getElementById("qrText").value = "";
   document.getElementById("qrResult").innerHTML = "";
@@ -580,13 +357,7 @@ function resetVoice() {
   window.speechSynthesis.cancel();
   showNotify("info", "Voice Stopped");
 }
-function resetPdfToImg() {
-  document.getElementById("pdfInput").value = "";
-  document.getElementById("pdfPreview").innerHTML = "";
-  document.getElementById("downloadAllBtn").classList.add("d-none"); // Ye line add karein
-  extractedImages = [];
-  showNotify("info", "PDF Cleared");
-}
+
 
 function goBack() {
   document.getElementById("activeTool").classList.add("d-none");
@@ -753,20 +524,6 @@ window.onpopstate = function (event) {
   }
 };
 
-function previewResize() {
-  const file = document.getElementById("resizeInput").files[0];
-  const previewArea = document.getElementById("resPreview");
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      previewArea.innerHTML = `
-        <img src="${e.target.result}" class="img-fluid rounded shadow-sm border" style="max-height:150px">
-        <p class="small text-muted mt-2">Original Size: ${(file.size / 1024).toFixed(2)} KB</p>
-      `;
-    };
-    reader.readAsDataURL(file);
-  }
-}
 
 // Jab bhi naya tool khule, ad ko refresh karne ke liye
 function refreshNativeAd() {
@@ -824,96 +581,5 @@ async function downloadAllAsZip() {
 }
 
 
-async function mergePDFs() {
-    const files = document.getElementById("mergeInput").files;
-    if (files.length < 2) return showNotify("error", "Kam se kam 2 PDF select karein!");
 
-    const btn = document.getElementById("mergeBtn");
-    const originalText = btn.innerHTML;
-    
-    // 1. Loader aur Ad Trigger
-    btn.disabled = true;
-    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing...`;
 
-    // Yahan Ad wait karega (3 seconds)
-    await openAd(); 
-
-    try {
-        const { PDFDocument } = window.PDFLib;
-        const mergedPdf = await PDFDocument.create();
-
-        for (const file of files) {
-            const arrayBuffer = await file.arrayBuffer();
-            const pdf = await PDFDocument.load(arrayBuffer);
-            const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-            copiedPages.forEach((page) => mergedPdf.addPage(page));
-        }
-
-        const pdfBytes = await mergedPdf.save();
-        const blob = new Blob([pdfBytes], { type: "application/pdf" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "SwiftTool_Merged.pdf";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        showNotify("success", "PDF Merged Successfully!");
-    } catch (e) {
-        console.error(e);
-        showNotify("error", "Merging failed!");
-    }
-    
-    btn.disabled = false;
-    btn.innerHTML = originalText;
-}
-
-async function splitPDF() {
-    const file = document.getElementById("splitInput").files[0];
-    const start = parseInt(document.getElementById("startPage").value);
-    const end = parseInt(document.getElementById("endPage").value);
-
-    if (!file || !start || !end) return showNotify("error", "Details fill karein!");
-
-    const btn = document.getElementById("splitBtn");
-    const originalText = btn.innerHTML;
-
-    btn.disabled = true;
-    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing...`;
-    
-    // Yahan Ad Trigger hoga
-    await openAd();
-
-    try {
-        const { PDFDocument } = window.PDFLib;
-        const arrayBuffer = await file.arrayBuffer();
-        const pdf = await PDFDocument.load(arrayBuffer);
-        const newPdf = await PDFDocument.create();
-
-        const totalPages = pdf.getPageCount();
-        if (start < 1 || end > totalPages || start > end) {
-            throw new Error(`Invalid range! Total pages: ${totalPages}`);
-        }
-
-        const pagesToCopy = Array.from({ length: end - start + 1 }, (_, i) => start - 1 + i);
-        const copiedPages = await newPdf.copyPages(pdf, pagesToCopy);
-        copiedPages.forEach((page) => newPdf.addPage(page));
-
-        const pdfBytes = await newPdf.save();
-        const blob = new Blob([pdfBytes], { type: "application/pdf" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `SwiftTool_Split.pdf`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        showNotify("success", "PDF Split Successfully!");
-    } catch (e) {
-        showNotify("error", e.message);
-    }
-    
-    btn.disabled = false;
-    btn.innerHTML = originalText;
-}
