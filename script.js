@@ -707,7 +707,7 @@ function showExtra(page) {
 
       // VALIDATION: Agar aapne abhi tak ID change nahi ki hai, tabhi warning dega
       // Agar aapne real ID daal di hai toh ye 'if' skip ho jayega
-      if (form.action.includes("YOUR_ID_HERE")) {
+      if (form.action.includes("https://formspree.io/f/xbdayrne")) {
         return Swal.fire(
           "Setup Required",
           "Please add your valid Formspree ID in script.js",
