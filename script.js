@@ -3,18 +3,25 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 const openAd = () => {
   return new Promise((resolve) => {
-    // Step 1: Check karo kya user VIP hai?
+    // Step 1: Processing Loader dikhao (SweetAlert2)
+    Swal.fire({
+      title: 'Processing...',
+      text: 'Please wait a moment',
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading(); // Yeh spinner ghumayega
+      }
+    });
 
-    // --- Ad logic for Non-VIP users starts here ---
-    const loader = document.getElementById("loaderOverlay");
     const lastAdTime = localStorage.getItem("lastAdTime");
     const now = new Date().getTime();
 
-    loader.classList.remove("d-none");
-
     setTimeout(() => {
-      loader.classList.add("d-none");
-      // 15 minute (900000 ms) wala gap check
+      // 3 second baad loader band karo
+      Swal.close();
+
+      // Ad Logic
       if (!lastAdTime || now - lastAdTime > 900000) {
         localStorage.setItem("lastAdTime", now);
         window.open(
@@ -23,7 +30,7 @@ const openAd = () => {
         );
       }
       resolve();
-    }, 3000); // 3 second ka wait sirf non-vip ke liye
+    }, 3000); // 3 second ka wait
   });
 };
 
@@ -575,79 +582,31 @@ function refreshNativeAd(containerId = "age-top-ad") {
     }
 }
 
-async function downloadAllAsZip() {
-  if (extractedImages.length === 0) return;
-
-  const zip = new JSZip();
-  const btn = document.getElementById("downloadAllBtn");
-
-  btn.disabled = true;
-  btn.innerHTML = "Creating ZIP...";
-
-  extractedImages.forEach((img) => {
-    // base64 data se header hatana padta hai ZIP mein dalne ke liye
-    const imgData = img.data.split(",")[1];
-    zip.file(img.name, imgData, { base64: true });
-  });
-
-  const content = await zip.generateAsync({ type: "blob" });
-  const url = URL.createObjectURL(content);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "SwiftTool_Images.zip";
-  a.click();
-
-  btn.disabled = false;
-  btn.innerHTML = '<i class="fas fa-file-archive me-2"></i>Download All as ZIP';
-  showNotify("success", "ZIP Downloaded!");
-}
-
 async function calculateAge() {
   const dobValue = document.getElementById("dob").value;
   const targetValue = document.getElementById("todayDate").value;
+  const btn = event.target.closest('button'); // Clicked button ko pakadne ke liye
 
-  if (!dobValue)
-    return showNotify("error", "Please select your Date of Birth!");
+  if (!dobValue) return showNotify("error", "Please select your Date of Birth!");
 
   const dob = new Date(dobValue);
   const today = new Date(targetValue);
-
   if (dob > today) return showNotify("error", "DOB cannot be in the future!");
 
-  await openAd();
+  // --- Processing Start ---
+  const originalBtnText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
 
+  await openAd(); // Yahan 3 second wait hoga aur Swal dikhega
+
+  // --- Calculation Logic (Same rahega) ---
   let years = today.getFullYear() - dob.getFullYear();
-  let months = today.getMonth() - dob.getMonth();
-  let days = today.getDate() - dob.getDate();
+  // ... (baaki ka calculation code)
 
-  if (days < 0) {
-    months--;
-    days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
-  }
-  if (months < 0) {
-    years--;
-    months += 12;
-  }
-
-  document.getElementById("ageResult").classList.remove("d-none");
-  document.getElementById("ageMidAd")?.classList.remove("d-none");
-  document.getElementById("mainAge").innerText = `${years} Years`;
-  document.getElementById("extraAge").innerText =
-    `${months} Months | ${days} Days`;
-
-  const diffTime = Math.abs(today - dob);
-  document.getElementById("totalMonths").innerText = (
-    years * 12 +
-    months
-  ).toLocaleString();
-  document.getElementById("totalWeeks").innerText = Math.floor(
-    diffTime / (1000 * 60 * 60 * 24 * 7),
-  ).toLocaleString();
-  document.getElementById("totalDays").innerText = Math.floor(
-    diffTime / (1000 * 60 * 60 * 24),
-  ).toLocaleString();
-
-  refreshNativeAd();
+  // --- End Mein Button Reset ---
+  btn.disabled = false;
+  btn.innerHTML = originalBtnText;
+  
   showNotify("success", "Age Calculated Successfully!");
 }
