@@ -585,28 +585,52 @@ function refreshNativeAd(containerId = "age-top-ad") {
 async function calculateAge() {
   const dobValue = document.getElementById("dob").value;
   const targetValue = document.getElementById("todayDate").value;
-  const btn = event.target.closest('button'); // Clicked button ko pakadne ke liye
-
+  
+  // 1. Validation check
   if (!dobValue) return showNotify("error", "Please select your Date of Birth!");
 
   const dob = new Date(dobValue);
   const today = new Date(targetValue);
   if (dob > today) return showNotify("error", "DOB cannot be in the future!");
 
-  // --- Processing Start ---
+  // 2. Button Loader Start
+  const btn = event.target.closest('button'); 
   const originalBtnText = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
 
-  await openAd(); // Yahan 3 second wait hoga aur Swal dikhega
+  // 3. Wait for Ad (3 Seconds)
+  await openAd(); 
 
-  // --- Calculation Logic (Same rahega) ---
+  // 4. --- CORE CALCULATION LOGIC ---
   let years = today.getFullYear() - dob.getFullYear();
-  // ... (baaki ka calculation code)
+  let months = today.getMonth() - dob.getMonth();
+  let days = today.getDate() - dob.getDate();
 
-  // --- End Mein Button Reset ---
+  if (days < 0) {
+    months--;
+    days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+  }
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  // 5. Update UI (Display Numbers)
+  document.getElementById("ageResult").classList.remove("d-none");
+  document.getElementById("ageMidAd")?.classList.remove("d-none");
+  document.getElementById("mainAge").innerText = `${years} Years`;
+  document.getElementById("extraAge").innerText = `${months} Months | ${days} Days`;
+
+  const diffTime = Math.abs(today - dob);
+  document.getElementById("totalMonths").innerText = (years * 12 + months).toLocaleString();
+  document.getElementById("totalWeeks").innerText = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)).toLocaleString();
+  document.getElementById("totalDays").innerText = Math.floor(diffTime / (1000 * 60 * 60 * 24)).toLocaleString();
+
+  // 6. Reset Button & Refresh Ad
   btn.disabled = false;
   btn.innerHTML = originalBtnText;
   
+  refreshNativeAd();
   showNotify("success", "Age Calculated Successfully!");
 }
