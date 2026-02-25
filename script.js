@@ -291,7 +291,7 @@ function openTool(toolName) {
                     </div>
                 </div>
                 <div class="row g-2 text-center">
-                    <div class="col-4"><div cflass="p-2 border rounded bg-white small"><b>Total Months:</b> <br><span id="totalMonths">--</span></div></div>
+                    <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Months:</b> <br><span id="totalMonths">--</span></div></div>
                     <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Weeks:</b> <br><span id="totalWeeks">--</span></div></div>
                     <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Days:</b> <br><span id="totalDays">--</span></div></div>
                 </div>
@@ -548,26 +548,31 @@ window.onpopstate = function (event) {
 
 // Jab bhi naya tool khule, ad ko refresh karne ke liye
 function refreshNativeAd(containerId = "age-top-ad") {
-  const container = document.getElementById(containerId);
-  if (container) {
-    container.innerHTML = ""; 
+    const container = document.getElementById(containerId);
+    if (container) {
+        container.innerHTML = ""; // Purani ad clear karein
 
-    // Adsterra Configuration - Global variable set karein
-    window.atOptions = {
-      'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce',
-      'format' : 'iframe',
-      'height' : 90,
-      'width' : 728,
-      'params' : {}
-    };
+        // 1. Naya Script Tag banayein Configuration ke liye
+        const configScript = document.createElement("script");
+        configScript.type = "text/javascript";
+        configScript.text = `
+            atOptions = {
+                'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce',
+                'format' : 'iframe',
+                'height' : 90,
+                'width' : 728,
+                'params' : {}
+            };
+        `;
+        container.appendChild(configScript);
 
-    const invokeScript = document.createElement("script");
-    invokeScript.type = "text/javascript";
-    // Cache busting ke liye timestamp add karein
-    invokeScript.src = `//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js?t=${new Date().getTime()}`;
-
-    container.appendChild(invokeScript);
-  }
+        // 2. Ab invoke.js load karein
+        const invokeScript = document.createElement("script");
+        invokeScript.type = "text/javascript";
+        invokeScript.src = `//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js`;
+        
+        container.appendChild(invokeScript);
+    }
 }
 
 async function downloadAllAsZip() {
