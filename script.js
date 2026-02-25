@@ -259,6 +259,49 @@ function openTool(toolName) {
             <p class="small text-muted">Extract specific pages from your PDF instantly. All processing happens in your browser for 100% data security.</p>
         </div>`;
   }
+  else if (toolName === "age") {
+    toolUI.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3><i class="fas fa-birthday-cake me-2 text-danger"></i>Age Calculator</h3>
+            <button class="btn btn-sm btn-outline-danger" onclick="openTool('age')"><i class="fas fa-redo me-1"></i> Reset</button>
+        </div><hr>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Date of Birth</label>
+                <input type="date" id="dob" class="form-control form-control-lg border-primary">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Age at the Date of</label>
+                <input type="date" id="todayDate" class="form-control form-control-lg" value="${new Date().toISOString().split('T')[0]}">
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary w-100 py-3 fw-bold shadow-sm" onclick="calculateAge()">
+                    <i class="fas fa-calculator me-2"></i> Calculate Exact Age
+                </button>
+            </div>
+        </div>
+
+        <div id="ageResult" class="mt-4 d-none">
+            <div class="card border-0 bg-light shadow-sm mb-3">
+                <div class="card-body text-center">
+                    <h5 class="text-muted">Current Age</h5>
+                    <h2 class="display-5 fw-bold text-primary" id="mainAge">--</h2>
+                    <p class="mb-0 text-dark" id="extraAge">--</p>
+                </div>
+            </div>
+            <div class="row g-2 text-center">
+                <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Months:</b> <br><span id="totalMonths">--</span></div></div>
+                <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Weeks:</b> <br><span id="totalWeeks">--</span></div></div>
+                <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Days:</b> <br><span id="totalDays">--</span></div></div>
+            </div>
+        </div>
+
+        <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+            <h5 class="fw-bold text-danger"><i class="fas fa-info-circle me-2"></i> How it works?</h5>
+            <p class="small text-muted">SwiftTool Pro's Age Calculator is a 100% accurate tool to find your age in years, months, days, and even minutes. It's especially useful for filling out government exam forms like SSC, UPSC, and Banking where precise age is required.</p>
+        </div>
+    `;
+}
 
  
 }
@@ -564,4 +607,43 @@ async function downloadAllAsZip() {
   btn.disabled = false;
   btn.innerHTML = '<i class="fas fa-file-archive me-2"></i>Download All as ZIP';
   showNotify("success", "ZIP Downloaded!");
+}
+
+
+function calculateAge() {
+    const dobValue = document.getElementById("dob").value;
+    const targetValue = document.getElementById("todayDate").value;
+
+    if (!dobValue) return showNotify("error", "Please select your Date of Birth!");
+
+    const dob = new Date(dobValue);
+    const today = new Date(targetValue);
+
+    if (dob > today) return showNotify("error", "DOB cannot be in the future!");
+
+    let years = today.getFullYear() - dob.getFullYear();
+    let months = today.getMonth() - dob.getMonth();
+    let days = today.getDate() - dob.getDate();
+
+    if (days < 0) {
+        months--;
+        days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+    }
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    // Results Display
+    document.getElementById("ageResult").classList.remove("d-none");
+    document.getElementById("mainAge").innerText = `${years} Years`;
+    document.getElementById("extraAge").innerText = `${months} Months | ${days} Days`;
+    
+    // Stats calculation
+    const diffTime = Math.abs(today - dob);
+    document.getElementById("totalMonths").innerText = (years * 12 + months).toLocaleString();
+    document.getElementById("totalWeeks").innerText = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)).toLocaleString();
+    document.getElementById("totalDays").innerText = Math.floor(diffTime / (1000 * 60 * 60 * 24)).toLocaleString();
+
+    showNotify("success", "Age Calculated Successfully!");
 }
