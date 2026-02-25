@@ -296,7 +296,9 @@ function openTool(toolName) {
                     <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Days:</b> <br><span id="totalDays">--</span></div></div>
                 </div>
             </div>`;
-            
+    setTimeout(() => {
+      refreshNativeAd("age-top-ad");
+    }, 300);
   }
 }
 
@@ -545,30 +547,33 @@ window.onpopstate = function (event) {
 };
 
 // Jab bhi naya tool khule, ad ko refresh karne ke liye
-function refreshNativeAd() {
+function refreshNativeAd(containerId = "age-top-ad") {
   if (localStorage.getItem("isSwiftVIP") === "true") return;
-  const containerId = "container-1f80efc60776ec6b8e8266dae4f5fc1f";
+
   const container = document.getElementById(containerId);
-
   if (container) {
-    // 1. Purani script dhoondo aur delete karo
-    const oldScript = document.querySelector(
-      `script[data-cfasync="false"][src*="invoke.js"]`,
-    );
-    if (oldScript) oldScript.remove();
+    container.innerHTML = ""; // Purana content saaf karo
 
-    // 2. Container ko khali karo taaki naya ad load ho sake
-    container.innerHTML = "";
+    // Adsterra Configuration
+    const atOptions = document.createElement("script");
+    atOptions.type = "text/javascript";
+    atOptions.text = `
+      atOptions = {
+        'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce',
+        'format' : 'iframe',
+        'height' : 90,
+        'width' : 728,
+        'params' : {}
+      };
+    `;
 
-    // 3. Nayi script create karo
-    const newScript = document.createElement("script");
-    newScript.async = true;
-    newScript.dataset.cfasync = "false";
-    // Timestamp add karne se browser cache bypass hota hai
-    newScript.src = `//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js?t=${Date.now()}`;
+    // Adsterra Invoke Script
+    const invokeScript = document.createElement("script");
+    invokeScript.type = "text/javascript";
+    invokeScript.src = `//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js`;
 
-    // 4. Script ko container ke baad ya body mein append karein
-    document.body.appendChild(newScript);
+    container.appendChild(atOptions);
+    container.appendChild(invokeScript);
   }
 }
 
