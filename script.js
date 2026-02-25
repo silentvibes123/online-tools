@@ -610,10 +610,11 @@ async function downloadAllAsZip() {
 }
 
 
-function calculateAge() {
+async function calculateAge() {
     const dobValue = document.getElementById("dob").value;
     const targetValue = document.getElementById("todayDate").value;
 
+    // 1. Pehle input check karein
     if (!dobValue) return showNotify("error", "Please select your Date of Birth!");
 
     const dob = new Date(dobValue);
@@ -621,6 +622,11 @@ function calculateAge() {
 
     if (dob > today) return showNotify("error", "DOB cannot be in the future!");
 
+    // 2. AD TRIGGER: Calculation se pehle ad aur loader dikhao
+    // Ye aapke openAd() function ko call karega jo 3s wait karwayega
+    await openAd(); 
+
+    // 3. Logic calculation (Ad ke baad execute hoga)
     let years = today.getFullYear() - dob.getFullYear();
     let months = today.getMonth() - dob.getMonth();
     let days = today.getDate() - dob.getDate();
@@ -634,7 +640,7 @@ function calculateAge() {
         months += 12;
     }
 
-    // Results Display
+    // 4. Results Display
     document.getElementById("ageResult").classList.remove("d-none");
     document.getElementById("mainAge").innerText = `${years} Years`;
     document.getElementById("extraAge").innerText = `${months} Months | ${days} Days`;
@@ -644,6 +650,9 @@ function calculateAge() {
     document.getElementById("totalMonths").innerText = (years * 12 + months).toLocaleString();
     document.getElementById("totalWeeks").innerText = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)).toLocaleString();
     document.getElementById("totalDays").innerText = Math.floor(diffTime / (1000 * 60 * 60 * 24)).toLocaleString();
+
+    // 5. Niche wala Native Ad refresh karein (Earning ke liye)
+    refreshNativeAd();
 
     showNotify("success", "Age Calculated Successfully!");
 }
