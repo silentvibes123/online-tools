@@ -259,12 +259,18 @@ function openTool(toolName) {
             <p class="small text-muted">Extract specific pages from your PDF instantly. All processing happens in your browser for 100% data security.</p>
         </div>`;
   }
-  else if (toolName === "age") {
+ else if (toolName === "age") {
     toolUI.innerHTML = `
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-birthday-cake me-2 text-danger"></i>Age Calculator</h3>
             <button class="btn btn-sm btn-outline-danger" onclick="openTool('age')"><i class="fas fa-redo me-1"></i> Reset</button>
         </div><hr>
+
+        <div class="text-center mb-4 ad-slot" style="min-height:90px; background: #f8f9fa; border: 1px dashed #ddd;">
+             <small class="text-muted d-block">Advertisement</small>
+             <div id="age-top-ad"></div> 
+        </div>
+
         <div class="row g-3">
             <div class="col-md-6">
                 <label class="form-label fw-bold">Date of Birth</label>
@@ -279,6 +285,11 @@ function openTool(toolName) {
                     <i class="fas fa-calculator me-2"></i> Calculate Exact Age
                 </button>
             </div>
+        </div>
+
+        <div id="ageMidAd" class="mt-4 text-center d-none ad-slot">
+             <small class="text-muted d-block">Advertisement</small>
+             <div id="age-result-ad"></div>
         </div>
 
         <div id="ageResult" class="mt-4 d-none">
@@ -642,6 +653,7 @@ async function calculateAge() {
 
     // 4. Results Display
     document.getElementById("ageResult").classList.remove("d-none");
+    document.getElementById("ageMidAd")?.classList.remove("d-none");
     document.getElementById("mainAge").innerText = `${years} Years`;
     document.getElementById("extraAge").innerText = `${months} Months | ${days} Days`;
     
