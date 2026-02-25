@@ -291,7 +291,7 @@ function openTool(toolName) {
                     </div>
                 </div>
                 <div class="row g-2 text-center">
-                    <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Months:</b> <br><span id="totalMonths">--</span></div></div>
+                    <div class="col-4"><div cflass="p-2 border rounded bg-white small"><b>Total Months:</b> <br><span id="totalMonths">--</span></div></div>
                     <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Weeks:</b> <br><span id="totalWeeks">--</span></div></div>
                     <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Days:</b> <br><span id="totalDays">--</span></div></div>
                 </div>
@@ -548,31 +548,24 @@ window.onpopstate = function (event) {
 
 // Jab bhi naya tool khule, ad ko refresh karne ke liye
 function refreshNativeAd(containerId = "age-top-ad") {
-  if (localStorage.getItem("isSwiftVIP") === "true") return;
-
   const container = document.getElementById(containerId);
   if (container) {
-    container.innerHTML = ""; // Purana content saaf karo
+    container.innerHTML = ""; 
 
-    // Adsterra Configuration
-    const atOptions = document.createElement("script");
-    atOptions.type = "text/javascript";
-    atOptions.text = `
-      atOptions = {
-        'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce',
-        'format' : 'iframe',
-        'height' : 90,
-        'width' : 728,
-        'params' : {}
-      };
-    `;
+    // Adsterra Configuration - Global variable set karein
+    window.atOptions = {
+      'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce',
+      'format' : 'iframe',
+      'height' : 90,
+      'width' : 728,
+      'params' : {}
+    };
 
-    // Adsterra Invoke Script
     const invokeScript = document.createElement("script");
     invokeScript.type = "text/javascript";
-    invokeScript.src = `//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js`;
+    // Cache busting ke liye timestamp add karein
+    invokeScript.src = `//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js?t=${new Date().getTime()}`;
 
-    container.appendChild(atOptions);
     container.appendChild(invokeScript);
   }
 }
