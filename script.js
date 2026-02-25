@@ -192,10 +192,7 @@ function openTool(toolName) {
     </div>
 
         <div id="pdfPreview" class="row g-3 mt-4"></div>`;
-  }
-  // --- Tool UI logic inside openTool() ---
-  // openTool function ke andar pdfPass wala hissa replace karein:
-  else if (toolName === "resizer") {
+  } else if (toolName === "resizer") {
     toolUI.innerHTML = `
         <div class="text-center">
             <h3><i class="fas fa-expand-arrows-alt me-2 text-warning"></i>Exam Photo Resizer</h3>
@@ -213,10 +210,7 @@ function openTool(toolName) {
     <p class="small text-muted">Easily resize your photos for government job applications. Our tool automatically adjusts your photo to 350x450 pixels and ensures the file size stays under 50KB or 20KB as per official guidelines.</p>
     </div>
         </div>`;
-  }
-  // --- Merge PDF UI ---
-  // --- Merge PDF UI ---
-  else if (toolName === "merge") {
+  } else if (toolName === "merge") {
     toolUI.innerHTML = `
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-object-group me-2 text-primary"></i>Merge PDF</h3>
@@ -234,10 +228,7 @@ function openTool(toolName) {
             <h5 class="fw-bold text-primary"><i class="fas fa-shield-alt me-2"></i> Private PDF Merger</h5>
             <p class="small text-muted">SwiftTool Pro merges your PDFs locally. Unlike iLovePDF, we don't upload your files to any server. Your privacy is our priority.</p>
         </div>`;
-  }
-
-  // --- Split PDF UI ---
-  else if (toolName === "split") {
+  } else if (toolName === "split") {
     toolUI.innerHTML = `
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-cut me-2 text-warning"></i>Split PDF</h3>
@@ -305,6 +296,7 @@ function openTool(toolName) {
                     <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Days:</b> <br><span id="totalDays">--</span></div></div>
                 </div>
             </div>`;
+            
   }
 }
 
@@ -343,9 +335,6 @@ async function handlePrint() {
   await openAd(); // 3 second wait karega
   window.print();
 }
-// Images to PDF
-
-// Image Compressor
 
 // QR Code
 async function generateQR() {
