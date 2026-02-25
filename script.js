@@ -3,18 +3,18 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 const openAd = () => {
   return new Promise((resolve) => {
+    // Step 1: Check karo kya user VIP hai?
+
+    // --- Ad logic for Non-VIP users starts here ---
     const loader = document.getElementById("loaderOverlay");
     const lastAdTime = localStorage.getItem("lastAdTime");
     const now = new Date().getTime();
 
-    // Loader dikhao
     loader.classList.remove("d-none");
 
-    // 3 second ka wait (Simulation)
     setTimeout(() => {
       loader.classList.add("d-none");
-
-      // 15 minute ka gap (900000 ms) CPM maintain karne ke liye
+      // 15 minute (900000 ms) wala gap check
       if (!lastAdTime || now - lastAdTime > 900000) {
         localStorage.setItem("lastAdTime", now);
         window.open(
@@ -22,9 +22,8 @@ const openAd = () => {
           "_blank",
         );
       }
-
-      resolve(); // Tool ka main kaam aage badhne do
-    }, 3000);
+      resolve();
+    }, 3000); // 3 second ka wait sirf non-vip ke liye
   });
 };
 
@@ -216,8 +215,8 @@ function openTool(toolName) {
         </div>`;
   }
   // --- Merge PDF UI ---
-// --- Merge PDF UI ---
-else if (toolName === "merge") {
+  // --- Merge PDF UI ---
+  else if (toolName === "merge") {
     toolUI.innerHTML = `
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-object-group me-2 text-primary"></i>Merge PDF</h3>
@@ -235,10 +234,10 @@ else if (toolName === "merge") {
             <h5 class="fw-bold text-primary"><i class="fas fa-shield-alt me-2"></i> Private PDF Merger</h5>
             <p class="small text-muted">SwiftTool Pro merges your PDFs locally. Unlike iLovePDF, we don't upload your files to any server. Your privacy is our priority.</p>
         </div>`;
-}
+  }
 
-// --- Split PDF UI ---
-else if (toolName === "split") {
+  // --- Split PDF UI ---
+  else if (toolName === "split") {
     toolUI.innerHTML = `
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-cut me-2 text-warning"></i>Split PDF</h3>
@@ -259,28 +258,21 @@ else if (toolName === "split") {
             <h5 class="fw-bold text-warning"><i class="fas fa-cut me-2"></i> Fast Offline PDF Splitter</h5>
             <p class="small text-muted">Extract specific pages from your PDF instantly. All processing happens in your browser for 100% data security.</p>
         </div>`;
-}
+  }
 
-  toolUI.innerHTML += `
-    <div class="mt-4 pt-3 border-top text-center" id="resultAdSlot">
-        <p class="small text-muted mb-2" style="font-size:10px">RECOMMENDED FOR YOU</p>
-        <div id="container-1f80efc60776ec6b8e8266dae4f5fc1f"></div>
-    </div>
-  `;
+ 
 }
 
 // --- Smart Resizer Logic ---
 
-
-
 function resetTool(toolName, btn) {
-    const icon = btn.querySelector('i');
-    icon.classList.add('spin-animation'); // Icon ko ghumao
-    
-    setTimeout(() => {
-        openTool(toolName); // Tool refresh karo
-        showNotify("info", "Tool Reseted!");
-    }, 500); 
+  const icon = btn.querySelector("i");
+  icon.classList.add("spin-animation"); // Icon ko ghumao
+
+  setTimeout(() => {
+    openTool(toolName); // Tool refresh karo
+    showNotify("info", "Tool Reseted!");
+  }, 500);
 }
 
 // Result ke sath ad refresh karne ke liye
@@ -309,9 +301,6 @@ async function handlePrint() {
 // Images to PDF
 
 // Image Compressor
-
-
-
 
 // QR Code
 async function generateQR() {
@@ -345,8 +334,6 @@ function resetCash() {
   showNotify("info", "Counter Cleared");
 }
 
-
-
 function resetQR() {
   document.getElementById("qrText").value = "";
   document.getElementById("qrResult").innerHTML = "";
@@ -357,7 +344,6 @@ function resetVoice() {
   window.speechSynthesis.cancel();
   showNotify("info", "Voice Stopped");
 }
-
 
 function goBack() {
   document.getElementById("activeTool").classList.add("d-none");
@@ -524,9 +510,9 @@ window.onpopstate = function (event) {
   }
 };
 
-
 // Jab bhi naya tool khule, ad ko refresh karne ke liye
 function refreshNativeAd() {
+  if (localStorage.getItem("isSwiftVIP") === "true") return;
   const containerId = "container-1f80efc60776ec6b8e8266dae4f5fc1f";
   const container = document.getElementById(containerId);
 
@@ -579,7 +565,3 @@ async function downloadAllAsZip() {
   btn.innerHTML = '<i class="fas fa-file-archive me-2"></i>Download All as ZIP';
   showNotify("success", "ZIP Downloaded!");
 }
-
-
-
-
