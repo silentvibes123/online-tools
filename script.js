@@ -105,12 +105,12 @@ function openTool(toolName) {
                     <h1 class="display-4 fw-bold text-success">₹<span id="grandTotal">0</span></h1>
                    <button class="btn btn-outline-primary mt-3" onclick="handlePrint()">
     <i class="fas fa-print me-2"></i>Print Receipt
-</button>
+    </button>
                 </div>
                 <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-success"><i class="fas fa-info-circle me-2"></i> How to use Cash Counter?</h5>
     <p class="small text-muted">SwiftTool Pro's Cash Counter helps you calculate total currency fast. Simply enter the number of notes for each denomination (₹2000 to ₹1), and the tool will show the grand total in real-time. You can also print a professional receipt for your records.</p>
-</div>
+    </div>
             </div>`;
   } else if (toolName === "pdf") {
     toolUI.innerHTML = `
@@ -124,7 +124,7 @@ function openTool(toolName) {
                 <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-danger"><i class="fas fa-file-pdf me-2"></i> Professional Image to PDF Converter</h5>
     <p class="small text-muted">Convert JPG, PNG, or WEBP images into a single high-quality PDF document instantly. Perfect for creating college assignments or office documents. Our tool maintains the original quality of your photos without any server upload.</p>
-</div>
+    </div>
             </div>`;
   } else if (toolName === "compress") {
     toolUI.innerHTML = `
@@ -145,7 +145,7 @@ function openTool(toolName) {
                 <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-primary"><i class="fas fa-compress-arrows-alt me-2"></i> Fast Online Image Compressor</h5>
     <p class="small text-muted">Reduce image file size instantly without losing quality. This tool is essential for uploading photos on government portals where specific size limits (like under 100KB) are required.</p>
-</div>
+    </div>
             </div>`;
   } else if (toolName === "qrcode") {
     toolUI.innerHTML = `
@@ -159,7 +159,7 @@ function openTool(toolName) {
             <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-dark"><i class="fas fa-qrcode me-2"></i> Free Instant QR Code Generator</h5>
     <p class="small text-muted">Create custom QR codes for your website URLs, text, or contact info. SwiftTool Pro provides a high-resolution QR generator that is 100% free and works instantly. Simply enter your text, and your QR code is ready to save.</p>
-</div>
+    </div>
             </div>`;
   } else if (toolName === "voice") {
     toolUI.innerHTML = `
@@ -172,7 +172,7 @@ function openTool(toolName) {
             <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-warning"><i class="fas fa-microphone-alt me-2"></i> AI-Powered Text to Speech</h5>
     <p class="small text-muted">Convert your written text into a clear AI voice. This tool uses advanced browser-based speech synthesis technology to read your content aloud. It's perfect for proofreading, accessibility, or creating audio snippets for your projects.</p>
-</div>
+    </div>
             `;
   } else if (toolName === "pdfToImg") {
     toolUI.innerHTML = `
@@ -189,7 +189,7 @@ function openTool(toolName) {
         <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-info"><i class="fas fa-images me-2"></i> High-Quality PDF to Image Extractor</h5>
     <p class="small text-muted">Extract every page of your PDF document into high-resolution JPG images. Our tool allows you to download pages individually or all at once in a convenient ZIP file. Everything happens locally in your browser, keeping your documents 100% private.</p>
-</div>
+    </div>
 
         <div id="pdfPreview" class="row g-3 mt-4"></div>`;
   }
@@ -211,7 +211,7 @@ function openTool(toolName) {
             <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-warning"><i class="fas fa-id-badge me-2"></i> Online Exam Photo Resizer (SSC, UPSC, IBPS)</h5>
     <p class="small text-muted">Easily resize your photos for government job applications. Our tool automatically adjusts your photo to 350x450 pixels and ensures the file size stays under 50KB or 20KB as per official guidelines.</p>
-</div>
+    </div>
         </div>`;
   }
   // --- Merge PDF UI ---
@@ -258,63 +258,54 @@ function openTool(toolName) {
             <h5 class="fw-bold text-warning"><i class="fas fa-cut me-2"></i> Fast Offline PDF Splitter</h5>
             <p class="small text-muted">Extract specific pages from your PDF instantly. All processing happens in your browser for 100% data security.</p>
         </div>`;
-  }
- else if (toolName === "age") {
+  } else if (toolName === "age") {
     toolUI.innerHTML = `
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3><i class="fas fa-birthday-cake me-2 text-danger"></i>Age Calculator</h3>
-            <button class="btn btn-sm btn-outline-danger" onclick="openTool('age')"><i class="fas fa-redo me-1"></i> Reset</button>
-        </div><hr>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3><i class="fas fa-birthday-cake me-2 text-danger"></i>Age Calculator</h3>
+                <button class="btn btn-sm btn-outline-danger" onclick="openTool('age')"><i class="fas fa-redo me-1"></i> Reset</button>
+            </div><hr>
 
-        <div class="text-center mb-4 ad-slot" style="min-height:90px; background: #f8f9fa; border: 1px dashed #ddd;">
-             <small class="text-muted d-block">Advertisement</small>
-             <div id="age-top-ad"></div> 
-        </div>
-
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Date of Birth</label>
-                <input type="date" id="dob" class="form-control form-control-lg border-primary">
+            <div class="text-center mb-4 ad-slot" style="min-height:90px; background: #f8f9fa; border: 1px dashed #ddd;">
+                 <small class="text-muted d-block">Advertisement</small>
+                 <div id="age-top-ad"></div> 
             </div>
-            <div class="col-md-6">
-                <label class="form-label fw-bold">Age at the Date of</label>
-                <input type="date" id="todayDate" class="form-control form-control-lg" value="${new Date().toISOString().split('T')[0]}">
-            </div>
-            <div class="col-12">
-                <button class="btn btn-primary w-100 py-3 fw-bold shadow-sm" onclick="calculateAge()">
-                    <i class="fas fa-calculator me-2"></i> Calculate Exact Age
-                </button>
-            </div>
-        </div>
 
-        <div id="ageMidAd" class="mt-4 text-center d-none ad-slot">
-             <small class="text-muted d-block">Advertisement</small>
-             <div id="age-result-ad"></div>
-        </div>
-
-        <div id="ageResult" class="mt-4 d-none">
-            <div class="card border-0 bg-light shadow-sm mb-3">
-                <div class="card-body text-center">
-                    <h5 class="text-muted">Current Age</h5>
-                    <h2 class="display-5 fw-bold text-primary" id="mainAge">--</h2>
-                    <p class="mb-0 text-dark" id="extraAge">--</p>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Date of Birth</label>
+                    <input type="date" id="dob" class="form-control form-control-lg border-primary">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Age at the Date of</label>
+                    <input type="date" id="todayDate" class="form-control form-control-lg" value="${new Date().toISOString().split("T")[0]}">
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary w-100 py-3 fw-bold shadow-sm" onclick="calculateAge()">
+                        <i class="fas fa-calculator me-2"></i> Calculate Exact Age
+                    </button>
                 </div>
             </div>
-            <div class="row g-2 text-center">
-                <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Months:</b> <br><span id="totalMonths">--</span></div></div>
-                <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Weeks:</b> <br><span id="totalWeeks">--</span></div></div>
-                <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Days:</b> <br><span id="totalDays">--</span></div></div>
+
+            <div id="ageMidAd" class="mt-4 text-center d-none ad-slot">
+                 <small class="text-muted d-block">Advertisement</small>
+                 <div id="age-result-ad"></div>
             </div>
-        </div>
 
-        <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-            <h5 class="fw-bold text-danger"><i class="fas fa-info-circle me-2"></i> How it works?</h5>
-            <p class="small text-muted">SwiftTool Pro's Age Calculator is a 100% accurate tool to find your age in years, months, days, and even minutes. It's especially useful for filling out government exam forms like SSC, UPSC, and Banking where precise age is required.</p>
-        </div>
-    `;
-}
-
- 
+            <div id="ageResult" class="mt-4 d-none">
+                <div class="card border-0 bg-light shadow-sm mb-3">
+                    <div class="card-body text-center">
+                        <h5 class="text-muted">Current Age</h5>
+                        <h2 class="display-5 fw-bold text-primary" id="mainAge">--</h2>
+                        <p class="mb-0 text-dark" id="extraAge">--</p>
+                    </div>
+                </div>
+                <div class="row g-2 text-center">
+                    <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Months:</b> <br><span id="totalMonths">--</span></div></div>
+                    <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Weeks:</b> <br><span id="totalWeeks">--</span></div></div>
+                    <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Days:</b> <br><span id="totalDays">--</span></div></div>
+                </div>
+            </div>`;
+  }
 }
 
 // --- Smart Resizer Logic ---
@@ -620,51 +611,51 @@ async function downloadAllAsZip() {
   showNotify("success", "ZIP Downloaded!");
 }
 
-
 async function calculateAge() {
-    const dobValue = document.getElementById("dob").value;
-    const targetValue = document.getElementById("todayDate").value;
+  const dobValue = document.getElementById("dob").value;
+  const targetValue = document.getElementById("todayDate").value;
 
-    // 1. Pehle input check karein
-    if (!dobValue) return showNotify("error", "Please select your Date of Birth!");
+  if (!dobValue)
+    return showNotify("error", "Please select your Date of Birth!");
 
-    const dob = new Date(dobValue);
-    const today = new Date(targetValue);
+  const dob = new Date(dobValue);
+  const today = new Date(targetValue);
 
-    if (dob > today) return showNotify("error", "DOB cannot be in the future!");
+  if (dob > today) return showNotify("error", "DOB cannot be in the future!");
 
-    // 2. AD TRIGGER: Calculation se pehle ad aur loader dikhao
-    // Ye aapke openAd() function ko call karega jo 3s wait karwayega
-    await openAd(); 
+  await openAd();
 
-    // 3. Logic calculation (Ad ke baad execute hoga)
-    let years = today.getFullYear() - dob.getFullYear();
-    let months = today.getMonth() - dob.getMonth();
-    let days = today.getDate() - dob.getDate();
+  let years = today.getFullYear() - dob.getFullYear();
+  let months = today.getMonth() - dob.getMonth();
+  let days = today.getDate() - dob.getDate();
 
-    if (days < 0) {
-        months--;
-        days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
-    }
-    if (months < 0) {
-        years--;
-        months += 12;
-    }
+  if (days < 0) {
+    months--;
+    days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+  }
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
 
-    // 4. Results Display
-    document.getElementById("ageResult").classList.remove("d-none");
-    document.getElementById("ageMidAd")?.classList.remove("d-none");
-    document.getElementById("mainAge").innerText = `${years} Years`;
-    document.getElementById("extraAge").innerText = `${months} Months | ${days} Days`;
-    
-    // Stats calculation
-    const diffTime = Math.abs(today - dob);
-    document.getElementById("totalMonths").innerText = (years * 12 + months).toLocaleString();
-    document.getElementById("totalWeeks").innerText = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)).toLocaleString();
-    document.getElementById("totalDays").innerText = Math.floor(diffTime / (1000 * 60 * 60 * 24)).toLocaleString();
+  document.getElementById("ageResult").classList.remove("d-none");
+  document.getElementById("ageMidAd")?.classList.remove("d-none");
+  document.getElementById("mainAge").innerText = `${years} Years`;
+  document.getElementById("extraAge").innerText =
+    `${months} Months | ${days} Days`;
 
-    // 5. Niche wala Native Ad refresh karein (Earning ke liye)
-    refreshNativeAd();
+  const diffTime = Math.abs(today - dob);
+  document.getElementById("totalMonths").innerText = (
+    years * 12 +
+    months
+  ).toLocaleString();
+  document.getElementById("totalWeeks").innerText = Math.floor(
+    diffTime / (1000 * 60 * 60 * 24 * 7),
+  ).toLocaleString();
+  document.getElementById("totalDays").innerText = Math.floor(
+    diffTime / (1000 * 60 * 60 * 24),
+  ).toLocaleString();
 
-    showNotify("success", "Age Calculated Successfully!");
+  refreshNativeAd();
+  showNotify("success", "Age Calculated Successfully!");
 }
