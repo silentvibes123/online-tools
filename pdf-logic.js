@@ -1,18 +1,16 @@
 // pdf-tools.js ki pehli line
 pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
 async function mergePDFs() {
-
     const files = document.getElementById("mergeInput").files;
     if (files.length < 2) return showNotify("error", "Kam se kam 2 PDF select karein!");
 
     const btn = document.getElementById("mergeBtn");
     const originalText = btn.innerHTML;
     
-    // 1. Loader aur Ad Trigger
     btn.disabled = true;
     btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing...`;
 
-    // Yahan Ad wait karega (3 seconds)
+    // 1. Pehle Ad dikhao
     await openAd(); 
 
     try {
@@ -32,9 +30,7 @@ async function mergePDFs() {
         const link = document.createElement("a");
         link.href = url;
         link.download = "SwiftTool_Merged.pdf";
-        document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
         
         showNotify("success", "PDF Merged Successfully!");
     } catch (e) {
@@ -60,7 +56,7 @@ async function splitPDF() {
     btn.disabled = true;
     btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing...`;
     
-    // Yahan Ad Trigger hoga
+    // Ad Trigger
     await openAd();
 
     try {
@@ -83,9 +79,7 @@ async function splitPDF() {
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
         link.download = `SwiftTool_Split.pdf`;
-        document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
 
         showNotify("success", "PDF Split Successfully!");
     } catch (e) {
@@ -103,15 +97,19 @@ async function convertPdfToImg() {
   const file = document.getElementById("pdfInput").files[0];
   if (!file) return showNotify("error", "Please select a PDF file!");
 
-  await openAd();
-
   const btn = document.getElementById("pdfImgBtn");
   const downloadAllBtn = document.getElementById("downloadAllBtn");
-  btn.disabled = true;
-  btn.innerHTML =
-    '<span class="spinner-border spinner-border-sm me-2"></span>Extracting...';
+  const originalText = btn.innerHTML;
 
-  extractedImages = []; // Purani images clear karein
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Optimizing...';
+
+  // 1. Ad Trigger
+  await openAd();
+
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Extracting Pages...';
+
+  extractedImages = []; 
   const previewArea = document.getElementById("pdfPreview");
   previewArea.innerHTML = "";
 
@@ -125,7 +123,7 @@ async function convertPdfToImg() {
 
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale: 2 }); // Quality badhane ke liye scale 2
+        const viewport = page.getViewport({ scale: 2 }); 
         const canvas = document.createElement("canvas");
         const context = canvas.getContext("2d");
         canvas.height = viewport.height;
@@ -137,13 +135,12 @@ async function convertPdfToImg() {
         extractedImages.push({ name: `Page_${i}.jpg`, data: imgData });
 
         previewArea.innerHTML += `
-                    <div class="col-6 col-md-3 text-center">
-                        <img src="${imgData}" class="img-fluid border rounded shadow-sm">
-                        <a href="${imgData}" download="Page_${i}.jpg" class="btn btn-sm btn-link">Download Page ${i}</a>
-                    </div>`;
+            <div class="col-6 col-md-3 text-center mb-3">
+                <img src="${imgData}" class="img-fluid border rounded shadow-sm mb-2">
+                <a href="${imgData}" download="Page_${i}.jpg" class="btn btn-sm btn-outline-info">Save Page ${i}</a>
+            </div>`;
       }
 
-      // Extraction ke baad button dikhao
       downloadAllBtn.classList.remove("d-none");
       showNotify("success", `${pdf.numPages} pages extracted!`);
     } catch (e) {
@@ -151,7 +148,7 @@ async function convertPdfToImg() {
       console.error(e);
     }
     btn.disabled = false;
-    btn.innerHTML = "Extract All Pages";
+    btn.innerHTML = originalText;
   };
 }
 

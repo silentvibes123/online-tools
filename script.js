@@ -3,38 +3,28 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 const openAd = () => {
   return new Promise((resolve) => {
-    // Step 1: Processing Loader dikhao (SweetAlert2)
-    Swal.fire({
-      title: 'Processing...',
-      text: 'Please wait a moment',
-      allowOutsideClick: false,
-      showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading(); // Yeh spinner ghumayega
-      }
-    });
-
     const lastAdTime = localStorage.getItem("lastAdTime");
     const now = new Date().getTime();
 
-    setTimeout(() => {
-      // 3 second baad loader band karo
-      Swal.close();
-
-      // Ad Logic
-      if (!lastAdTime || now - lastAdTime > 900000) {
+    if (!lastAdTime || now - lastAdTime > 300000) {
+      Swal.fire({
+        title: 'Optimizing Tool...',
+        text: 'Please wait 2 seconds',
+        timer: 2000, // Automate closing
+        showConfirmButton: false,
+        didOpen: () => { Swal.showLoading(); }
+      }).then(() => {
         localStorage.setItem("lastAdTime", now);
-        window.open(
-          "https://www.effectivegatecpm.com/uhv7f7jam?key=621c144ec67a64c9e4ccf13b92fb867b",
-          "_blank",
-        );
-      }
+        // Direct call taki browser popup blocker trigger na ho
+        window.open("https://www.effectivegatecpm.com/uhv7f7jam?key=621c144ec67a64c9e4ccf13b92fb867b", "_blank");
+        resolve();
+      });
+    } else {
       resolve();
-    }, 3000); // 3 second ka wait
+    }
   });
 };
 
-// --- 1. Helper Function for Professional Alerts (SweetAlert2) ---
 
 function showNotify(type, message) {
   if (type === "success") {
@@ -63,33 +53,27 @@ function showNotify(type, message) {
   }
 }
 
-// --- 2. Tool Opening Logic ---
 function openTool(toolName) {
-  // 1. Browser history update (Back button ke liye)
   history.pushState({ page: "tool" }, "");
-
-  // 2. Elements ko variables mein le lo
   const toolsGrid = document.getElementById("toolsGrid");
   const seoSection = document.getElementById("seoSection");
   const activeTool = document.getElementById("activeTool");
   const toolUI = document.getElementById("toolUI");
 
-  // 3. Purana data saaf karo aur Dashboard hide karo
   toolsGrid.classList.add("d-none");
   if (seoSection) seoSection.classList.add("d-none");
   toolUI.innerHTML = ""; // Purane tool ka kachra saaf
 
-  // 4. Tool container dikhao
   activeTool.classList.remove("d-none");
   activeTool.classList.add("animate__animated", "animate__fadeInUp");
-
-  // 5. Page ko top par le jao (Most Important)
   window.scrollTo(0, 0);
-
   setTimeout(refreshNativeAd, 500);
-
   if (toolName === "cash") {
     toolUI.innerHTML = `
+            <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
+   <small class="text-muted">Advertisement</small>
+   <div id="dynamic-ad-container"></div>
+  </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-calculator me-2 text-success"></i>Cash Counter</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetCash()"><i class="fas fa-redo me-1"></i> Reset</button>
@@ -121,6 +105,10 @@ function openTool(toolName) {
             </div>`;
   } else if (toolName === "pdf") {
     toolUI.innerHTML = `
+            <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
+   <small class="text-muted">Advertisement</small>
+   <div id="dynamic-ad-container"></div>
+            </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-file-pdf me-2 text-danger"></i>Images to PDF</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetPDFTool()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -135,6 +123,11 @@ function openTool(toolName) {
             </div>`;
   } else if (toolName === "compress") {
     toolUI.innerHTML = `
+
+          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
+   <small class="text-muted">Advertisement</small>
+   <div id="dynamic-ad-container"></div>
+          </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-compress-arrows-alt me-2 text-primary"></i>Compressor</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetCompressor()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -155,7 +148,12 @@ function openTool(toolName) {
     </div>
             </div>`;
   } else if (toolName === "qrcode") {
-    toolUI.innerHTML = `
+    toolUI.innerHTML = `  
+
+        <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
+   <small class="text-muted">Advertisement</small>
+   <div id="dynamic-ad-container"></div>
+        </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-qrcode me-2 text-dark"></i>QR Generator</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetQR()"><i class="fas fa-trash me-1"></i> Reset</button>
@@ -170,6 +168,11 @@ function openTool(toolName) {
             </div>`;
   } else if (toolName === "voice") {
     toolUI.innerHTML = `
+
+        <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
+   <small class="text-muted">Advertisement</small>
+   <div id="dynamic-ad-container"></div>
+        </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-volume-up me-2 text-warning"></i>AI Voice</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetVoice()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -183,6 +186,10 @@ function openTool(toolName) {
             `;
   } else if (toolName === "pdfToImg") {
     toolUI.innerHTML = `
+          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
+   <small class="text-muted">Advertisement</small>
+   <div id="dynamic-ad-container"></div>
+          </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-images me-2 text-info"></i>PDF to Image</h3>
             <button class="btn btn-sm btn-outline-danger" onclick="resetPdfToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -201,6 +208,10 @@ function openTool(toolName) {
         <div id="pdfPreview" class="row g-3 mt-4"></div>`;
   } else if (toolName === "resizer") {
     toolUI.innerHTML = `
+          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
+   <small class="text-muted">Advertisement</small>
+   <div id="dynamic-ad-container"></div>
+          </div>
         <div class="text-center">
             <h3><i class="fas fa-expand-arrows-alt me-2 text-warning"></i>Exam Photo Resizer</h3>
             <p class="text-muted">SSC, UPSC, Bank Forms (20KB - 50KB)</p><hr>
@@ -218,7 +229,11 @@ function openTool(toolName) {
     </div>
         </div>`;
   } else if (toolName === "merge") {
-    toolUI.innerHTML = `
+    toolUI.innerHTML = `  
+          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
+   <small class="text-muted">Advertisement</small>
+   <div id="dynamic-ad-container"></div>
+          </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-object-group me-2 text-primary"></i>Merge PDF</h3>
             <button class="btn btn-sm btn-outline-danger" onclick="resetTool('merge', this)">
@@ -237,6 +252,11 @@ function openTool(toolName) {
         </div>`;
   } else if (toolName === "split") {
     toolUI.innerHTML = `
+
+      <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
+           <small class="text-muted">Advertisement</small>
+          <div id="dynamic-ad-container"></div>
+      </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-cut me-2 text-warning"></i>Split PDF</h3>
             <button class="btn btn-sm btn-outline-danger" onclick="resetTool('split', this)">
@@ -303,13 +323,9 @@ function openTool(toolName) {
                     <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Days:</b> <br><span id="totalDays">--</span></div></div>
                 </div>
             </div>`;
-    setTimeout(() => {
-      refreshNativeAd("age-top-ad");
-    }, 300);
+  
   }
 }
-
-// --- Smart Resizer Logic ---
 
 function resetTool(toolName, btn) {
   const icon = btn.querySelector("i");
@@ -349,10 +365,21 @@ async function handlePrint() {
 async function generateQR() {
   const text = document.getElementById("qrText").value;
   if (!text.trim()) return showNotify("error", "Enter text/URL for QR!");
-  await openAd();
+
+  // Button state change
+  const btn = document.querySelector("button[onclick*='generateQR']");
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = "Generating...";
+
+  await openAd(); // Ad dikhayega
+
   document.getElementById("qrResult").innerHTML = `
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(text)}" class="img-fluid shadow rounded">
         <p class="text-muted mt-2">Right-click to save image</p>`;
+  
+  btn.disabled = false;
+  btn.innerHTML = originalText;
   showNotify("success", "QR Code Generated!");
 }
 
@@ -497,16 +524,11 @@ function showExtra(page) {
             </div>
             <button type="submit" id="form-submit" class="btn btn-danger w-100 fw-bold py-3">Send Message</button>
         </form>`;
-
-    // Yahan Form submission ka logic (AJAX) wapas paste karein jo aapne upar diya tha.
-
     const form = document.getElementById("contact-form");
     form.onsubmit = async (e) => {
       e.preventDefault();
       const btn = document.getElementById("form-submit");
 
-      // VALIDATION: Agar aapne abhi tak ID change nahi ki hai, tabhi warning dega
-      // Agar aapne real ID daal di hai toh ye 'if' skip ho jayega
       if (form.action.includes("https://formspree.io/f/xbdayrne")) {
         return Swal.fire(
           "Setup Required",
@@ -514,7 +536,6 @@ function showExtra(page) {
           "warning",
         );
       }
-
       btn.disabled = true;
       btn.innerHTML =
         '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
@@ -543,8 +564,6 @@ function showExtra(page) {
     };
   }
 }
-
-// 3. Back Button Handler
 window.onpopstate = function (event) {
   // Check if tools grid is hidden (means some tool is open)
   const grid = document.getElementById("toolsGrid");
@@ -553,16 +572,15 @@ window.onpopstate = function (event) {
   }
 };
 
-// Jab bhi naya tool khule, ad ko refresh karne ke liye
 function refreshNativeAd(containerId = "age-top-ad") {
-    const container = document.getElementById(containerId);
-    if (container) {
-        container.innerHTML = ""; // Purani ad clear karein
+  const container = document.getElementById(containerId);
+  if (container) {
+    container.innerHTML = ""; // Purani ad clear karein
 
-        // 1. Naya Script Tag banayein Configuration ke liye
-        const configScript = document.createElement("script");
-        configScript.type = "text/javascript";
-        configScript.text = `
+    // 1. Naya Script Tag banayein Configuration ke liye
+    const configScript = document.createElement("script");
+    configScript.type = "text/javascript";
+    configScript.text = `
             atOptions = {
                 'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce',
                 'format' : 'iframe',
@@ -571,38 +589,37 @@ function refreshNativeAd(containerId = "age-top-ad") {
                 'params' : {}
             };
         `;
-        container.appendChild(configScript);
+    container.appendChild(configScript);
 
-        // 2. Ab invoke.js load karein
-        const invokeScript = document.createElement("script");
-        invokeScript.type = "text/javascript";
-        invokeScript.src = `//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js`;
-        
-        container.appendChild(invokeScript);
-    }
+    // 2. Ab invoke.js load karein
+    const invokeScript = document.createElement("script");
+    invokeScript.type = "text/javascript";
+    invokeScript.src = `//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js`;
+
+    container.appendChild(invokeScript);
+  }
 }
 
 async function calculateAge() {
   const dobValue = document.getElementById("dob").value;
   const targetValue = document.getElementById("todayDate").value;
-  
-  // 1. Validation check
+
   if (!dobValue) return showNotify("error", "Please select your Date of Birth!");
 
   const dob = new Date(dobValue);
   const today = new Date(targetValue);
   if (dob > today) return showNotify("error", "DOB cannot be in the future!");
 
-  // 2. Button Loader Start
-  const btn = event.target.closest('button'); 
+  // Button loader set karein
+  const btn = document.querySelector("button[onclick='calculateAge()']");
   const originalBtnText = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Wait...';
 
-  // 3. Wait for Ad (3 Seconds)
-  await openAd(); 
+  // Yahan Ad wait karega
+  await openAd();
 
-  // 4. --- CORE CALCULATION LOGIC ---
+  // Ab calculation logic
   let years = today.getFullYear() - dob.getFullYear();
   let months = today.getMonth() - dob.getMonth();
   let days = today.getDate() - dob.getDate();
@@ -616,9 +633,8 @@ async function calculateAge() {
     months += 12;
   }
 
-  // 5. Update UI (Display Numbers)
+  // Result show karein
   document.getElementById("ageResult").classList.remove("d-none");
-  document.getElementById("ageMidAd")?.classList.remove("d-none");
   document.getElementById("mainAge").innerText = `${years} Years`;
   document.getElementById("extraAge").innerText = `${months} Months | ${days} Days`;
 
@@ -627,10 +643,10 @@ async function calculateAge() {
   document.getElementById("totalWeeks").innerText = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)).toLocaleString();
   document.getElementById("totalDays").innerText = Math.floor(diffTime / (1000 * 60 * 60 * 24)).toLocaleString();
 
-  // 6. Reset Button & Refresh Ad
+  // Button reset
   btn.disabled = false;
   btn.innerHTML = originalBtnText;
-  
+
+  showNotify("success", "Age Calculated!");
   refreshNativeAd();
-  showNotify("success", "Age Calculated Successfully!");
 }
