@@ -1,29 +1,34 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
 
-const openAd = () => {
+async function openAd() {
   return new Promise((resolve) => {
-    const lastAdTime = localStorage.getItem("lastAdTime");
-    const now = new Date().getTime();
+    // Button ko loading state mein dikhane ke liye hum SweetAlert use kar rahe hain
+    Swal.fire({
+      title: 'Optimizing Tool...',
+      html: 'Please wait <b></b> seconds.<br/>Preparing secure environment...',
+      timer: 2500, // 2.5 seconds ka wait (Ads load hone ke liye best hai)
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const b = Swal.getHtmlContainer().querySelector('b');
+        timerInterval = setInterval(() => {
+          b.textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+        }, 100);
 
-    if (!lastAdTime || now - lastAdTime > 300000) {
-      Swal.fire({
-        title: 'Optimizing Tool...',
-        text: 'Please wait 2 seconds',
-        timer: 2000, // Automate closing
-        showConfirmButton: false,
-        didOpen: () => { Swal.showLoading(); }
-      }).then(() => {
-        localStorage.setItem("lastAdTime", now);
-        // Direct call taki browser popup blocker trigger na ho
-        window.open("https://www.effectivegatecpm.com/uhv7f7jam?key=621c144ec67a64c9e4ccf13b92fb867b", "_blank");
-        resolve();
-      });
-    } else {
-      resolve();
-    }
+        // --- YAHAN APNA DIRECT AD LINK YA POP-UNDER TRIGGER KAREIN ---
+        // Agar aapka koi direct link ad hai toh:
+        // window.open('https://aapka-ad-link.com', '_blank');
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+      allowOutsideClick: false
+    }).then((result) => {
+      resolve(true); // Ad process khatam, ab tool chalega
+    });
   });
-};
+}
 
 
 function showNotify(type, message) {
