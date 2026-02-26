@@ -23,22 +23,25 @@ async function smartResize() {
       canvas.height = 450;
       ctx.drawImage(img, 0, 0, 350, 450);
 
-      function attemptDownload(q) {
-        canvas.toBlob((blob) => {
-            if (blob.size / 1024 > targetKB && q > 0.1) {
-              attemptDownload(q - 0.1);
-            } else {
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement("a");
-              a.href = url;
-              a.download = `Exam_Ready_${targetKB}KB.jpg`;
-              a.click();
-              btn.disabled = false;
-              btn.innerHTML = originalText;
-              showNotify("success", `Success! Final Size: ${(blob.size / 1024).toFixed(1)}KB`);
-            }
-          }, "image/jpeg", q);
+     function attemptDownload(q) {
+  canvas.toBlob((blob) => {
+      // Agar size bada hai aur quality abhi baaki hai
+      if (blob.size / 1024 > targetKB && q > 0.05) { 
+        attemptDownload(q - 0.05); // Thoda aur bariki se kam karo (0.05)
+      } else {
+        // Final Result chahe target se bada ho ya chota, download trigger karo
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Exam_Ready_${targetKB}KB.jpg`;
+        a.click();
+        
+        btn.disabled = false; // Reset button
+        btn.innerHTML = originalText;
+        showNotify("success", `Final Size: ${(blob.size / 1024).toFixed(1)}KB`);
       }
+    }, "image/jpeg", q);
+}
       attemptDownload(quality);
     };
   };

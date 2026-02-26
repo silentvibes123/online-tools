@@ -3,30 +3,28 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 async function openAd() {
   return new Promise((resolve) => {
-    // Button ko loading state mein dikhane ke liye hum SweetAlert use kar rahe hain
+    // 1. Direct Ad Link ko Naye Tab mein kholna
+    // Isse Popup Block hone ke chances kam hote hain kyunki ye user click ke baad chalta hai
+    const adWindow = window.open('https://www.highperformanceformat.com/YOUR_DIRECT_LINK_HERE', '_blank');
+
+    // 2. User ko Tool interface par SweetAlert dikhana
     Swal.fire({
       title: 'Optimizing Tool...',
-      html: 'Please wait <b></b> seconds.<br/>Preparing secure environment...',
-      timer: 2500, // 2.5 seconds ka wait (Ads load hone ke liye best hai)
+      html: 'Please wait... Preparing your secure file.',
+      timer: 2000,
       timerProgressBar: true,
+      showConfirmButton: false,
+      allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
-        const b = Swal.getHtmlContainer().querySelector('b');
-        timerInterval = setInterval(() => {
-          b.textContent = Math.ceil(Swal.getTimerLeft() / 1000);
-        }, 100);
-
-        // --- YAHAN APNA DIRECT AD LINK YA POP-UNDER TRIGGER KAREIN ---
-        // Agar aapka koi direct link ad hai toh:
-        // window.open('https://aapka-ad-link.com', '_blank');
       },
       willClose: () => {
-        clearInterval(timerInterval);
-      },
-      allowOutsideClick: false
-    }).then((result) => {
-      resolve(true); // Ad process khatam, ab tool chalega
+        resolve(true); // 2 second baad tool ka process aage badhega
+      }
     });
+
+    // Backup: Agar window open nahi hui (Popup Blocked), tab bhi tool na ruke
+    setTimeout(() => resolve(true), 2500);
   });
 }
 
