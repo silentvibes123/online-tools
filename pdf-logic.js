@@ -1,5 +1,7 @@
 // pdf-tools.js ki pehli line
 pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+
+// Merge PDF - Sahi hai
 async function mergePDFs() {
     const files = document.getElementById("mergeInput").files;
     if (files.length < 2) return showNotify("error", "Kam se kam 2 PDF select karein!");
@@ -10,8 +12,7 @@ async function mergePDFs() {
     btn.disabled = true;
     btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing...`;
 
-    // 1. Pehle Ad dikhao
-    await openAd(); 
+    await openAd(); // Sabse pehle Ad
 
     try {
         const { PDFDocument } = window.PDFLib;
@@ -30,14 +31,12 @@ async function mergePDFs() {
         const link = document.createElement("a");
         link.href = url;
         link.download = "SwiftTool_Merged.pdf";
-        link.click();
+        link.click(); // Bina body mein add kiye bhi chalega
         
         showNotify("success", "PDF Merged Successfully!");
     } catch (e) {
-        console.error(e);
         showNotify("error", "Merging failed!");
     }
-    
     btn.disabled = false;
     btn.innerHTML = originalText;
 }
@@ -102,54 +101,49 @@ async function convertPdfToImg() {
   const originalText = btn.innerHTML;
 
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Optimizing...';
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Wait...';
 
-  // 1. Ad Trigger
-  await openAd();
+  await openAd(); // Ad Trigger pehle
 
-  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Extracting Pages...';
-
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Extracting...';
   extractedImages = []; 
   const previewArea = document.getElementById("pdfPreview");
   previewArea.innerHTML = "";
 
-  const reader = new FileReader();
-  reader.readAsArrayBuffer(file);
-  reader.onload = async function () {
-    try {
-      const typedarray = new Uint8Array(this.result);
-      const pdfjsLib = window["pdfjs-dist/build/pdf"] || window.pdfjsLib;
-      const pdf = await pdfjsLib.getDocument(typedarray).promise;
+  try {
+    // FileReader ko await ke saath use karna zyada stable hai
+    const arrayBuffer = await file.arrayBuffer();
+    const pdfjsLib = window["pdfjs-dist/build/pdf"] || window.pdfjsLib;
+    const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
 
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale: 2 }); 
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: 2 }); 
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
 
-        await page.render({ canvasContext: context, viewport }).promise;
+      await page.render({ canvasContext: context, viewport }).promise;
 
-        const imgData = canvas.toDataURL("image/jpeg", 0.9);
-        extractedImages.push({ name: `Page_${i}.jpg`, data: imgData });
+      const imgData = canvas.toDataURL("image/jpeg", 0.9);
+      extractedImages.push({ name: `Page_${i}.jpg`, data: imgData });
 
-        previewArea.innerHTML += `
-            <div class="col-6 col-md-3 text-center mb-3">
-                <img src="${imgData}" class="img-fluid border rounded shadow-sm mb-2">
-                <a href="${imgData}" download="Page_${i}.jpg" class="btn btn-sm btn-outline-info">Save Page ${i}</a>
-            </div>`;
-      }
-
-      downloadAllBtn.classList.remove("d-none");
-      showNotify("success", `${pdf.numPages} pages extracted!`);
-    } catch (e) {
-      showNotify("error", "Error processing PDF.");
-      console.error(e);
+      previewArea.innerHTML += `
+          <div class="col-6 col-md-3 text-center mb-3 animate__animated animate__fadeIn">
+              <img src="${imgData}" class="img-fluid border rounded shadow-sm mb-2">
+              <a href="${imgData}" download="Page_${i}.jpg" class="btn btn-sm btn-outline-info">Save Page ${i}</a>
+          </div>`;
     }
-    btn.disabled = false;
-    btn.innerHTML = originalText;
-  };
+
+    downloadAllBtn.classList.remove("d-none");
+    showNotify("success", `${pdf.numPages} pages extracted!`);
+  } catch (e) {
+    showNotify("error", "Error processing PDF.");
+    console.error(e);
+  }
+  btn.disabled = false;
+  btn.innerHTML = originalText;
 }
 
 function resetPdfToImg() {
