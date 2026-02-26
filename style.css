@@ -1,3 +1,31 @@
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+    .tool-card {
+        padding: 15px !important;
+        min-height: 140px; /* Sab cards ek barabar dikhenge */
+    }
+    
+    .icon-box {
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 1.2rem !important;
+    }
+
+    .tool-card h5, .tool-card h6 {
+        font-size: 0.9rem !important;
+        margin-top: 10px;
+    }
+    
+    /* Ads ko screen se bahar jane se rokne ke liye */
+    #mobile-ad iframe, #desktop-ad iframe {
+        max-width: 100% !important;
+    }
+    
+    /* Footer sticky ad ke liye space */
+    body {
+        padding-bottom: 80px; 
+    }
+}
 html, body {
     height: 100%;
     margin: 0;
