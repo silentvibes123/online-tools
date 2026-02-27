@@ -1,31 +1,20 @@
 @media print {
-    /* Poori website chhupa do */
-    body * {
-        visibility: hidden;
+    /* Sabse important: Ads aur Iframes ko print se hatao */
+    iframe, .ad-slot, #tool-banner-ad, #dynamic-ad-container, script {
+        display: none !important;
+        visibility: hidden !important;
     }
-    /* Sirf Cash Counter ka calculation area dikhao */
-    #toolUI, #toolUI * {
-        visibility: visible;
+
+    /* Sirf receipt ka area dikhao */
+    #toolUI {
+        display: block !important;
     }
-    /* Buttons aur Ads ko print mein mat dikhao */
-    .btn, .ad-slot, #tool-banner-ad, .alert, .text-muted, hr {
+    
+    /* Buttons ko bhi chhupao */
+    button, .btn {
         display: none !important;
     }
-    /* Receipt ko top par set karo */
-    #toolUI {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        padding: 20px;
-    }
-    /* Notes list ko saaf dikhane ke liye formatting */
-    .note-input {
-        border: none !important;
-        background: transparent !important;
-    }
 }
-
 :root {
     --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --success-gradient: linear-gradient(135deg, #2af598 0%, #009efd 100%);

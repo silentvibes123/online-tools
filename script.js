@@ -186,7 +186,7 @@ function openTool(toolName) {
                 <button class="btn btn-sm btn-outline-danger" onclick="resetQR()"><i class="fas fa-trash me-1"></i> Reset</button>
             </div><hr>
             <input type="text" id="qrText" class="form-control mb-3" placeholder="Enter text or URL">
-            <button class="btn btn-dark w-100" onclick="openAd(); generateQR()">Generate QR Code</button>
+            <button class="btn btn-dark w-100" onclick="processWithAd(generateQR)">Generate QR Code</button>
             <div id="qrResult" class="text-center mt-4">
             <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-dark"><i class="fas fa-qrcode me-2"></i> Free Instant QR Code Generator</h5>
@@ -391,15 +391,50 @@ function calcCash() {
 async function handlePrint() {
   const total = document.getElementById("grandTotal").innerText;
   
-  if (total === "0") {
-      return showNotify("error", "Amount is not should be 0!");
+  if (total === "0" || total === "") {
+      return showNotify("error", "Amount 0 hai, print nahi ho sakta!");
   }
 
-  // Pehle Ad dikhayenge (Revenue ke liye)
-  await openAd(); 
+  // Pehle user ko SweetAlert dikhayenge
+  Swal.fire({
+      title: 'Generating Receipt...',
+      html: 'Please wait while we secure your document.',
+      timer: 2500, // 2.5 seconds ka wait
+      timerProgressBar: true,
+      didOpen: () => {
+          Swal.showLoading();
+          // Ad ko background mein open karenge
+          window.open('https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2', '_blank');
+      },
+      willClose: () => {
+          // Alert band hone ke thodi der baad print command
+          setTimeout(() => {
+              window.print();
+          }, 500);
+      }
+  });
+}
 
-  // Print command
-  window.print();
+async function processWithAd(callback) {
+    // 1. Pehle tool ka function (callback) chalega (Jaise Generate QR ya PDF)
+    await callback(); 
+
+    // 2. Kaam hone ke JUST BAAD SweetAlert aur Ad dikhayenge
+    setTimeout(() => {
+        window.open('https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2', '_blank');
+        
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+        Toast.fire({
+            icon: 'success',
+            title: 'File Processed Successfully!'
+        });
+    }, 800); 
 }
 
 // QR Code
