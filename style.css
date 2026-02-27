@@ -1,19 +1,16 @@
-/* 1. VARIABLES & RESET */
 :root {
     --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --success-gradient: linear-gradient(135deg, #2af598 0%, #009efd 100%);
     --danger-gradient: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
     --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     --warning-gradient: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-    --dark-gradient: linear-gradient(135deg, #434343 0%, #000000 100%);
 }
 
 html, body {
-    height: 100%;
+   height: 100%;
     margin: 0;
     background-color: #f0f2f5;
     font-family: "Inter", sans-serif;
-    overflow-x: hidden;
 }
 
 body {
@@ -21,30 +18,153 @@ body {
     flex-direction: column;
 }
 
-.content-wrapper {
-    flex: 1 0 auto;
+
+/* Ad wale card ko control karne ke liye */
+/* Ad card ko responsive aur flexible banane ke liye */
+.ad-card-container {
+    min-height: 220px !important; /* Thodi height badha di hai */
+    height: auto !important; 
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: space-between !important; /* Space distribute karega */
+    padding: 12px !important;
+    background: #f8fbff !important;
+    border: 1px dashed #cfe2ff !important; /* Ad ko alag dikhane ke liye */
 }
 
-/* 2. DASHBOARD & HEADER */
-.dashboard-header {
-    background: white;
-    padding: 30px 0;
-    margin-bottom: 20px;
-    border-radius: 0 0 30px 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+@media print {
+    /* Print ke waqt faltu cheezein chhupane ke liye */
+    .btn, .navbar, footer, #resultAdSlot, #loaderOverlay, hr {
+        display: none !important;
+    }
+    /* Tool UI ko poori screen par dikhane ke liye */
+    #activeTool {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+    /* Background colors ko force karne ke liye */
+    body {
+        -webkit-print-color-adjust: exact;
+    }
 }
 
-.dashboard-title {
-    font-weight: 800;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -1px;
-    font-size: 2.5rem;
+/* Adterra ke inner container ko stretch karne ke liye */
+#container-b35ebb7fb08b0d4cfa955a277c2007ce {
+    width: 100% !important;
+    height: 100% !important;
+    overflow: visible !important; /* Text dikhne ke liye visible zaroori hai */
 }
 
-/* 3. TOOL CARDS */
-.tool-card {
+
+/* Reset icon rotation animation */
+.spin-animation {
+    animation: fa-spin 0.6s linear;
+}
+
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Button smooth hover */
+.btn {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+/* Button hover effects */
+.btn-primary, .btn-warning {
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover, .btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+/* Native ad ke images aur text ka fix */
+#container-b35ebb7fb08b0d4cfa955a277c2007ce div {
+    max-width: 100% !important;
+}
+
+/* Mobile par layout ko sambhalne ke liye */
+@media (max-width: 768px) {
+    .ad-card-container {
+        min-height: 180px;
+    }
+}
+/* Glassmorphism Card Effect */
+
+
+.tool-card:hover {
+    transform: translateY(-5px);
+    border-color: #0d6efd; /* Blue border on hover */
+    transition: all 0.3s ease;
+}
+
+/* Fixed Back Button for Mobile */
+#activeTool {
+    animation: fadeIn 0.5s;
+}
+
+.back-btn {
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-weight: 600;
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 768px) {
+    .display-4 { font-size: 2.5rem; }
+    .btn-lg { width: 100%; margin-bottom: 10px; }
+    .col-md-6 { padding: 10px; }
+    .border-start { border-left: none !important; border-top: 1px solid #dee2e6; margin-top: 20px; padding-top: 20px; }
+}
+
+/* Custom File Input Styling */
+input[type="file"] {
+    padding: 10px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+/* Nice Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+
+ :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --success-gradient: linear-gradient(135deg, #2af598 0%, #009efd 100%);
+        --danger-gradient: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+        --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --warning-gradient: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        --dark-gradient: linear-gradient(135deg, #434343 0%, #000000 100%);
+      }
+
+      body {
+        background-color: #f0f2f5;
+        font-family: "Inter", sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* Dashboard Styling */
+      .dashboard-header {
+        background: white;
+        padding: 30px 0;
+        margin-bottom: 40px;
+        border-radius: 0 0 30px 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      }
+      .dashboard-title {
+        font-weight: 800;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -1px;
+      }
+
+      .tool-card {
     border: none !important;
     border-radius: 20px !important;
     background: #ffffff !important;
@@ -60,104 +180,179 @@ body {
     height: 100%;
 }
 
-.tool-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-    border: 1px solid #0d6efd !important;
-}
+     
+      .tool-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+      }
 
-/* 4. ICON BOXES */
-.icon-box {
-    width: 65px;
-    height: 65px;
+   .icon-box {
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 18px;
+    border-radius: 15px;
     margin-bottom: 15px;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: white;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.bg-cash { background: var(--success-gradient); }
-.bg-pdf { background: var(--danger-gradient); }
-.bg-compress { background: var(--info-gradient); }
-.bg-qr { background: #f3e5f5 !important; color: #7b1fa2 !important; }
-.bg-voice { background: var(--warning-gradient); }
-.bg-imgpdf { background: var(--primary-gradient); }
-
-/* 5. AD CONTAINERS */
-.ad-card-container {
-    min-height: 200px !important;
-    background: #f8fbff !important;
-    border: 1px dashed #cfe2ff !important;
-    overflow: hidden;
+      .bg-cash {
+        background: var(--success-gradient);
+      }
+      .bg-pdf {
+        background: var(--danger-gradient);
+      }
+      .bg-compress {
+        background: var(--info-gradient);
+      }
+      .bg-qr { 
+    background-color: #f3e5f5 !important; /* Light Purple background */
+    color: #7b1fa2 !important;          /* Dark Purple icon color */
 }
+      .bg-voice {
+        background: var(--warning-gradient);
+      }
+      .bg-imgpdf {
+        background: var(--primary-gradient);
+      }
 
-#desktop-ad, #mobile-ad {
-    background: #f8f9fa;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: center;
-}
-
-/* 6. MOBILE OPTIMIZATION (BOHOT ZARURI) */
-@media (max-width: 768px) {
-    .dashboard-header { padding: 20px 0; margin-bottom: 10px; }
-    .dashboard-title { font-size: 1.8rem !important; }
-    
-    .tool-card {
-        padding: 15px 10px !important;
-        min-height: 130px !important;
-        border-radius: 15px !important;
+      @media (max-width: 768px) {
+    .container {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
     }
-
-    .tool-card p { display: none !important; } /* Space bachane ke liye description hide */
-
-    .icon-box {
-        width: 50px;
-        height: 50px;
-        font-size: 1.4rem;
+    
+    .dashboard-header {
+        padding: 15px 0;
         margin-bottom: 10px;
     }
 
-    .tool-card h5 { font-size: 0.9rem !important; font-weight: 700; }
-    
-    body { padding-bottom: 70px !important; } /* Floating bar space */
+    .dashboard-title {
+        font-size: 1.6rem !important;
+    }
+
+    /* Cards side-by-side gap fix */
+    .row.g-2, .row.g-3 {
+        --bs-gutter-x: 0.75rem;
+        --bs-gutter-y: 0.75rem;
+    }
+
+    .tool-card {
+        padding: 15px 10px !important;
+        min-height: 120px !important;
+        border-radius: 15px !important;
+    }
+
+    .tool-card p {
+        display: none !important; /* Mobile par description chhupa di taki clean dikhe */
+    }
+
+    .icon-box {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+    }
+
+    .tool-card h5, .tool-card h6 {
+        font-size: 0.85rem !important;
+        margin-bottom: 0 !important;
+        font-weight: 700;
+    }
+
+    body {
+        padding-bottom: 80px !important; /* Social Bar safety */
+    }
 }
 
-/* 7. ANIMATIONS & UI ELEMENTS */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-card {
+        animation: fadeInUp 0.6s ease backwards;
+      }
+
+      /* Back Button Styling */
+      .back-btn {
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      .back-btn:hover {
+        background: #eee;
+        transform: translateX(-5px);
+      }
+
+      #loaderOverlay:not(.d-none) {
+    display: flex !important;
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    /* Title aur Subtitle ko chota karein */
+    .dashboard-title { font-size: 1.5rem !important; margin-bottom: 5px; }
+    .text-muted { font-size: 0.8rem; }
+
+    /* Tool Card se description chupa dein (space bachane ke liye) */
+    .tool-card p { display: none; } 
+    
+    /* Card ka padding kam karein */
+    .tool-card { padding: 15px !important; }
+    
+    /* Icons thode chote karein */
+    .icon-box { width: 45px; height: 45px; margin: 0 auto 10px; }
+    .icon-box i { font-size: 1.2rem; }
+    
+    /* Text size cards ke liye */
+    .tool-card h5 { font-size: 0.9rem; margin-bottom: 0; }
+}
+
+
+/* Ad container ki jagah pehle se book kar lo */
+#desktop-ad {
+    min-height: 90px;
+    margin-bottom: 15px;
+}
+
+#mobile-ad {
+    min-height: 50px;
+    margin-bottom: 15px;
+}
+
+/* Mobile par tools ko thoda aur upar lane ke liye */
+@media (max-width: 768px) {
+    #toolsGrid {
+        padding-top: 5px !important;
+    }
+    .dashboard-header {
+        margin-bottom: 10px !important;
+    }
+}
+
 #activeTool, #extraScreens {
     position: relative;
-    z-index: 100;
-    background: #f8f9fa;
+    z-index: 10; /* Footer se upar dikhne ke liye */
+    background: #f8f9fa; /* Page background color */
     min-height: 70vh;
 }
 
-.back-btn {
-    border-radius: 50px;
-    padding: 10px 25px;
-    font-weight: 600;
-    transition: all 0.3s ease;
+footer {
+   flex-shrink: 0;
 }
 
-#loaderOverlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(255,255,255,0.9);
-    z-index: 9999;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.content-wrapper {
+    flex: 1 0 auto;
 }
 
-#loaderOverlay:not(.d-none) { display: flex !important; }
-
-/* 8. PRINT SETTINGS */
-@media print {
-    .navbar, footer, .back-btn, .ad-card-container, #loaderOverlay { display: none !important; }
-    #activeTool { width: 100%; margin: 0; padding: 0; }
+.swal2-shown {
+    overflow: hidden !important;
 }
