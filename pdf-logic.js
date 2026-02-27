@@ -8,11 +8,8 @@ async function mergePDFs() {
 
     const btn = document.getElementById("mergeBtn");
     const originalText = btn.innerHTML;
-    
     btn.disabled = true;
-    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing...`;
-
-    await openAd(); // Sabse pehle Ad
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Merging Files...`;
 
     try {
         const { PDFDocument } = window.PDFLib;
@@ -26,12 +23,16 @@ async function mergePDFs() {
         }
 
         const pdfBytes = await mergedPdf.save();
+        
+        // --- KAAM KHATAM, AB AD ---
+        await openAd(); 
+
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
         link.download = "SwiftTool_Merged.pdf";
-        link.click(); // Bina body mein add kiye bhi chalega
+        link.click();
         
         showNotify("success", "PDF Merged Successfully!");
     } catch (e) {
@@ -51,12 +52,8 @@ async function splitPDF() {
 
     const btn = document.getElementById("splitBtn");
     const originalText = btn.innerHTML;
-
     btn.disabled = true;
-    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing...`;
-    
-    // Ad Trigger
-    await openAd();
+    btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Splitting...`;
 
     try {
         const { PDFDocument } = window.PDFLib;
@@ -74,6 +71,10 @@ async function splitPDF() {
         copiedPages.forEach((page) => newPdf.addPage(page));
 
         const pdfBytes = await newPdf.save();
+
+        // --- KAAM KHATAM, AB AD ---
+        await openAd(); 
+
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
@@ -84,7 +85,6 @@ async function splitPDF() {
     } catch (e) {
         showNotify("error", e.message);
     }
-    
     btn.disabled = false;
     btn.innerHTML = originalText;
 }
@@ -101,17 +101,13 @@ async function convertPdfToImg() {
   const originalText = btn.innerHTML;
 
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Wait...';
-
-  await openAd(); // Ad Trigger pehle
-
   btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Extracting...';
+
   extractedImages = []; 
   const previewArea = document.getElementById("pdfPreview");
   previewArea.innerHTML = "";
 
   try {
-    // FileReader ko await ke saath use karna zyada stable hai
     const arrayBuffer = await file.arrayBuffer();
     const pdfjsLib = window["pdfjs-dist/build/pdf"] || window.pdfjsLib;
     const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
@@ -128,13 +124,19 @@ async function convertPdfToImg() {
 
       const imgData = canvas.toDataURL("image/jpeg", 0.9);
       extractedImages.push({ name: `Page_${i}.jpg`, data: imgData });
+    }
 
+    // --- SAARI PAGES EXTRACT HONE KE BAAD AD ---
+    await openAd(); 
+
+    // Ad ke baad preview dikhao
+    extractedImages.forEach((img, index) => {
       previewArea.innerHTML += `
           <div class="col-6 col-md-3 text-center mb-3 animate__animated animate__fadeIn">
-              <img src="${imgData}" class="img-fluid border rounded shadow-sm mb-2">
-              <a href="${imgData}" download="Page_${i}.jpg" class="btn btn-sm btn-outline-info">Save Page ${i}</a>
+              <img src="${img.data}" class="img-fluid border rounded shadow-sm mb-2">
+              <a href="${img.data}" download="Page_${index+1}.jpg" class="btn btn-sm btn-outline-info">Save Page ${index+1}</a>
           </div>`;
-    }
+    });
 
     downloadAllBtn.classList.remove("d-none");
     showNotify("success", `${pdf.numPages} pages extracted!`);

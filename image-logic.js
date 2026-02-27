@@ -6,42 +6,42 @@ async function smartResize() {
   const btn = document.querySelector("button[onclick='smartResize()']");
   const originalText = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Resizing...';
 
-  await openAd(); // Action se pehle ad
-
+  // Yahan se Ad hata di hai, pehle process hoga
   let quality = 0.9;
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = (e) => {
     const img = new Image();
     img.src = e.target.result;
-    img.onload = () => {
+    img.onload = async () => { // async banaya taaki await use ho sake
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
       canvas.width = 350;
       canvas.height = 450;
       ctx.drawImage(img, 0, 0, 350, 450);
 
-     function attemptDownload(q) {
-  canvas.toBlob((blob) => {
-      // Agar size bada hai aur quality abhi baaki hai
-      if (blob.size / 1024 > targetKB && q > 0.05) { 
-        attemptDownload(q - 0.05); // Thoda aur bariki se kam karo (0.05)
-      } else {
-        // Final Result chahe target se bada ho ya chota, download trigger karo
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `Exam_Ready_${targetKB}KB.jpg`;
-        a.click();
-        
-        btn.disabled = false; // Reset button
-        btn.innerHTML = originalText;
-        showNotify("success", `Final Size: ${(blob.size / 1024).toFixed(1)}KB`);
+      async function attemptDownload(q) {
+        canvas.toBlob(async (blob) => {
+          if (blob.size / 1024 > targetKB && q > 0.05) {
+            attemptDownload(q - 0.05);
+          } else {
+            // Kaam khatam! Ab Ad dikhao
+            await openAd(); 
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `Exam_Ready_${targetKB}KB.jpg`;
+            a.click();
+
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            showNotify("success", `Final Size: ${(blob.size / 1024).toFixed(1)}KB`);
+          }
+        }, "image/jpeg", q);
       }
-    }, "image/jpeg", q);
-}
       attemptDownload(quality);
     };
   };
@@ -56,15 +56,13 @@ async function compressImage() {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Compressing...';
 
-  await openAd(); // Pehle Ad dikhao
-
   const quality = parseFloat(document.getElementById("qualityRange").value);
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = (e) => {
     const img = new Image();
     img.src = e.target.result;
-    img.onload = () => {
+    img.onload = async () => {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
       let width = img.width;
@@ -78,13 +76,16 @@ async function compressImage() {
       canvas.height = height;
       ctx.drawImage(img, 0, 0, width, height);
 
-      canvas.toBlob((blob) => {
+      canvas.toBlob(async (blob) => {
+          // Processing khatam, ab ad khulegi
+          await openAd(); 
+
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
           a.download = `SwiftTool_Compressed_${file.name}`;
           a.click();
-          
+
           btn.disabled = false;
           btn.innerHTML = originalText;
           showNotify("success", `Compressed to approx ${(blob.size / 1024).toFixed(2)} KB`);
@@ -92,7 +93,6 @@ async function compressImage() {
     };
   };
 }
-
 function previewResize() {
   const file = document.getElementById("resizeInput").files[0];
   const previewArea = document.getElementById("resPreview");
@@ -108,7 +108,6 @@ function previewResize() {
   }
 }
 
-
 async function generatePDF() {
   const files = document.getElementById("imageInput").files;
   if (files.length === 0) return showNotify("error", "Please select images first!");
@@ -116,16 +115,15 @@ async function generatePDF() {
   const btn = document.getElementById("pdfBtn");
   const originalText = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating PDF...';
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing PDF...';
 
   try {
-    await openAd(); // Ad trigger
-
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF("p", "mm", "a4");
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
 
+    // Loop mein saari images PDF mein add ho jayengi
     for (let i = 0; i < files.length; i++) {
       const data = await readFileAsDataURL(files[i]);
       const img = new Image();
@@ -133,19 +131,19 @@ async function generatePDF() {
       await new Promise((resolve) => (img.onload = resolve));
 
       if (i > 0) doc.addPage();
-
       let imgWidth = pageWidth - 20;
       let imgHeight = (img.height * imgWidth) / img.width;
-
       if (imgHeight > pageHeight - 20) {
         imgHeight = pageHeight - 20;
         imgWidth = (img.width * imgHeight) / img.height;
       }
-
       const xOffset = (pageWidth - imgWidth) / 2;
       const yOffset = (pageHeight - imgHeight) / 2;
       doc.addImage(data, "JPEG", xOffset, yOffset, imgWidth, imgHeight);
     }
+
+    // PDF ready hai, ab download se theek pehle Ad dikhao
+    await openAd(); 
 
     doc.save("SwiftTool_Converted.pdf");
     showNotify("success", "PDF Downloaded Successfully!");

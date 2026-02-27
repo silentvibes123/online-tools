@@ -2,39 +2,43 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
 
 
- function injectAdIntoContainer(containerId) {
+function injectAdIntoContainer(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
-
-    container.innerHTML = ""; // Container saaf
+    container.innerHTML = "";
     const configScript = document.createElement("script");
     configScript.type = "text/javascript";
-    configScript.text = `
-        atOptions = {
-            'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce',
-            'format' : 'iframe',
-            'height' : 90,
-            'width' : 728,
-            'params' : {}
-        };
-    `;
+    configScript.text = `atOptions = { 'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };`;
     const invokeScript = document.createElement("script");
     invokeScript.type = "text/javascript";
     invokeScript.src = "//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js";
-
     container.appendChild(configScript);
     container.appendChild(invokeScript);
 }
+
+async function showProcessingAd() {
+    return new Promise((resolve) => {
+        Swal.fire({
+            title: 'Finalizing...',
+            html: 'Securing your file and generating result.',
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => { Swal.showLoading(); },
+            willClose: () => {
+                // Click -> Kaam Khatam -> Ad Open
+                window.open('https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2', '_blank');
+                resolve(true);
+            }
+        });
+    });
+}
 async function openAd() {
   return new Promise((resolve) => {
-    // 1. Direct Ad Link ko Naye Tab mein kholna
-    // Isse Popup Block hone ke chances kam hote hain kyunki ye user click ke baad chalta hai
-    const adWindow = window.open('https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2', '_blank');
-
-    // 2. User ko Tool interface par SweetAlert dikhana
     Swal.fire({
-      title: 'Optimizing Tool...',
-      html: 'Please wait... Preparing your secure file.',
+      title: 'Processing...',
+      html: 'Optimizing your file for high quality.',
       timer: 2000,
       timerProgressBar: true,
       showConfirmButton: false,
@@ -43,41 +47,24 @@ async function openAd() {
         Swal.showLoading();
       },
       willClose: () => {
-        resolve(true); // 2 second baad tool ka process aage badhega
+        // Jab user ko lagega kaam ho gaya, tab ad khulegi
+        window.open('https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2', '_blank');
+        resolve(true); 
       }
     });
-
-    // Backup: Agar window open nahi hui (Popup Blocked), tab bhi tool na ruke
-    setTimeout(() => resolve(true), 2500);
   });
 }
 
 
 function showNotify(type, message) {
-  if (type === "success") {
-    Swal.fire({
-      icon: "success",
-      title: "Done!",
-      text: message,
-      confirmButtonColor: "#28a745",
-    });
-  } else if (type === "error") {
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: message,
-      confirmButtonColor: "#dc3545",
-    });
-  } else {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-    });
-    Toast.fire({ icon: "info", title: message });
-  }
+    if (type === "success") {
+        Swal.fire({ icon: "success", title: "Done!", text: message, confirmButtonColor: "#28a745" });
+    } else if (type === "error") {
+        Swal.fire({ icon: "error", title: "Error", text: message, confirmButtonColor: "#dc3545" });
+    } else {
+        const Toast = Swal.mixin({ toast: true, position: "top-end", showConfirmButton: false, timer: 3000, timerProgressBar: true });
+        Toast.fire({ icon: "info", title: message });
+    }
 }
 
 function openTool(toolName) {
@@ -389,32 +376,18 @@ function calcCash() {
 }
 // --- Naya Helper Function ---
 async function handlePrint() {
-  const total = document.getElementById("grandTotal").innerText;
-  
-  if (total === "0" || total === "") {
-      return showNotify("error", "Amount 0 hai, print nahi ho sakta!");
-  }
+    const total = document.getElementById("grandTotal").innerText;
+    if (total === "0" || total === "") return showNotify("error", "Amount 0 hai!");
 
-  // Pehle user ko SweetAlert dikhayenge
-  Swal.fire({
-      title: 'Generating Receipt...',
-      html: 'Please wait while we secure your document.',
-      timer: 2500, // 2.5 seconds ka wait
-      timerProgressBar: true,
-      didOpen: () => {
-          Swal.showLoading();
-          // Ad ko background mein open karenge
-          window.open('https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2', '_blank');
-      },
-      willClose: () => {
-          // Alert band hone ke thodi der baad print command
-          setTimeout(() => {
-              window.print();
-          }, 500);
-      }
-  });
+    // Pehle loader chalega, phir Ad khulegi
+    await showProcessingAd();
+
+    // Ad window khulne ke 1 second baad print dialog aayega
+    // Isse Browser focus reset ho jata hai aur ad print nahi hoti
+    setTimeout(() => {
+        window.print();
+    }, 1000);
 }
-
 async function processWithAd(callback) {
     // 1. Pehle tool ka function (callback) chalega (Jaise Generate QR ya PDF)
     await callback(); 
@@ -439,24 +412,22 @@ async function processWithAd(callback) {
 
 // QR Code
 async function generateQR() {
-  const text = document.getElementById("qrText").value;
-  if (!text.trim()) return showNotify("error", "Enter text/URL for QR!");
+    const text = document.getElementById("qrText").value;
+    if (!text.trim()) return showNotify("error", "Enter text/URL for QR!");
 
-  // Button state change
-  const btn = document.querySelector("button[onclick*='generateQR']");
-  const originalText = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = "Generating...";
+    const btn = document.querySelector("button[onclick*='generateQR']");
+    btn.disabled = true;
 
-  await openAd(); // Ad dikhayega
-
-  document.getElementById("qrResult").innerHTML = `
+    // 1. Pehle QR dikhao
+    document.getElementById("qrResult").innerHTML = `
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(text)}" class="img-fluid shadow rounded">
-        <p class="text-muted mt-2">Right-click to save image</p>`;
-  
-  btn.disabled = false;
-  btn.innerHTML = originalText;
-  showNotify("success", "QR Code Generated!");
+        <p class="text-muted mt-2">QR Generated Successfully!</p>`;
+    
+    // 2. Ab User ko Ad wala loader dikhao (Task completion ke baad)
+    await showProcessingAd();
+    
+    btn.disabled = false;
+    showNotify("success", "QR Code Ready!");
 }
 
 // AI Voice
