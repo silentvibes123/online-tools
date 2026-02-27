@@ -28,6 +28,8 @@ async function smartResize() {
             attemptDownload(q - 0.05);
           } else {
             // Kaam khatam! Ab Ad dikhao
+            btn.disabled = false;
+        btn.innerHTML = originalText;
             await openAd(); 
 
             const url = URL.createObjectURL(blob);
