@@ -1,11 +1,35 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
 
+
+ function injectAdIntoContainer(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = ""; // Container saaf
+    const configScript = document.createElement("script");
+    configScript.type = "text/javascript";
+    configScript.text = `
+        atOptions = {
+            'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+        };
+    `;
+    const invokeScript = document.createElement("script");
+    invokeScript.type = "text/javascript";
+    invokeScript.src = "//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js";
+
+    container.appendChild(configScript);
+    container.appendChild(invokeScript);
+}
 async function openAd() {
   return new Promise((resolve) => {
     // 1. Direct Ad Link ko Naye Tab mein kholna
     // Isse Popup Block hone ke chances kam hote hain kyunki ye user click ke baad chalta hai
-    const adWindow = window.open('https://www.highperformanceformat.com/YOUR_DIRECT_LINK_HERE', '_blank');
+    const adWindow = window.open('https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2', '_blank');
 
     // 2. User ko Tool interface par SweetAlert dikhana
     Swal.fire({
@@ -73,10 +97,10 @@ function openTool(toolName) {
   setTimeout(refreshNativeAd, 500);
   if (toolName === "cash") {
     toolUI.innerHTML = `
-            <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
-   <small class="text-muted">Advertisement</small>
-   <div id="dynamic-ad-container"></div>
-  </div>
+            <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
+                <div id="dynamic-ad-container"></div>
+            </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-calculator me-2 text-success"></i>Cash Counter</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetCash()"><i class="fas fa-redo me-1"></i> Reset</button>
@@ -108,9 +132,9 @@ function openTool(toolName) {
             </div>`;
   } else if (toolName === "pdf") {
     toolUI.innerHTML = `
-            <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
-   <small class="text-muted">Advertisement</small>
-   <div id="dynamic-ad-container"></div>
+            <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
+                <div id="dynamic-ad-container"></div>
             </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-file-pdf me-2 text-danger"></i>Images to PDF</h3>
@@ -127,10 +151,10 @@ function openTool(toolName) {
   } else if (toolName === "compress") {
     toolUI.innerHTML = `
 
-          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
-   <small class="text-muted">Advertisement</small>
-   <div id="dynamic-ad-container"></div>
-          </div>
+         <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
+                <div id="dynamic-ad-container"></div>
+            </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-compress-arrows-alt me-2 text-primary"></i>Compressor</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetCompressor()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -153,10 +177,10 @@ function openTool(toolName) {
   } else if (toolName === "qrcode") {
     toolUI.innerHTML = `  
 
-        <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
-   <small class="text-muted">Advertisement</small>
-   <div id="dynamic-ad-container"></div>
-        </div>
+       <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
+                <div id="dynamic-ad-container"></div>
+            </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-qrcode me-2 text-dark"></i>QR Generator</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetQR()"><i class="fas fa-trash me-1"></i> Reset</button>
@@ -172,10 +196,10 @@ function openTool(toolName) {
   } else if (toolName === "voice") {
     toolUI.innerHTML = `
 
-        <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
-   <small class="text-muted">Advertisement</small>
-   <div id="dynamic-ad-container"></div>
-        </div>
+        <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
+                <div id="dynamic-ad-container"></div>
+            </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-volume-up me-2 text-warning"></i>AI Voice</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetVoice()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -189,10 +213,10 @@ function openTool(toolName) {
             `;
   } else if (toolName === "pdfToImg") {
     toolUI.innerHTML = `
-          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
-   <small class="text-muted">Advertisement</small>
-   <div id="dynamic-ad-container"></div>
-          </div>
+         <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
+                <div id="dynamic-ad-container"></div>
+            </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-images me-2 text-info"></i>PDF to Image</h3>
             <button class="btn btn-sm btn-outline-danger" onclick="resetPdfToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -211,10 +235,10 @@ function openTool(toolName) {
         <div id="pdfPreview" class="row g-3 mt-4"></div>`;
   } else if (toolName === "resizer") {
     toolUI.innerHTML = `
-          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
-   <small class="text-muted">Advertisement</small>
-   <div id="dynamic-ad-container"></div>
-          </div>
+         <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
+                <div id="dynamic-ad-container"></div>
+            </div>
         <div class="text-center">
             <h3><i class="fas fa-expand-arrows-alt me-2 text-warning"></i>Exam Photo Resizer</h3>
             <p class="text-muted">SSC, UPSC, Bank Forms (20KB - 50KB)</p><hr>
@@ -233,10 +257,10 @@ function openTool(toolName) {
         </div>`;
   } else if (toolName === "merge") {
     toolUI.innerHTML = `  
-          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
-   <small class="text-muted">Advertisement</small>
-   <div id="dynamic-ad-container"></div>
-          </div>
+         <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
+                <div id="dynamic-ad-container"></div>
+            </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-object-group me-2 text-primary"></i>Merge PDF</h3>
             <button class="btn btn-sm btn-outline-danger" onclick="resetTool('merge', this)">
@@ -256,10 +280,10 @@ function openTool(toolName) {
   } else if (toolName === "split") {
     toolUI.innerHTML = `
 
-      <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; background: #f8f9fa;">
-           <small class="text-muted">Advertisement</small>
-          <div id="dynamic-ad-container"></div>
-      </div>
+     <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
+                <div id="dynamic-ad-container"></div>
+            </div>
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-cut me-2 text-warning"></i>Split PDF</h3>
             <button class="btn btn-sm btn-outline-danger" onclick="resetTool('split', this)">
@@ -281,6 +305,10 @@ function openTool(toolName) {
         </div>`;
   } else if (toolName === "age") {
     toolUI.innerHTML = `
+    <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
+                <div id="dynamic-ad-container"></div>
+            </div>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-birthday-cake me-2 text-danger"></i>Age Calculator</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="openTool('age')"><i class="fas fa-redo me-1"></i> Reset</button>
@@ -328,6 +356,7 @@ function openTool(toolName) {
             </div>`;
   
   }
+  setTimeout(() => injectAdIntoContainer("dynamic-ad-container"), 200);
 }
 
 function resetTool(toolName, btn) {
@@ -360,7 +389,16 @@ function calcCash() {
 }
 // --- Naya Helper Function ---
 async function handlePrint() {
-  await openAd(); // 3 second wait karega
+  const total = document.getElementById("grandTotal").innerText;
+  
+  if (total === "0") {
+      return showNotify("error", "Amount is not should be 0!");
+  }
+
+  // Pehle Ad dikhayenge (Revenue ke liye)
+  await openAd(); 
+
+  // Print command
   window.print();
 }
 
