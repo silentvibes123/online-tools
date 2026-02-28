@@ -172,8 +172,20 @@ async function downloadAllAsZip() {
 function saveAsFile(blob, filename) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
+    
+    a.style.display = "none"; // Hide the element
     a.href = url;
     a.download = filename;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 100);
+    
+    // Naya tab rokne ke liye target check
+    // a.target = "_self"; // Force same tab (optional)
+
+    document.body.appendChild(a); // Add to DOM temporarily
+    a.click(); // Trigger download
+    
+    // Clean up
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    }, 200); // 200ms delay for safety
 }
