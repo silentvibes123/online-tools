@@ -401,24 +401,51 @@ async function handlePrint() {
     const total = document.getElementById("grandTotal").innerText;
     if (total === "0" || total === "") return showNotify("error", "Amount 0 hai!");
 
-    // 1. Pehle SweetAlert dikhao
-    Swal.fire({
-        title: 'Finalizing...',
-        html: 'Generating your receipt...',
-        timer: 1500, // 1.5 second tak dikhega
-        timerProgressBar: true,
-        showConfirmButton: false,
-        didOpen: () => { Swal.showLoading(); },
-        willClose: () => {
-            // 2. JAISE HI ALERT BAND HOGA, TAB PRINT HOGA
-            // Isse "Finalizing" wala box print mein nahi aayega
-            window.print();
+    // 1. Data tayyar karo
+    let receiptContent = `
+        <div style="text-align:center; font-family:Arial; padding:20px; border:1px solid #eee;">
+            <h2>SwiftTool Pro - Cash Receipt</h2>
+            <hr>
+            <table style="width:100%; border-collapse:collapse; margin-top:20px;">
+                <tr style="background:#f4f4f4;">
+                    <th style="padding:10px; border:1px solid #ddd;">Note Value</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Count</th>
+                    <th style="padding:10px; border:1px solid #ddd;">Total</th>
+                </tr>`;
+
+    // Sabhi notes ka data loop se nikalo
+    [2000, 500, 200, 100, 50, 20, 10, 5, 2, 1].forEach(note => {
+        const qty = document.getElementById(`note-${note}`).value || 0;
+        if (qty > 0) {
+            receiptContent += `
+                <tr>
+                    <td style="padding:8px; border:1px solid #ddd; text-align:center;">₹${note}</td>
+                    <td style="padding:8px; border:1px solid #ddd; text-align:center;">${qty}</td>
+                    <td style="padding:8px; border:1px solid #ddd; text-align:center;">₹${qty * note}</td>
+                </tr>`;
         }
     });
 
-    // 3. Ad ko alag window mein kholne ka logic (optional)
+    receiptContent += `
+            </table>
+            <h1 style="color:green; margin-top:30px;">Grand Total: ₹${total}</h1>
+            <p style="margin-top:50px; font-size:12px; color:#888;">Generated on: ${new Date().toLocaleString()}</p>
+        </div>`;
+
+    // 2. Alert dikhao aur Ad kholo
+    await showProcessingAd();
+
+    // 3. Print ke liye naya window kholo
+    const printWin = window.open('', '_blank', 'width=800,height=600');
+    printWin.document.write('<html><head><title>Print Receipt</title></head><body>');
+    printWin.document.write(receiptContent);
+    printWin.document.write('</body></html>');
+    printWin.document.close();
+
+    // 4. Print command
     setTimeout(() => {
-        window.open('https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2', '_blank');
+        printWin.print();
+        printWin.close(); // Print ke baad auto-close
     }, 500);
 }
 async function processWithAd(callback) {
