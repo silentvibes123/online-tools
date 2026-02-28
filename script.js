@@ -284,7 +284,7 @@ function calcCash() {
 async function handlePrint() {
   const total = document.getElementById("grandTotal").innerText;
   if (total === "0" || total === "")
-    return showNotify("error", "Amount 0 hai!");
+    return showNotify("error", "Amount is not should be 0!");
 
   // 1. Data tayyar karo
   let receiptContent = `
