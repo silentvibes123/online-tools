@@ -109,11 +109,12 @@ function renderToolContent(toolName, container) {
     let content = "";
     
     // Header & Ad Container (Reusable part)
-    const commonHeader = `
-        <div id="tool-banner-ad" class="text-center mb-3" style="min-height:95px;">
-            <small class="text-muted" style="font-size:10px;">ADVERTISEMENT</small>
-            <div id="dynamic-ad-container"></div>
-        </div>`;
+// renderToolContent mein commonHeader ko aise update karo
+const commonHeader = `
+    <div id="tool-banner-ad" class="text-center mb-3 no-print" style="min-height:95px;">
+        <small class="text-muted" style="font-size:10px;">ADVERTISEMENT</small>
+        <div id="dynamic-ad-container"></div>
+    </div>`;
 
     if (toolName === "cash") {
         content = commonHeader + `

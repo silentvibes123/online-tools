@@ -65,23 +65,27 @@ body {
 }
 
 @media print {
-    /* Print ke waqt faltu cheezein chhupane ke liye */
-    .btn, .navbar, footer, #resultAdSlot, #loaderOverlay, hr {
+    /* Ads, Buttons aur फालतू cheezen print mein nahi aayengi */
+    #tool-banner-ad, 
+    .ad-slot, 
+    #dynamic-ad-container, 
+    .btn, 
+    nav, 
+    footer,
+    .no-print {
         display: none !important;
     }
-    /* Tool UI ko poori screen par dikhane ke liye */
-    #activeTool {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        border: none;
+
+    /* Receipt ko sundar dikhane ke liye */
+    .card {
+        border: none !important;
+        shadow: none !important;
     }
-    /* Background colors ko force karne ke liye */
+    
     body {
-        -webkit-print-color-adjust: exact;
+        background: white !important;
     }
 }
-
 /* Adterra ke inner container ko stretch karne ke liye */
 #container-b35ebb7fb08b0d4cfa955a277c2007ce {
     width: 100% !important;
