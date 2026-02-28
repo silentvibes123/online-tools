@@ -1,7 +1,10 @@
-// pdf-tools.js ki pehli line
+// 1. Initial Setup
 pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
 
-// Merge PDF - Sahi hai
+// Global storage for images
+let extractedImages = []; 
+
+// 2. Merge PDF Logic
 async function mergePDFs() {
     const files = document.getElementById("mergeInput").files;
     if (files.length < 2) return showNotify("error", "Kam se kam 2 PDF select karein!");
@@ -24,30 +27,26 @@ async function mergePDFs() {
 
         const pdfBytes = await mergedPdf.save();
         
-        // --- KAAM KHATAM, AB AD ---
+        // --- AD TRIGGER HERE ---
 
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "SwiftTool_Merged.pdf";
-        link.click();
-        
+        saveAsFile(blob, "SwiftTool_Merged.pdf");
         showNotify("success", "PDF Merged Successfully!");
     } catch (e) {
         showNotify("error", "Merging failed!");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
     }
-    btn.disabled = false;
-    btn.innerHTML = originalText;
 }
 
-
+// 3. Split PDF Logic
 async function splitPDF() {
     const file = document.getElementById("splitInput").files[0];
     const start = parseInt(document.getElementById("startPage").value);
     const end = parseInt(document.getElementById("endPage").value);
 
-    if (!file || !start || !end) return showNotify("error", "Details fill karein!");
+    if (!file || isNaN(start) || isNaN(end)) return showNotify("error", "Range sahi se bharein!");
 
     const btn = document.getElementById("splitBtn");
     const originalText = btn.innerHTML;
@@ -58,102 +57,123 @@ async function splitPDF() {
         const { PDFDocument } = window.PDFLib;
         const arrayBuffer = await file.arrayBuffer();
         const pdf = await PDFDocument.load(arrayBuffer);
-        const newPdf = await PDFDocument.create();
-
         const totalPages = pdf.getPageCount();
+
         if (start < 1 || end > totalPages || start > end) {
-            throw new Error(`Invalid range! Total pages: ${totalPages}`);
+            throw new Error(`Invalid range! PDF has ${totalPages} pages.`);
         }
 
+        const newPdf = await PDFDocument.create();
         const pagesToCopy = Array.from({ length: end - start + 1 }, (_, i) => start - 1 + i);
         const copiedPages = await newPdf.copyPages(pdf, pagesToCopy);
         copiedPages.forEach((page) => newPdf.addPage(page));
 
         const pdfBytes = await newPdf.save();
 
-        // --- KAAM KHATAM, AB AD ---
+        // --- AD TRIGGER HERE ---
 
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `SwiftTool_Split.pdf`;
-        link.click();
-
+        saveAsFile(blob, `SwiftTool_Split_Page_${start}_to_${end}.pdf`);
         showNotify("success", "PDF Split Successfully!");
     } catch (e) {
         showNotify("error", e.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
     }
-    btn.disabled = false;
-    btn.innerHTML = originalText;
 }
 
-// PDF to Image (Fully Fixed)
-let extractedImages = []; // Global variable images store karne ke liye
-
+// 4. PDF to Image Logic (The Core)
 async function convertPdfToImg() {
-  const file = document.getElementById("pdfInput").files[0];
-  if (!file) return showNotify("error", "Please select a PDF file!");
+    const file = document.getElementById("pdfInput").files[0];
+    if (!file) return showNotify("error", "Please select a PDF file!");
 
-  const btn = document.getElementById("pdfImgBtn");
-  const downloadAllBtn = document.getElementById("downloadAllBtn");
-  const originalText = btn.innerHTML;
+    const btn = document.getElementById("pdfImgBtn");
+    const downloadAllBtn = document.getElementById("downloadAllBtn");
+    const previewArea = document.getElementById("pdfPreview");
+    const originalText = btn.innerHTML;
 
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Extracting...';
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Extracting...';
+    
+    extractedImages = []; // Reset global array
+    previewArea.innerHTML = "";
 
-  extractedImages = []; 
-  const previewArea = document.getElementById("pdfPreview");
-  previewArea.innerHTML = "";
+    try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
-  try {
-    const arrayBuffer = await file.arrayBuffer();
-    const pdfjsLib = window["pdfjs-dist/build/pdf"] || window.pdfjsLib;
-    const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: 2.0 }); // High quality
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
 
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const viewport = page.getViewport({ scale: 2 }); 
-      const canvas = document.createElement("canvas");
-      const context = canvas.getContext("2d");
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
+            await page.render({ canvasContext: context, viewport }).promise;
 
-      await page.render({ canvasContext: context, viewport }).promise;
+            const imgData = canvas.toDataURL("image/jpeg", 0.9);
+            extractedImages.push({ name: `Page_${i}.jpg`, data: imgData });
 
-      const imgData = canvas.toDataURL("image/jpeg", 0.9);
-      extractedImages.push({ name: `Page_${i}.jpg`, data: imgData });
+            // Preview UI build
+            const card = document.createElement("div");
+            card.className = "col-6 col-md-3 text-center mb-3 animate__animated animate__fadeIn";
+            card.innerHTML = `
+                <img src="${imgData}" class="img-fluid border rounded shadow-sm mb-2">
+                <a href="${imgData}" download="Page_${i}.jpg" class="btn btn-sm btn-outline-info">Save P${i}</a>
+            `;
+            previewArea.appendChild(card);
+        }
+
+        // --- AD TRIGGER HERE ---
+        
+        downloadAllBtn.classList.remove("d-none");
+        showNotify("success", `${pdf.numPages} pages extracted!`);
+    } catch (e) {
+        showNotify("error", "Error extracting images.");
+        console.error(e);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
     }
-
-    // --- SAARI PAGES EXTRACT HONE KE BAAD AD ---
-
-    // Ad ke baad preview dikhao
-    extractedImages.forEach((img, index) => {
-      previewArea.innerHTML += `
-          <div class="col-6 col-md-3 text-center mb-3 animate__animated animate__fadeIn">
-              <img src="${img.data}" class="img-fluid border rounded shadow-sm mb-2">
-              <a href="${img.data}" download="Page_${index+1}.jpg" class="btn btn-sm btn-outline-info">Save Page ${index+1}</a>
-          </div>`;
-    });
-
-    downloadAllBtn.classList.remove("d-none");
-    showNotify("success", `${pdf.numPages} pages extracted!`);
-  } catch (e) {
-    showNotify("error", "Error processing PDF.");
-    console.error(e);
-  }
-  btn.disabled = false;
-  btn.innerHTML = originalText;
 }
 
-function resetPdfToImg() {
-  document.getElementById("pdfInput").value = "";
-  document.getElementById("pdfPreview").innerHTML = "";
-  document.getElementById("downloadAllBtn").classList.add("d-none"); // Ye line add karein
-  extractedImages = [];
-  showNotify("info", "PDF Cleared");
+// 5. ZIP Download Logic
+async function downloadAllAsZip() {
+    if (extractedImages.length === 0) return showNotify("error", "Extract images first!");
+
+    const btn = document.getElementById("downloadAllBtn");
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Zipping...';
+
+    try {
+        if (!window.JSZip) await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
+        
+        const zip = new JSZip();
+        extractedImages.forEach((img) => {
+            const base64Data = img.data.split(',')[1];
+            zip.file(img.name, base64Data, { base64: true });
+        });
+
+        const content = await zip.generateAsync({ type: "blob" });
+        saveAsFile(content, "SwiftTool_Full_PDF.zip");
+        showNotify("success", "ZIP Downloaded!");
+    } catch (e) {
+        showNotify("error", "ZIP failed!");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+    }
 }
 
-function resetPDFTool() {
-  document.getElementById("imageInput").value = "";
-  showNotify("info", "File Cleared");
+// Helper: Download Trigger
+function saveAsFile(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 100);
 }
