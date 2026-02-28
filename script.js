@@ -1,61 +1,69 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
-  const loadedScripts = new Set();
+const loadedScripts = new Set();
 function loadScript(src) {
-    if (loadedScripts.has(src)) return Promise.resolve();
-    return new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = src;
-        s.onload = () => { loadedScripts.add(src); resolve(); };
-        s.onerror = reject;
-        document.head.appendChild(s);
-    });
+  if (loadedScripts.has(src)) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = () => {
+      loadedScripts.add(src);
+      resolve();
+    };
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
 }
 
 function injectAdIntoContainer(containerId) {
-    if (!window.requestIdleCallback) return; // Fallback for old browsers
-    
-    window.requestIdleCallback(() => {
-        const container = document.getElementById(containerId);
-        if (!container) return;
-        
-        container.innerHTML = ''; // Purana ad saaf karo memory bachane ke liye
-        const iframe = document.createElement("iframe");
-        iframe.style = "width:728px; height:90px; border:none; overflow:hidden;";
-        iframe.srcdoc = `
+  if (!window.requestIdleCallback) return; // Fallback for old browsers
+
+  window.requestIdleCallback(() => {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = ""; // Purana ad saaf karo memory bachane ke liye
+    const iframe = document.createElement("iframe");
+    iframe.style = "width:728px; height:90px; border:none; overflow:hidden;";
+    iframe.srcdoc = `
             <body style="margin:0; overflow:hidden;">
                 <script type="text/javascript">
                     atOptions = { 'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce', 'format' : 'iframe', 'height' : 90, 'width' : 728 };
                 <\/script>
                 <script src="//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js"><\/script>
             </body>`;
-        container.appendChild(iframe);
-    });
+    container.appendChild(iframe);
+  });
 }
 
 async function showProcessingAd() {
-    return new Promise((resolve) => {
-        Swal.fire({
-            title: 'Finalizing...',
-            html: 'Securing your file and generating result.',
-            timer: 2000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            didOpen: () => { Swal.showLoading(); },
-            willClose: () => {
-                // Click -> Kaam Khatam -> Ad Open
-                window.open('https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2', '_blank');
-                resolve(true);
-            }
-        });
+  return new Promise((resolve) => {
+    Swal.fire({
+      title: "Finalizing...",
+      html: "Securing your file and generating result.",
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      willClose: () => {
+        // Click -> Kaam Khatam -> Ad Open
+        window.open(
+          "https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2",
+          "_blank",
+        );
+        resolve(true);
+      },
     });
+  });
 }
 async function openAd() {
   return new Promise((resolve) => {
     Swal.fire({
-      title: 'Processing...',
-      html: 'Optimizing your file for high quality.',
+      title: "Processing...",
+      html: "Optimizing your file for high quality.",
       timer: 2000,
       timerProgressBar: true,
       showConfirmButton: false,
@@ -65,71 +73,95 @@ async function openAd() {
       },
       willClose: () => {
         // Jab user ko lagega kaam ho gaya, tab ad khulegi
-        window.open('https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2', '_blank');
-        resolve(true); 
-      }
+        window.open(
+          "https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2",
+          "_blank",
+        );
+        resolve(true);
+      },
     });
   });
 }
 
-
 function showNotify(type, message) {
-    if (type === "success") {
-        Swal.fire({ icon: "success", title: "Done!", text: message, confirmButtonColor: "#28a745" });
-    } else if (type === "error") {
-        Swal.fire({ icon: "error", title: "Error", text: message, confirmButtonColor: "#dc3545" });
-    } else {
-        const Toast = Swal.mixin({ toast: true, position: "top-end", showConfirmButton: false, timer: 3000, timerProgressBar: true });
-        Toast.fire({ icon: "info", title: message });
-    }
+  if (type === "success") {
+    Swal.fire({
+      icon: "success",
+      title: "Done!",
+      text: message,
+      confirmButtonColor: "#28a745",
+    });
+  } else if (type === "error") {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: message,
+      confirmButtonColor: "#dc3545",
+    });
+  } else {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    });
+    Toast.fire({ icon: "info", title: message });
+  }
 }
 
 function openTool(toolName) {
-    const toolsGrid = document.getElementById("toolsGrid");
-    const seoSection = document.getElementById("seoSection");
-    const activeTool = document.getElementById("activeTool");
-    const toolUI = document.getElementById("toolUI");
+  const toolsGrid = document.getElementById("toolsGrid");
+  const seoSection = document.getElementById("seoSection");
+  const activeTool = document.getElementById("activeTool");
+  const toolUI = document.getElementById("toolUI");
 
-    // Purana content gayab karo (Fade out)
-    toolsGrid.classList.add("d-none");
-    if (seoSection) seoSection.classList.add("d-none");
+  // Purana content gayab karo (Fade out)
+  toolsGrid.classList.add("d-none");
+  if (seoSection) seoSection.classList.add("d-none");
 
-    // Naya tool dikhao
-    activeTool.classList.remove("d-none");
-    toolUI.innerHTML = ""; // Purana kachra saaf
-    
-    renderToolContent(toolName, toolUI); // Tool ka HTML load karo
-    
-    // Ad ko load hone do
-    setTimeout(() => injectAdIntoContainer("dynamic-ad-container"), 500);
+  // Naya tool dikhao
+  activeTool.classList.remove("d-none");
+  toolUI.innerHTML = ""; // Purana kachra saaf
+
+  renderToolContent(toolName, toolUI); // Tool ka HTML load karo
+
+  // Ad ko load hone do
+  setTimeout(() => injectAdIntoContainer("dynamic-ad-container"), 500);
 }
 
 function renderToolContent(toolName, container) {
-    // Sirf badalne wala part yahan rakho
-    let content = "";
-    
-    // Header & Ad Container (Reusable part)
-// renderToolContent mein commonHeader ko aise update karo
-const commonHeader = `
+  // Sirf badalne wala part yahan rakho
+  let content = "";
+
+  // Header & Ad Container (Reusable part)
+  // renderToolContent mein commonHeader ko aise update karo
+  const commonHeader = `
     <div id="tool-banner-ad" class="text-center mb-3 no-print" style="min-height:95px;">
         <small class="text-muted" style="font-size:10px;">ADVERTISEMENT</small>
         <div id="dynamic-ad-container"></div>
     </div>`;
 
-    if (toolName === "cash") {
-        content = commonHeader + `
+  if (toolName === "cash") {
+    content =
+      commonHeader +
+      `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-calculator me-2 text-success"></i>Cash Counter</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetCash()"><i class="fas fa-redo me-1"></i> Reset</button>
             </div><hr>
             <div class="row">
                 <div class="col-md-6">
-                    ${[2000, 500, 200, 100, 50, 20, 10, 5, 2, 1].map(note => `
+                    ${[2000, 500, 200, 100, 50, 20, 10, 5, 2, 1]
+                      .map(
+                        (note) => `
                         <div class="d-flex align-items-center mb-2">
                             <span class="fw-bold w-25">₹${note}</span>
                             <input type="number" class="form-control note-input" id="note-${note}" oninput="calcCash()" placeholder="0">
                             <span class="ms-3 fw-bold text-end" style="min-width:80px" id="res-${note}">₹0</span>
-                        </div>`).join("")}
+                        </div>`,
+                      )
+                      .join("")}
                 </div>
                 <div class="col-md-6 text-center border-start">
                     <h4 class="text-muted">Total Amount</h4>
@@ -137,8 +169,10 @@ const commonHeader = `
                     <button class="btn btn-outline-primary mt-3" onclick="handlePrint()"><i class="fas fa-print me-2"></i>Print Receipt</button>
                 </div>
             </div>`;
-    } else if (toolName === "pdf") {
-    toolUI.innerHTML = `
+  } else if (toolName === "pdf") {
+     content =
+      commonHeader +
+      `
             <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
                 <div id="dynamic-ad-container"></div>
@@ -156,7 +190,9 @@ const commonHeader = `
     </div>
             </div>`;
   } else if (toolName === "compress") {
-    toolUI.innerHTML = `
+    content =
+      commonHeader +
+      `
 
          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
@@ -182,7 +218,9 @@ const commonHeader = `
     </div>
             </div>`;
   } else if (toolName === "qrcode") {
-    toolUI.innerHTML = `  
+    content =
+      commonHeader +
+      `
 
        <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
@@ -201,7 +239,9 @@ const commonHeader = `
     </div>
             </div>`;
   } else if (toolName === "voice") {
-    toolUI.innerHTML = `
+    content =
+      commonHeader +
+      `
 
         <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
@@ -219,7 +259,9 @@ const commonHeader = `
     </div>
             `;
   } else if (toolName === "pdfToImg") {
-    toolUI.innerHTML = `
+    content =
+      commonHeader +
+      `
          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
                 <div id="dynamic-ad-container"></div>
@@ -241,7 +283,9 @@ const commonHeader = `
 
         <div id="pdfPreview" class="row g-3 mt-4"></div>`;
   } else if (toolName === "resizer") {
-    toolUI.innerHTML = `
+    content =
+      commonHeader +
+      `
          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
                 <div id="dynamic-ad-container"></div>
@@ -262,8 +306,10 @@ const commonHeader = `
     <p class="small text-muted">Easily resize your photos for government job applications. Our tool automatically adjusts your photo to 350x450 pixels and ensures the file size stays under 50KB or 20KB as per official guidelines.</p>
     </div>
         </div>`;
-  }  else if (toolName === "merge") {
-    toolUI.innerHTML = `  
+  } else if (toolName === "merge") {
+    content =
+      commonHeader +
+      `
          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
                 <div id="dynamic-ad-container"></div>
@@ -285,7 +331,9 @@ const commonHeader = `
             <p class="small text-muted">SwiftTool Pro merges your PDFs locally. Unlike iLovePDF, we don't upload your files to any server. Your privacy is our priority.</p>
         </div>`;
   } else if (toolName === "split") {
-    toolUI.innerHTML = `
+    content =
+      commonHeader +
+      `
 
      <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
@@ -311,7 +359,9 @@ const commonHeader = `
             <p class="small text-muted">Extract specific pages from your PDF instantly. All processing happens in your browser for 100% data security.</p>
         </div>`;
   } else if (toolName === "age") {
-    toolUI.innerHTML = `
+    content =
+      commonHeader +
+      `
     <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
                 <div id="dynamic-ad-container"></div>
@@ -361,11 +411,10 @@ const commonHeader = `
                     <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Days:</b> <br><span id="totalDays">--</span></div></div>
                 </div>
             </div>`;
-  
   }
-    // ... Baki tools ke liye bhi isi tarah content variable update karein ...
-    
-    container.innerHTML = content;
+  // ... Baki tools ke liye bhi isi tarah content variable update karein ...
+
+  container.innerHTML = content;
 }
 
 function resetTool(toolName, btn) {
@@ -398,11 +447,12 @@ function calcCash() {
 }
 // --- Naya Helper Function ---
 async function handlePrint() {
-    const total = document.getElementById("grandTotal").innerText;
-    if (total === "0" || total === "") return showNotify("error", "Amount 0 hai!");
+  const total = document.getElementById("grandTotal").innerText;
+  if (total === "0" || total === "")
+    return showNotify("error", "Amount 0 hai!");
 
-    // 1. Data tayyar karo
-    let receiptContent = `
+  // 1. Data tayyar karo
+  let receiptContent = `
         <div style="text-align:center; font-family:Arial; padding:20px; border:1px solid #eee;">
             <h2>SwiftTool Pro - Cash Receipt</h2>
             <hr>
@@ -413,81 +463,86 @@ async function handlePrint() {
                     <th style="padding:10px; border:1px solid #ddd;">Total</th>
                 </tr>`;
 
-    // Sabhi notes ka data loop se nikalo
-    [2000, 500, 200, 100, 50, 20, 10, 5, 2, 1].forEach(note => {
-        const qty = document.getElementById(`note-${note}`).value || 0;
-        if (qty > 0) {
-            receiptContent += `
+  // Sabhi notes ka data loop se nikalo
+  [2000, 500, 200, 100, 50, 20, 10, 5, 2, 1].forEach((note) => {
+    const qty = document.getElementById(`note-${note}`).value || 0;
+    if (qty > 0) {
+      receiptContent += `
                 <tr>
                     <td style="padding:8px; border:1px solid #ddd; text-align:center;">₹${note}</td>
                     <td style="padding:8px; border:1px solid #ddd; text-align:center;">${qty}</td>
                     <td style="padding:8px; border:1px solid #ddd; text-align:center;">₹${qty * note}</td>
                 </tr>`;
-        }
-    });
+    }
+  });
 
-    receiptContent += `
+  receiptContent += `
             </table>
             <h1 style="color:green; margin-top:30px;">Grand Total: ₹${total}</h1>
             <p style="margin-top:50px; font-size:12px; color:#888;">Generated on: ${new Date().toLocaleString()}</p>
         </div>`;
 
-    // 2. Alert dikhao aur Ad kholo
-    await showProcessingAd();
+  // 2. Alert dikhao aur Ad kholo
+  await showProcessingAd();
 
-    // 3. Print ke liye naya window kholo
-    const printWin = window.open('', '_blank', 'width=800,height=600');
-    printWin.document.write('<html><head><title>Print Receipt</title></head><body>');
-    printWin.document.write(receiptContent);
-    printWin.document.write('</body></html>');
-    printWin.document.close();
+  // 3. Print ke liye naya window kholo
+  const printWin = window.open("", "_blank", "width=800,height=600");
+  printWin.document.write(
+    "<html><head><title>Print Receipt</title></head><body>",
+  );
+  printWin.document.write(receiptContent);
+  printWin.document.write("</body></html>");
+  printWin.document.close();
 
-    // 4. Print command
-    setTimeout(() => {
-        printWin.print();
-        printWin.close(); // Print ke baad auto-close
-    }, 500);
+  // 4. Print command
+  setTimeout(() => {
+    printWin.print();
+    printWin.close(); // Print ke baad auto-close
+  }, 500);
 }
 async function processWithAd(callback) {
-    // 1. Pehle tool ka function (callback) chalega (Jaise Generate QR ya PDF)
-    await callback(); 
+  // 1. Pehle tool ka function (callback) chalega (Jaise Generate QR ya PDF)
+  await callback();
 
-    // 2. Kaam hone ke JUST BAAD SweetAlert aur Ad dikhayenge
-    setTimeout(() => {
-        window.open('https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2', '_blank');
-        
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-        });
-        Toast.fire({
-            icon: 'success',
-            title: 'File Processed Successfully!'
-        });
-    }, 800); 
+  // 2. Kaam hone ke JUST BAAD SweetAlert aur Ad dikhayenge
+  setTimeout(() => {
+    window.open(
+      "https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2",
+      "_blank",
+    );
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    });
+    Toast.fire({
+      icon: "success",
+      title: "File Processed Successfully!",
+    });
+  }, 800);
 }
 
 // QR Code
 async function generateQR() {
-    const text = document.getElementById("qrText").value;
-    if (!text.trim()) return showNotify("error", "Enter text/URL for QR!");
+  const text = document.getElementById("qrText").value;
+  if (!text.trim()) return showNotify("error", "Enter text/URL for QR!");
 
-    const btn = document.querySelector("button[onclick*='generateQR']");
-    btn.disabled = true;
+  const btn = document.querySelector("button[onclick*='generateQR']");
+  btn.disabled = true;
 
-    // 1. Pehle QR dikhao
-    document.getElementById("qrResult").innerHTML = `
+  // 1. Pehle QR dikhao
+  document.getElementById("qrResult").innerHTML = `
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(text)}" class="img-fluid shadow rounded">
         <p class="text-muted mt-2">QR Generated Successfully!</p>`;
-    
-    // 2. Ab User ko Ad wala loader dikhao (Task completion ke baad)
-    await showProcessingAd();
-    
-    btn.disabled = false;
-    showNotify("success", "QR Code Ready!");
+
+  // 2. Ab User ko Ad wala loader dikhao (Task completion ke baad)
+  await showProcessingAd();
+
+  btn.disabled = false;
+  showNotify("success", "QR Code Ready!");
 }
 
 // AI Voice
@@ -711,7 +766,8 @@ async function calculateAge() {
   const dobValue = document.getElementById("dob").value;
   const targetValue = document.getElementById("todayDate").value;
 
-  if (!dobValue) return showNotify("error", "Please select your Date of Birth!");
+  if (!dobValue)
+    return showNotify("error", "Please select your Date of Birth!");
 
   const dob = new Date(dobValue);
   const today = new Date(targetValue);
@@ -721,7 +777,8 @@ async function calculateAge() {
   const btn = document.querySelector("button[onclick='calculateAge()']");
   const originalBtnText = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Wait...';
+  btn.innerHTML =
+    '<span class="spinner-border spinner-border-sm me-2"></span>Wait...';
 
   // Yahan Ad wait karega
   await openAd();
@@ -743,12 +800,20 @@ async function calculateAge() {
   // Result show karein
   document.getElementById("ageResult").classList.remove("d-none");
   document.getElementById("mainAge").innerText = `${years} Years`;
-  document.getElementById("extraAge").innerText = `${months} Months | ${days} Days`;
+  document.getElementById("extraAge").innerText =
+    `${months} Months | ${days} Days`;
 
   const diffTime = Math.abs(today - dob);
-  document.getElementById("totalMonths").innerText = (years * 12 + months).toLocaleString();
-  document.getElementById("totalWeeks").innerText = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 7)).toLocaleString();
-  document.getElementById("totalDays").innerText = Math.floor(diffTime / (1000 * 60 * 60 * 24)).toLocaleString();
+  document.getElementById("totalMonths").innerText = (
+    years * 12 +
+    months
+  ).toLocaleString();
+  document.getElementById("totalWeeks").innerText = Math.floor(
+    diffTime / (1000 * 60 * 60 * 24 * 7),
+  ).toLocaleString();
+  document.getElementById("totalDays").innerText = Math.floor(
+    diffTime / (1000 * 60 * 60 * 24),
+  ).toLocaleString();
 
   // Button reset
   btn.disabled = false;
