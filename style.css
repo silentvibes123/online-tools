@@ -1,47 +1,20 @@
-@media print {
-    /* Sabse important: Ads aur Iframes ko print se hatao */
-    iframe, .ad-slot, #tool-banner-ad, #dynamic-ad-container, script {
-        display: none !important;
-        visibility: hidden !important;
-    }
-
-    /* Sirf receipt ka area dikhao */
-    #toolUI {
-        display: block !important;
-    }
-    
-    /* Buttons ko bhi chhupao */
-    button, .btn {
-        display: none !important;
-    }
-}
-
-#toolUI, #toolsGrid {
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-.fade-out {
-    opacity: 0;
-    transform: translateY(-10px);
-}
-
-.fade-in {
-    opacity: 1;
-    transform: translateY(0);
-}
+/* 1. Global Variables & Reset */
 :root {
     --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --success-gradient: linear-gradient(135deg, #2af598 0%, #009efd 100%);
     --danger-gradient: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
     --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     --warning-gradient: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    --dark-gradient: linear-gradient(135deg, #434343 0%, #000000 100%);
+    --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 html, body {
-   height: 100%;
+    height: 100%;
     margin: 0;
     background-color: #f0f2f5;
     font-family: "Inter", sans-serif;
+    overflow-x: hidden;
 }
 
 body {
@@ -49,157 +22,26 @@ body {
     flex-direction: column;
 }
 
+.content-wrapper { flex: 1 0 auto; }
 
-/* Ad wale card ko control karne ke liye */
-/* Ad card ko responsive aur flexible banane ke liye */
-.ad-card-container {
-    min-height: 220px !important; /* Thodi height badha di hai */
-    height: auto !important; 
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: space-between !important; /* Space distribute karega */
-    padding: 12px !important;
-    background: #f8fbff !important;
-    border: 1px dashed #cfe2ff !important; /* Ad ko alag dikhane ke liye */
+/* 2. Dashboard & Tool Cards */
+.dashboard-header {
+    background: white;
+    padding: 30px 0;
+    margin-bottom: 20px;
+    border-radius: 0 0 30px 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-@media print {
-    /* Ads, Buttons aur फालतू cheezen print mein nahi aayengi */
-    #tool-banner-ad, 
-    .ad-slot, 
-    #dynamic-ad-container, 
-    .btn, 
-    nav, 
-    footer,
-    .no-print {
-        display: none !important;
-    }
-
-    /* Receipt ko sundar dikhane ke liye */
-    .card {
-        border: none !important;
-        shadow: none !important;
-    }
-    
-    body {
-        background: white !important;
-    }
-}
-/* Adterra ke inner container ko stretch karne ke liye */
-#container-b35ebb7fb08b0d4cfa955a277c2007ce {
-    width: 100% !important;
-    height: 100% !important;
-    overflow: visible !important; /* Text dikhne ke liye visible zaroori hai */
+.dashboard-title {
+    font-weight: 800;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
 }
 
-
-/* Reset icon rotation animation */
-.spin-animation {
-    animation: fa-spin 0.6s linear;
-}
-
-@keyframes fa-spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Button smooth hover */
-.btn {
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-/* Button hover effects */
-.btn-primary, .btn-warning {
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover, .btn-warning:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-/* Native ad ke images aur text ka fix */
-#container-b35ebb7fb08b0d4cfa955a277c2007ce div {
-    max-width: 100% !important;
-}
-
-/* Mobile par layout ko sambhalne ke liye */
-@media (max-width: 768px) {
-    .ad-card-container {
-        min-height: 180px;
-    }
-}
-/* Glassmorphism Card Effect */
-
-
-.tool-card:hover {
-    transform: translateY(-5px);
-    border-color: #0d6efd; /* Blue border on hover */
-    transition: all 0.3s ease;
-}
-
-/* Fixed Back Button for Mobile */
-#activeTool {
-    animation: fadeIn 0.5s;
-}
-
-.back-btn {
-    border-radius: 50px;
-    padding: 8px 20px;
-    font-weight: 600;
-}
-
-/* Responsive Grid Adjustments */
-@media (max-width: 768px) {
-    .display-4 { font-size: 2.5rem; }
-    .btn-lg { width: 100%; margin-bottom: 10px; }
-    .col-md-6 { padding: 10px; }
-    .border-start { border-left: none !important; border-top: 1px solid #dee2e6; margin-top: 20px; padding-top: 20px; }
-}
-
-/* Custom File Input Styling */
-input[type="file"] {
-    padding: 10px;
-    background: #fff;
-    border-radius: 10px;
-}
-
-/* Nice Scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #f1f1f1; }
-::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
-
- :root {
-        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --success-gradient: linear-gradient(135deg, #2af598 0%, #009efd 100%);
-        --danger-gradient: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
-        --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        --warning-gradient: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-        --dark-gradient: linear-gradient(135deg, #434343 0%, #000000 100%);
-      }
-
-      body {
-        background-color: #f0f2f5;
-        font-family: "Inter", sans-serif;
-        overflow-x: hidden;
-      }
-
-      /* Dashboard Styling */
-      .dashboard-header {
-        background: white;
-        padding: 30px 0;
-        margin-bottom: 40px;
-        border-radius: 0 0 30px 30px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-      }
-      .dashboard-title {
-        font-weight: 800;
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        letter-spacing: -1px;
-      }
-
-      .tool-card {
+.tool-card {
     border: none !important;
     border-radius: 20px !important;
     background: #ffffff !important;
@@ -207,21 +49,21 @@ input[type="file"] {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    justify-content: center !important;
     text-align: center !important;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    transition: var(--transition) !important;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
     cursor: pointer;
     height: 100%;
 }
 
-     
-      .tool-card:hover {
-        transform: translateY(-12px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-      }
+.tool-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+    border: 1px solid #667eea !important;
+}
 
-   .icon-box {
+/* 3. Icon Boxes */
+.icon-box {
     width: 60px;
     height: 60px;
     display: flex;
@@ -233,161 +75,54 @@ input[type="file"] {
     color: white;
 }
 
-      .bg-cash {
-        background: var(--success-gradient);
-      }
-      .bg-pdf {
-        background: var(--danger-gradient);
-      }
-      .bg-compress {
-        background: var(--info-gradient);
-      }
-      .bg-qr { 
-    background-color: #f3e5f5 !important; /* Light Purple background */
-    color: #7b1fa2 !important;          /* Dark Purple icon color */
+.bg-cash { background: var(--success-gradient); }
+.bg-pdf { background: var(--danger-gradient); }
+.bg-compress { background: var(--info-gradient); }
+.bg-qr { background: #f3e5f5; color: #7b1fa2; }
+.bg-voice { background: var(--warning-gradient); }
+.bg-imgpdf { background: var(--primary-gradient); }
+
+/* 4. Loader & Animations */
+#loaderOverlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    display: none; /* JS will toggle d-none */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
 }
-      .bg-voice {
-        background: var(--warning-gradient);
-      }
-      .bg-imgpdf {
-        background: var(--primary-gradient);
-      }
 
-      @media (max-width: 768px) {
-    .container {
-        padding-left: 12px !important;
-        padding-right: 12px !important;
-    }
+.animate__fadeInUp { animation: fadeInUp 0.6s ease; }
+
+/* 5. Mobile Optimization (The "Pro" Look) */
+@media (max-width: 768px) {
+    .dashboard-header { padding: 15px 0; margin-bottom: 10px; }
+    .dashboard-title { font-size: 1.6rem !important; }
     
-    .dashboard-header {
-        padding: 15px 0;
-        margin-bottom: 10px;
-    }
-
-    .dashboard-title {
-        font-size: 1.6rem !important;
-    }
-
-    /* Cards side-by-side gap fix */
-    .row.g-2, .row.g-3 {
-        --bs-gutter-x: 0.75rem;
-        --bs-gutter-y: 0.75rem;
-    }
-
     .tool-card {
         padding: 15px 10px !important;
-        min-height: 120px !important;
+        min-height: 110px !important;
         border-radius: 15px !important;
     }
 
-    .tool-card p {
-        display: none !important; /* Mobile par description chhupa di taki clean dikhe */
-    }
-
+    .tool-card p { display: none !important; } /* Hidden for clean mobile UI */
+    
     .icon-box {
-        width: 45px;
-        height: 45px;
+        width: 45px; height: 45px;
         font-size: 1.2rem;
         margin-bottom: 8px;
     }
 
-    .tool-card h5, .tool-card h6 {
-        font-size: 0.85rem !important;
-        margin-bottom: 0 !important;
-        font-weight: 700;
+    .tool-card h5 { font-size: 0.85rem !important; font-weight: 700; }
+}
+
+/* 6. Printing Logic */
+@media print {
+    iframe, .ad-slot, #tool-banner-ad, button, .btn, nav, footer, .no-print {
+        display: none !important;
     }
-
-    body {
-        padding-bottom: 80px !important; /* Social Bar safety */
-    }
-}
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .animate-card {
-        animation: fadeInUp 0.6s ease backwards;
-      }
-
-      /* Back Button Styling */
-      .back-btn {
-        border-radius: 50px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-      }
-      .back-btn:hover {
-        background: #eee;
-        transform: translateX(-5px);
-      }
-
-      #loaderOverlay:not(.d-none) {
-    display: flex !important;
-}
-
-/* Mobile Optimization */
-@media (max-width: 768px) {
-    /* Title aur Subtitle ko chota karein */
-    .dashboard-title { font-size: 1.5rem !important; margin-bottom: 5px; }
-    .text-muted { font-size: 0.8rem; }
-
-    /* Tool Card se description chupa dein (space bachane ke liye) */
-    .tool-card p { display: none; } 
-    
-    /* Card ka padding kam karein */
-    .tool-card { padding: 15px !important; }
-    
-    /* Icons thode chote karein */
-    .icon-box { width: 45px; height: 45px; margin: 0 auto 10px; }
-    .icon-box i { font-size: 1.2rem; }
-    
-    /* Text size cards ke liye */
-    .tool-card h5 { font-size: 0.9rem; margin-bottom: 0; }
-}
-
-
-/* Ad container ki jagah pehle se book kar lo */
-#desktop-ad {
-    min-height: 90px;
-    margin-bottom: 15px;
-}
-
-#mobile-ad {
-    min-height: 50px;
-    margin-bottom: 15px;
-}
-
-/* Mobile par tools ko thoda aur upar lane ke liye */
-@media (max-width: 768px) {
-    #toolsGrid {
-        padding-top: 5px !important;
-    }
-    .dashboard-header {
-        margin-bottom: 10px !important;
-    }
-}
-
-#activeTool, #extraScreens {
-    position: relative;
-    z-index: 10; /* Footer se upar dikhne ke liye */
-    background: #f8f9fa; /* Page background color */
-    min-height: 70vh;
-}
-
-footer {
-   flex-shrink: 0;
-}
-
-.content-wrapper {
-    flex: 1 0 auto;
-}
-
-.swal2-shown {
-    overflow: hidden !important;
+    #toolUI { display: block !important; border: none; }
+    body { background: white !important; }
 }

@@ -30,7 +30,6 @@ async function smartResize() {
             // Kaam khatam! Ab Ad dikhao
             btn.disabled = false;
         btn.innerHTML = originalText;
-            await openAd(); 
 
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
@@ -80,7 +79,6 @@ async function compressImage() {
 
       canvas.toBlob(async (blob) => {
           // Processing khatam, ab ad khulegi
-          await openAd(); 
 
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
@@ -145,7 +143,6 @@ async function generatePDF() {
     }
 
     // PDF ready hai, ab download se theek pehle Ad dikhao
-    await openAd(); 
 
     doc.save("SwiftTool_Converted.pdf");
     showNotify("success", "PDF Downloaded Successfully!");

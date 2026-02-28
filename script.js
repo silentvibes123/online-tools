@@ -15,73 +15,6 @@ function loadScript(src) {
   });
 }
 
-function injectAdIntoContainer(containerId) {
-  if (!window.requestIdleCallback) return; // Fallback for old browsers
-
-  window.requestIdleCallback(() => {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-
-    container.innerHTML = ""; // Purana ad saaf karo memory bachane ke liye
-    const iframe = document.createElement("iframe");
-    iframe.style = "width:728px; height:90px; border:none; overflow:hidden;";
-    iframe.srcdoc = `
-            <body style="margin:0; overflow:hidden;">
-                <script type="text/javascript">
-                    atOptions = { 'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce', 'format' : 'iframe', 'height' : 90, 'width' : 728 };
-                <\/script>
-                <script src="//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js"><\/script>
-            </body>`;
-    container.appendChild(iframe);
-  });
-}
-
-async function showProcessingAd() {
-  return new Promise((resolve) => {
-    Swal.fire({
-      title: "Finalizing...",
-      html: "Securing your file and generating result.",
-      timer: 2000,
-      timerProgressBar: true,
-      showConfirmButton: false,
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-      willClose: () => {
-        // Click -> Kaam Khatam -> Ad Open
-        window.open(
-          "https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2",
-          "_blank",
-        );
-        resolve(true);
-      },
-    });
-  });
-}
-async function openAd() {
-  return new Promise((resolve) => {
-    Swal.fire({
-      title: "Processing...",
-      html: "Optimizing your file for high quality.",
-      timer: 2000,
-      timerProgressBar: true,
-      showConfirmButton: false,
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-      willClose: () => {
-        // Jab user ko lagega kaam ho gaya, tab ad khulegi
-        window.open(
-          "https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2",
-          "_blank",
-        );
-        resolve(true);
-      },
-    });
-  });
-}
 
 function showNotify(type, message) {
   if (type === "success") {
@@ -126,40 +59,14 @@ function openTool(toolName) {
 
   renderToolContent(toolName, toolUI); // Tool ka HTML load karo
 
-  // Ad ko load hone do
- setTimeout(() => {
-    const adBox = document.getElementById("ad-container-main");
-    if (adBox) {
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      // Adsterra ka 'key' yahan dalo
-      script.innerHTML = `
-        atOptions = {
-          'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce',
-          'format' : 'iframe',
-          'height' : 90,
-          'width' : 728,
-          'params' : {}
-        };
-      `;
-      const loader = document.createElement('script');
-      loader.src = "//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js";
-      
-      adBox.appendChild(script);
-      adBox.appendChild(loader);
-    }
-  }, 100);
+
 }
 
 function renderToolContent(toolName, container) {
   let content = "";
 
   // Common Header & Ad Container
-  const commonHeader = `
-    <div id="tool-banner-ad" class="text-center mb-3 no-print" style="min-height:95px;">
-        <small class="text-muted" style="font-size:10px;">ADVERTISEMENT</small>
-        <div id="dynamic-ad-container"></div>
-    </div>`;
+const commonHeader = "";
 
   if (toolName === "cash") {
     content = commonHeader + `
@@ -277,7 +184,7 @@ function renderToolContent(toolName, container) {
                 <button class="btn btn-sm btn-outline-danger" onclick="resetQR()"><i class="fas fa-trash me-1"></i> Reset</button>
             </div><hr>
             <input type="text" id="qrText" class="form-control mb-3" placeholder="Enter text or URL">
-            <button class="btn btn-dark w-100" onclick="processWithAd(generateQR)">Generate QR Code</button>
+            <button class="btn btn-dark w-100" onclick="generateQR()">Generate QR Code</button>
             <div id="qrResult" class="text-center mt-4"></div>`;
 
   } else if (toolName === "pdfToImg") {
@@ -411,7 +318,6 @@ async function handlePrint() {
         </div>`;
 
   // 2. Alert dikhao aur Ad kholo
-  await showProcessingAd();
 
   // 3. Print ke liye naya window kholo
   const printWin = window.open("", "_blank", "width=800,height=600");
@@ -428,30 +334,7 @@ async function handlePrint() {
     printWin.close(); // Print ke baad auto-close
   }, 500);
 }
-async function processWithAd(callback) {
-  // 1. Pehle tool ka function (callback) chalega (Jaise Generate QR ya PDF)
-  await callback();
 
-  // 2. Kaam hone ke JUST BAAD SweetAlert aur Ad dikhayenge
-  setTimeout(() => {
-    window.open(
-      "https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2",
-      "_blank",
-    );
-
-    const Toast = Swal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-    });
-    Toast.fire({
-      icon: "success",
-      title: "File Processed Successfully!",
-    });
-  }, 800);
-}
 
 // QR Code
 async function generateQR() {
@@ -467,7 +350,6 @@ async function generateQR() {
         <p class="text-muted mt-2">QR Generated Successfully!</p>`;
 
   // 2. Ab User ko Ad wala loader dikhao (Task completion ke baad)
-  await showProcessingAd();
 
   btn.disabled = false;
   showNotify("success", "QR Code Ready!");
@@ -662,33 +544,6 @@ window.onpopstate = function (event) {
   }
 };
 
-function refreshNativeAd(containerId = "age-top-ad") {
-  const container = document.getElementById(containerId);
-  if (container) {
-    container.innerHTML = ""; // Purani ad clear karein
-
-    // 1. Naya Script Tag banayein Configuration ke liye
-    const configScript = document.createElement("script");
-    configScript.type = "text/javascript";
-    configScript.text = `
-            atOptions = {
-                'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce',
-                'format' : 'iframe',
-                'height' : 90,
-                'width' : 728,
-                'params' : {}
-            };
-        `;
-    container.appendChild(configScript);
-
-    // 2. Ab invoke.js load karein
-    const invokeScript = document.createElement("script");
-    invokeScript.type = "text/javascript";
-    invokeScript.src = `//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js`;
-
-    container.appendChild(invokeScript);
-  }
-}
 
 async function calculateAge() {
   const dobValue = document.getElementById("dob").value;
@@ -709,7 +564,6 @@ async function calculateAge() {
     '<span class="spinner-border spinner-border-sm me-2"></span>Wait...';
 
   // Yahan Ad wait karega
-  await openAd();
 
   // Ab calculation logic
   let years = today.getFullYear() - dob.getFullYear();
@@ -748,5 +602,4 @@ async function calculateAge() {
   btn.innerHTML = originalBtnText;
 
   showNotify("success", "Age Calculated!");
-  refreshNativeAd();
 }

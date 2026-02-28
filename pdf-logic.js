@@ -25,7 +25,6 @@ async function mergePDFs() {
         const pdfBytes = await mergedPdf.save();
         
         // --- KAAM KHATAM, AB AD ---
-        await openAd(); 
 
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
         const url = URL.createObjectURL(blob);
@@ -73,7 +72,6 @@ async function splitPDF() {
         const pdfBytes = await newPdf.save();
 
         // --- KAAM KHATAM, AB AD ---
-        await openAd(); 
 
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
         const link = document.createElement("a");
@@ -127,7 +125,6 @@ async function convertPdfToImg() {
     }
 
     // --- SAARI PAGES EXTRACT HONE KE BAAD AD ---
-    await openAd(); 
 
     // Ad ke baad preview dikhao
     extractedImages.forEach((img, index) => {
