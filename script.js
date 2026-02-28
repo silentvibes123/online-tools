@@ -401,14 +401,25 @@ async function handlePrint() {
     const total = document.getElementById("grandTotal").innerText;
     if (total === "0" || total === "") return showNotify("error", "Amount 0 hai!");
 
-    // Pehle loader chalega, phir Ad khulegi
-    await showProcessingAd();
+    // 1. Pehle SweetAlert dikhao
+    Swal.fire({
+        title: 'Finalizing...',
+        html: 'Generating your receipt...',
+        timer: 1500, // 1.5 second tak dikhega
+        timerProgressBar: true,
+        showConfirmButton: false,
+        didOpen: () => { Swal.showLoading(); },
+        willClose: () => {
+            // 2. JAISE HI ALERT BAND HOGA, TAB PRINT HOGA
+            // Isse "Finalizing" wala box print mein nahi aayega
+            window.print();
+        }
+    });
 
-    // Ad window khulne ke 1 second baad print dialog aayega
-    // Isse Browser focus reset ho jata hai aur ad print nahi hoti
+    // 3. Ad ko alag window mein kholne ka logic (optional)
     setTimeout(() => {
-        window.print();
-    }, 1000);
+        window.open('https://www.effectivegatecpm.com/d4yc4d2sb?key=4f4245282f055058282e2fc41a3a8ce2', '_blank');
+    }, 500);
 }
 async function processWithAd(callback) {
     // 1. Pehle tool ka function (callback) chalega (Jaise Generate QR ya PDF)
