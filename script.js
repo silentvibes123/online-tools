@@ -131,11 +131,9 @@ function openTool(toolName) {
 }
 
 function renderToolContent(toolName, container) {
-  // Sirf badalne wala part yahan rakho
   let content = "";
 
-  // Header & Ad Container (Reusable part)
-  // renderToolContent mein commonHeader ko aise update karo
+  // Common Header & Ad Container
   const commonHeader = `
     <div id="tool-banner-ad" class="text-center mb-3 no-print" style="min-height:95px;">
         <small class="text-muted" style="font-size:10px;">ADVERTISEMENT</small>
@@ -143,25 +141,19 @@ function renderToolContent(toolName, container) {
     </div>`;
 
   if (toolName === "cash") {
-    content =
-      commonHeader +
-      `
+    content = commonHeader + `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-calculator me-2 text-success"></i>Cash Counter</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetCash()"><i class="fas fa-redo me-1"></i> Reset</button>
             </div><hr>
             <div class="row">
                 <div class="col-md-6">
-                    ${[2000, 500, 200, 100, 50, 20, 10, 5, 2, 1]
-                      .map(
-                        (note) => `
+                    ${[2000, 500, 200, 100, 50, 20, 10, 5, 2, 1].map(note => `
                         <div class="d-flex align-items-center mb-2">
                             <span class="fw-bold w-25">₹${note}</span>
                             <input type="number" class="form-control note-input" id="note-${note}" oninput="calcCash()" placeholder="0">
                             <span class="ms-3 fw-bold text-end" style="min-width:80px" id="res-${note}">₹0</span>
-                        </div>`,
-                      )
-                      .join("")}
+                        </div>`).join("")}
                 </div>
                 <div class="col-md-6 text-center border-start">
                     <h4 class="text-muted">Total Amount</h4>
@@ -169,14 +161,9 @@ function renderToolContent(toolName, container) {
                     <button class="btn btn-outline-primary mt-3" onclick="handlePrint()"><i class="fas fa-print me-2"></i>Print Receipt</button>
                 </div>
             </div>`;
+
   } else if (toolName === "pdf") {
-     content =
-      commonHeader +
-      `
-            <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
-                <div id="dynamic-ad-container"></div>
-            </div>
+    content = commonHeader + `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-file-pdf me-2 text-danger"></i>Images to PDF</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetPDFTool()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -184,20 +171,68 @@ function renderToolContent(toolName, container) {
             <div class="text-center p-5 border border-dashed rounded bg-light">
                 <input type="file" id="imageInput" multiple accept="image/*" class="form-control mb-3">
                 <button class="btn btn-danger btn-lg w-100" id="pdfBtn" onclick="generatePDF()"><i class="fas fa-magic me-2"></i>Generate PDF</button>
-                <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-danger"><i class="fas fa-file-pdf me-2"></i> Professional Image to PDF Converter</h5>
-    <p class="small text-muted">Convert JPG, PNG, or WEBP images into a single high-quality PDF document instantly. Perfect for creating college assignments or office documents. Our tool maintains the original quality of your photos without any server upload.</p>
-    </div>
-            </div>`;
-  } else if (toolName === "compress") {
-    content =
-      commonHeader +
-      `
-
-         <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
-                <div id="dynamic-ad-container"></div>
             </div>
+            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+                <h5 class="fw-bold text-danger"><i class="fas fa-file-pdf me-2"></i> Professional Image to PDF Converter</h5>
+                <p class="small text-muted">Convert JPG, PNG, or WEBP images into a single high-quality PDF document instantly.</p>
+            </div>`;
+
+  } else if (toolName === "resizer") {
+    content = commonHeader + `
+            <div class="text-center">
+                <h3><i class="fas fa-expand-arrows-alt me-2 text-warning"></i>Exam Photo Resizer</h3>
+                <p class="text-muted small">SSC, UPSC, Bank Forms (20KB - 50KB)</p><hr>
+                <input type="file" id="resizeInput" accept="image/*" class="form-control mb-3" onchange="previewResize()">
+                <div id="resPreview" class="mb-3"></div>
+                <select id="targetSize" class="form-select mb-3">
+                    <option value="20">Target: Under 20KB (Signature)</option>
+                    <option value="50" selected>Target: Under 50KB (Photo)</option>
+                    <option value="100">Target: Under 100KB</option>
+                </select>
+                <button class="btn btn-warning w-100 fw-bold" onclick="smartResize()">Download Perfect Size</button>
+                <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+                    <h5 class="fw-bold text-warning"><i class="fas fa-id-badge me-2"></i> Online Exam Photo Resizer</h5>
+                    <p class="small text-muted">Automatically adjusts your photo to 350x450 pixels and ensures the file size stays under the required limit.</p>
+                </div>
+            </div>`;
+
+  } else if (toolName === "merge") {
+    content = commonHeader + `
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3><i class="fas fa-object-group me-2 text-primary"></i>Merge PDF</h3>
+                <button class="btn btn-sm btn-outline-danger" onclick="resetTool('merge', this)"><i class="fas fa-redo me-1"></i> Reset</button>
+            </div><hr>
+            <p class="text-muted small text-center">Combine multiple PDF files into one secure document.</p>
+            <input type="file" id="mergeInput" accept="application/pdf" multiple class="form-control mb-3">
+            <button class="btn btn-primary w-100 fw-bold" id="mergeBtn" onclick="mergePDFs()">
+                <i class="fas fa-layer-group me-2"></i>Merge & Download PDF
+            </button>
+            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+                <h5 class="fw-bold text-primary"><i class="fas fa-shield-alt me-2"></i> Private PDF Merger</h5>
+                <p class="small text-muted">Merge PDFs locally in your browser. No server uploads, 100% data safety.</p>
+            </div>`;
+
+  } else if (toolName === "split") {
+    content = commonHeader + `
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3><i class="fas fa-cut me-2 text-warning"></i>Split PDF</h3>
+                <button class="btn btn-sm btn-outline-danger" onclick="resetTool('split', this)"><i class="fas fa-redo me-1"></i> Reset</button>
+            </div><hr>
+            <input type="file" id="splitInput" accept="application/pdf" class="form-control mb-3">
+            <div class="row mb-3">
+                <div class="col"><label class="small fw-bold">From Page:</label><input type="number" id="startPage" class="form-control" placeholder="1"></div>
+                <div class="col"><label class="small fw-bold">To Page:</label><input type="number" id="endPage" class="form-control" placeholder="3"></div>
+            </div>
+            <button class="btn btn-warning w-100 fw-bold" id="splitBtn" onclick="splitPDF()">
+                <i class="fas fa-file-export me-2"></i>Split & Download
+            </button>
+            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+                <h5 class="fw-bold text-warning"><i class="fas fa-cut me-2"></i> Fast Offline PDF Splitter</h5>
+                <p class="small text-muted">Extract specific pages from your PDF instantly with complete security.</p>
+            </div>`;
+
+  } else if (toolName === "compress") {
+    content = commonHeader + `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-compress-arrows-alt me-2 text-primary"></i>Compressor</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetCompressor()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -212,41 +247,31 @@ function renderToolContent(toolName, container) {
                     <div id="previewArea" class="mb-3 border rounded p-2" style="min-height:150px">Preview</div>
                     <button class="btn btn-primary w-100" onclick="compressImage()">Compress & Download</button>
                 </div>
-                <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-primary"><i class="fas fa-compress-arrows-alt me-2"></i> Fast Online Image Compressor</h5>
-    <p class="small text-muted">Reduce image file size instantly without losing quality. This tool is essential for uploading photos on government portals where specific size limits (like under 100KB) are required.</p>
-    </div>
             </div>`;
-  } else if (toolName === "qrcode") {
-    content =
-      commonHeader +
-      `
 
-       <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
-                <div id="dynamic-ad-container"></div>
-            </div>
+  } else if (toolName === "qrcode") {
+    content = commonHeader + `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-qrcode me-2 text-dark"></i>QR Generator</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetQR()"><i class="fas fa-trash me-1"></i> Reset</button>
             </div><hr>
             <input type="text" id="qrText" class="form-control mb-3" placeholder="Enter text or URL">
             <button class="btn btn-dark w-100" onclick="processWithAd(generateQR)">Generate QR Code</button>
-            <div id="qrResult" class="text-center mt-4">
-            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-dark"><i class="fas fa-qrcode me-2"></i> Free Instant QR Code Generator</h5>
-    <p class="small text-muted">Create custom QR codes for your website URLs, text, or contact info. SwiftTool Pro provides a high-resolution QR generator that is 100% free and works instantly. Simply enter your text, and your QR code is ready to save.</p>
-    </div>
-            </div>`;
-  } else if (toolName === "voice") {
-    content =
-      commonHeader +
-      `
+            <div id="qrResult" class="text-center mt-4"></div>`;
 
-        <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
-                <div id="dynamic-ad-container"></div>
-            </div>
+  } else if (toolName === "pdfToImg") {
+    content = commonHeader + `
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3><i class="fas fa-images me-2 text-info"></i>PDF to Image</h3>
+                <button class="btn btn-sm btn-outline-danger" onclick="resetPdfToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
+            </div><hr>
+            <input type="file" id="pdfInput" accept="application/pdf" class="form-control mb-3">
+            <button class="btn btn-info w-100 fw-bold mb-2" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
+            <button class="btn btn-success w-100 fw-bold d-none" id="downloadAllBtn" onclick="downloadAllAsZip()">Download All as ZIP</button>
+            <div id="pdfPreview" class="row g-3 mt-4"></div>`;
+  }
+  else if (toolName === "voice") {
+    content = commonHeader + `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-volume-up me-2 text-warning"></i>AI Voice</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetVoice()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -254,128 +279,16 @@ function renderToolContent(toolName, container) {
             <textarea id="speechText" class="form-control mb-3" rows="4" placeholder="Type text here..."></textarea>
             <button class="btn btn-warning w-100 fw-bold" onclick="speakText()">Speak Now</button>
             <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-warning"><i class="fas fa-microphone-alt me-2"></i> AI-Powered Text to Speech</h5>
-    <p class="small text-muted">Convert your written text into a clear AI voice. This tool uses advanced browser-based speech synthesis technology to read your content aloud. It's perfect for proofreading, accessibility, or creating audio snippets for your projects.</p>
-    </div>
-            `;
-  } else if (toolName === "pdfToImg") {
-    content =
-      commonHeader +
-      `
-         <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
-                <div id="dynamic-ad-container"></div>
-            </div>
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3><i class="fas fa-images me-2 text-info"></i>PDF to Image</h3>
-            <button class="btn btn-sm btn-outline-danger" onclick="resetPdfToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
-        </div><hr>
-        <input type="file" id="pdfInput" accept="application/pdf" class="form-control mb-3">
-        <button class="btn btn-info w-100 fw-bold mb-2" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
-        
-        <button class="btn btn-success w-100 fw-bold d-none" id="downloadAllBtn" onclick="downloadAllAsZip()">
-            <i class="fas fa-file-archive me-2"></i>Download All as ZIP
-        </button>
-        <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-info"><i class="fas fa-images me-2"></i> High-Quality PDF to Image Extractor</h5>
-    <p class="small text-muted">Extract every page of your PDF document into high-resolution JPG images. Our tool allows you to download pages individually or all at once in a convenient ZIP file. Everything happens locally in your browser, keeping your documents 100% private.</p>
-    </div>
+                <h5 class="fw-bold text-warning"><i class="fas fa-microphone-alt me-2"></i> AI-Powered Text to Speech</h5>
+                <p class="small text-muted">Convert written text into a clear AI voice. All processing stays in your browser.</p>
+            </div>`;
 
-        <div id="pdfPreview" class="row g-3 mt-4"></div>`;
-  } else if (toolName === "resizer") {
-    content =
-      commonHeader +
-      `
-         <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
-                <div id="dynamic-ad-container"></div>
-            </div>
-        <div class="text-center">
-            <h3><i class="fas fa-expand-arrows-alt me-2 text-warning"></i>Exam Photo Resizer</h3>
-            <p class="text-muted">SSC, UPSC, Bank Forms (20KB - 50KB)</p><hr>
-            <input type="file" id="resizeInput" accept="image/*" class="form-control mb-3" onchange="previewResize()">
-            <div id="resPreview" class="mb-3"></div>
-            <select id="targetSize" class="form-select mb-3">
-                <option value="20">Target: Under 20KB (Signature)</option>
-                <option value="50" selected>Target: Under 50KB (Photo)</option>
-                <option value="100">Target: Under 100KB</option>
-            </select>
-            <button class="btn btn-warning w-100 fw-bold" onclick="smartResize()">Download Perfect Size</button>
-            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-warning"><i class="fas fa-id-badge me-2"></i> Online Exam Photo Resizer (SSC, UPSC, IBPS)</h5>
-    <p class="small text-muted">Easily resize your photos for government job applications. Our tool automatically adjusts your photo to 350x450 pixels and ensures the file size stays under 50KB or 20KB as per official guidelines.</p>
-    </div>
-        </div>`;
-  } else if (toolName === "merge") {
-    content =
-      commonHeader +
-      `
-         <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
-                <div id="dynamic-ad-container"></div>
-            </div>
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3><i class="fas fa-object-group me-2 text-primary"></i>Merge PDF</h3>
-            <button class="btn btn-sm btn-outline-danger" onclick="resetTool('merge', this)">
-                <i class="fas fa-redo me-1"></i> Reset
-            </button>
-        </div><hr>
-        <p class="text-muted small">Combine multiple PDF files into one secure document.</p>
-        <input type="file" id="mergeInput" accept="application/pdf" multiple class="form-control mb-3">
-        <button class="btn btn-primary w-100 fw-bold" id="mergeBtn" onclick="mergePDFs()">
-            <i class="fas fa-layer-group me-2"></i>Merge & Download PDF
-        </button>
-        
-        <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-            <h5 class="fw-bold text-primary"><i class="fas fa-shield-alt me-2"></i> Private PDF Merger</h5>
-            <p class="small text-muted">SwiftTool Pro merges your PDFs locally. Unlike iLovePDF, we don't upload your files to any server. Your privacy is our priority.</p>
-        </div>`;
-  } else if (toolName === "split") {
-    content =
-      commonHeader +
-      `
-
-     <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
-                <div id="dynamic-ad-container"></div>
-            </div>
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3><i class="fas fa-cut me-2 text-warning"></i>Split PDF</h3>
-            <button class="btn btn-sm btn-outline-danger" onclick="resetTool('split', this)">
-                <i class="fas fa-redo me-1"></i> Reset
-            </button>
-        </div><hr>
-        <input type="file" id="splitInput" accept="application/pdf" class="form-control mb-3">
-        <div class="row mb-3">
-            <div class="col"><label class="small fw-bold">From Page:</label><input type="number" id="startPage" class="form-control" placeholder="1"></div>
-            <div class="col"><label class="small fw-bold">To Page:</label><input type="number" id="endPage" class="form-control" placeholder="3"></div>
-        </div>
-        <button class="btn btn-warning w-100 fw-bold" id="splitBtn" onclick="splitPDF()">
-            <i class="fas fa-file-export me-2"></i>Split & Download
-        </button>
-        
-        <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-            <h5 class="fw-bold text-warning"><i class="fas fa-cut me-2"></i> Fast Offline PDF Splitter</h5>
-            <p class="small text-muted">Extract specific pages from your PDF instantly. All processing happens in your browser for 100% data security.</p>
-        </div>`;
   } else if (toolName === "age") {
-    content =
-      commonHeader +
-      `
-    <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
-                <div id="dynamic-ad-container"></div>
-            </div>
+    content = commonHeader + `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-birthday-cake me-2 text-danger"></i>Age Calculator</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="openTool('age')"><i class="fas fa-redo me-1"></i> Reset</button>
             </div><hr>
-
-            <div class="text-center mb-4 ad-slot" style="min-height:90px; background: #f8f9fa; border: 1px dashed #ddd;">
-                 <small class="text-muted d-block">Advertisement</small>
-                 <div id="age-top-ad"></div> 
-            </div>
-
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Date of Birth</label>
@@ -391,12 +304,6 @@ function renderToolContent(toolName, container) {
                     </button>
                 </div>
             </div>
-
-            <div id="ageMidAd" class="mt-4 text-center d-none ad-slot">
-                 <small class="text-muted d-block">Advertisement</small>
-                 <div id="age-result-ad"></div>
-            </div>
-
             <div id="ageResult" class="mt-4 d-none">
                 <div class="card border-0 bg-light shadow-sm mb-3">
                     <div class="card-body text-center">
@@ -406,14 +313,14 @@ function renderToolContent(toolName, container) {
                     </div>
                 </div>
                 <div class="row g-2 text-center">
-                    <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Months:</b> <br><span id="totalMonths">--</span></div></div>
-                    <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Weeks:</b> <br><span id="totalWeeks">--</span></div></div>
-                    <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Total Days:</b> <br><span id="totalDays">--</span></div></div>
+                    <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Months:</b><br><span id="totalMonths">--</span></div></div>
+                    <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Weeks:</b><br><span id="totalWeeks">--</span></div></div>
+                    <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Days:</b><br><span id="totalDays">--</span></div></div>
                 </div>
             </div>`;
   }
-  // ... Baki tools ke liye bhi isi tarah content variable update karein ...
 
+  // Final rendering
   container.innerHTML = content;
 }
 
