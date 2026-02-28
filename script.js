@@ -127,7 +127,28 @@ function openTool(toolName) {
   renderToolContent(toolName, toolUI); // Tool ka HTML load karo
 
   // Ad ko load hone do
-  setTimeout(() => injectAdIntoContainer("dynamic-ad-container"), 500);
+ setTimeout(() => {
+    const adBox = document.getElementById("ad-container-main");
+    if (adBox) {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      // Adsterra ka 'key' yahan dalo
+      script.innerHTML = `
+        atOptions = {
+          'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce',
+          'format' : 'iframe',
+          'height' : 90,
+          'width' : 728,
+          'params' : {}
+        };
+      `;
+      const loader = document.createElement('script');
+      loader.src = "//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js";
+      
+      adBox.appendChild(script);
+      adBox.appendChild(loader);
+    }
+  }, 100);
 }
 
 function renderToolContent(toolName, container) {
