@@ -1,8 +1,7 @@
 // 1. Initial Setup
 pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
 
-// Global storage for images
-let extractedImages = []; 
+let extractedImages = [];
 
 // 2. Merge PDF Logic
 async function mergePDFs() {
@@ -26,10 +25,9 @@ async function mergePDFs() {
         }
 
         const pdfBytes = await mergedPdf.save();
+        const blob = new Blob([pdfBytes], { type: "application/pdf" });
         
         // --- AD TRIGGER HERE ---
-
-        const blob = new Blob([pdfBytes], { type: "application/pdf" });
         saveAsFile(blob, "SwiftTool_Merged.pdf");
         showNotify("success", "PDF Merged Successfully!");
     } catch (e) {
@@ -60,7 +58,7 @@ async function splitPDF() {
         const totalPages = pdf.getPageCount();
 
         if (start < 1 || end > totalPages || start > end) {
-            throw new Error(`Invalid range! PDF has ${totalPages} pages.`);
+            throw new Error(`Invalid range! Total pages: ${totalPages}`);
         }
 
         const newPdf = await PDFDocument.create();
@@ -69,11 +67,10 @@ async function splitPDF() {
         copiedPages.forEach((page) => newPdf.addPage(page));
 
         const pdfBytes = await newPdf.save();
+        const blob = new Blob([pdfBytes], { type: "application/pdf" });
 
         // --- AD TRIGGER HERE ---
-
-        const blob = new Blob([pdfBytes], { type: "application/pdf" });
-        saveAsFile(blob, `SwiftTool_Split_Page_${start}_to_${end}.pdf`);
+        saveAsFile(blob, `SwiftTool_Split_${start}_to_${end}.pdf`);
         showNotify("success", "PDF Split Successfully!");
     } catch (e) {
         showNotify("error", e.message);
@@ -83,7 +80,7 @@ async function splitPDF() {
     }
 }
 
-// 4. PDF to Image Logic (The Core)
+// 4. PDF to Image Logic
 async function convertPdfToImg() {
     const file = document.getElementById("pdfInput").files[0];
     if (!file) return showNotify("error", "Please select a PDF file!");
@@ -95,8 +92,8 @@ async function convertPdfToImg() {
 
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Extracting...';
-    
-    extractedImages = []; // Reset global array
+
+    extractedImages = [];
     previewArea.innerHTML = "";
 
     try {
@@ -105,7 +102,7 @@ async function convertPdfToImg() {
 
         for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
-            const viewport = page.getViewport({ scale: 2.0 }); // High quality
+            const viewport = page.getViewport({ scale: 2.0 });
             const canvas = document.createElement("canvas");
             const context = canvas.getContext("2d");
             canvas.height = viewport.height;
@@ -116,23 +113,19 @@ async function convertPdfToImg() {
             const imgData = canvas.toDataURL("image/jpeg", 0.9);
             extractedImages.push({ name: `Page_${i}.jpg`, data: imgData });
 
-            // Preview UI build
             const card = document.createElement("div");
             card.className = "col-6 col-md-3 text-center mb-3 animate__animated animate__fadeIn";
             card.innerHTML = `
                 <img src="${imgData}" class="img-fluid border rounded shadow-sm mb-2">
-                <a href="${imgData}" download="Page_${i}.jpg" class="btn btn-sm btn-outline-info">Save P${i}</a>
+                <button onclick="downloadSingleImage('${imgData}', 'Page_${i}.jpg')" class="btn btn-sm btn-outline-info">Save P${i}</button>
             `;
             previewArea.appendChild(card);
         }
 
-        // --- AD TRIGGER HERE ---
-        
         downloadAllBtn.classList.remove("d-none");
         showNotify("success", `${pdf.numPages} pages extracted!`);
     } catch (e) {
         showNotify("error", "Error extracting images.");
-        console.error(e);
     } finally {
         btn.disabled = false;
         btn.innerHTML = originalText;
@@ -150,15 +143,15 @@ async function downloadAllAsZip() {
 
     try {
         if (!window.JSZip) await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
-        
+
         const zip = new JSZip();
         extractedImages.forEach((img) => {
-            const base64Data = img.data.split(',')[1];
+            const base64Data = img.data.split(",")[1];
             zip.file(img.name, base64Data, { base64: true });
         });
 
         const content = await zip.generateAsync({ type: "blob" });
-        saveAsFile(content, "SwiftTool_Full_PDF.zip");
+        saveAsFile(content, "SwiftTool_Images.zip");
         showNotify("success", "ZIP Downloaded!");
     } catch (e) {
         showNotify("error", "ZIP failed!");
@@ -168,24 +161,28 @@ async function downloadAllAsZip() {
     }
 }
 
-// Helper: Download Trigger
+// --- HELPERS (BUG FIX FOR NEW TAB) ---
+
 function saveAsFile(blob, filename) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-    
-    a.style.display = "none"; // Hide the element
+    a.style.display = "none";
     a.href = url;
     a.download = filename;
-    
-    // Naya tab rokne ke liye target check
-    // a.target = "_self"; // Force same tab (optional)
-
-    document.body.appendChild(a); // Add to DOM temporarily
-    a.click(); // Trigger download
-    
-    // Clean up
+    document.body.appendChild(a);
+    a.click();
     setTimeout(() => {
         URL.revokeObjectURL(url);
         document.body.removeChild(a);
-    }, 200); // 200ms delay for safety
+    }, 200);
+}
+
+function downloadSingleImage(data, name) {
+    const a = document.createElement("a");
+    a.style.display = "none";
+    a.href = data;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => document.body.removeChild(a), 200);
 }
