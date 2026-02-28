@@ -15,7 +15,6 @@ function loadScript(src) {
   });
 }
 
-
 function showNotify(type, message) {
   if (type === "success") {
     Swal.fire({
@@ -58,40 +57,51 @@ function openTool(toolName) {
   toolUI.innerHTML = ""; // Purana kachra saaf
 
   renderToolContent(toolName, toolUI); // Tool ka HTML load karo
-
-
 }
 
 function renderToolContent(toolName, container) {
   let content = "";
 
   // Common Header & Ad Container
-const commonHeader = "";
+  const commonHeader = "";
 
   if (toolName === "cash") {
-    content = commonHeader + `
+    content =
+      commonHeader +
+      `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-calculator me-2 text-success"></i>Cash Counter</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetCash()"><i class="fas fa-redo me-1"></i> Reset</button>
             </div><hr>
             <div class="row">
                 <div class="col-md-6">
-                    ${[2000, 500, 200, 100, 50, 20, 10, 5, 2, 1].map(note => `
+                    ${[2000, 500, 200, 100, 50, 20, 10, 5, 2, 1]
+                      .map(
+                        (note) => `
                         <div class="d-flex align-items-center mb-2">
                             <span class="fw-bold w-25">₹${note}</span>
                             <input type="number" class="form-control note-input" id="note-${note}" oninput="calcCash()" placeholder="0">
                             <span class="ms-3 fw-bold text-end" style="min-width:80px" id="res-${note}">₹0</span>
-                        </div>`).join("")}
+                        </div>`,
+                      )
+                      .join("")}
                 </div>
                 <div class="col-md-6 text-center border-start">
                     <h4 class="text-muted">Total Amount</h4>
                     <h1 class="display-4 fw-bold text-success">₹<span id="grandTotal">0</span></h1>
                     <button class="btn btn-outline-primary mt-3" onclick="handlePrint()"><i class="fas fa-print me-2"></i>Print Receipt</button>
                 </div>
-            </div>`;
-
+            </div> 
+            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-success"><i class="fas fa-coins me-2"></i> Online Cash Counter & Denomination Calculator</h5>
+    <p class="small text-muted">SwiftTool Pro's Cash Counter helps you calculate total currency value instantly. Perfect for shopkeepers, bank deposits, and daily accounting. 
+    <strong>Key Features:</strong> Supports all Indian denominations (₹2000 to ₹1), real-time calculation, and professional print-ready receipts.</p>
+</div>
+            `;
   } else if (toolName === "pdf") {
-    content = commonHeader + `
+    content =
+      commonHeader +
+      `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-file-pdf me-2 text-danger"></i>Images to PDF</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetPDFTool()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -103,10 +113,17 @@ const commonHeader = "";
             <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
                 <h5 class="fw-bold text-danger"><i class="fas fa-file-pdf me-2"></i> Professional Image to PDF Converter</h5>
                 <p class="small text-muted">Convert JPG, PNG, or WEBP images into a single high-quality PDF document instantly.</p>
-            </div>`;
-
+            </div>
+            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-info"><i class="fas fa-file-image me-2"></i> High-Quality PDF to JPG Converter</h5>
+    <p class="small text-muted">Convert each page of your PDF document into separate high-resolution images. 
+    <strong>Why use this?</strong> No software installation needed, works offline in your browser, and preserves the original quality of your documents.</p>
+</div>
+            `;
   } else if (toolName === "resizer") {
-    content = commonHeader + `
+    content =
+      commonHeader +
+      `
             <div class="text-center">
                 <h3><i class="fas fa-expand-arrows-alt me-2 text-warning"></i>Exam Photo Resizer</h3>
                 <p class="text-muted small">SSC, UPSC, Bank Forms (20KB - 50KB)</p><hr>
@@ -123,9 +140,10 @@ const commonHeader = "";
                     <p class="small text-muted">Automatically adjusts your photo to 350x450 pixels and ensures the file size stays under the required limit.</p>
                 </div>
             </div>`;
-
   } else if (toolName === "merge") {
-    content = commonHeader + `
+    content =
+      commonHeader +
+      `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-object-group me-2 text-primary"></i>Merge PDF</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetTool('merge', this)"><i class="fas fa-redo me-1"></i> Reset</button>
@@ -139,9 +157,10 @@ const commonHeader = "";
                 <h5 class="fw-bold text-primary"><i class="fas fa-shield-alt me-2"></i> Private PDF Merger</h5>
                 <p class="small text-muted">Merge PDFs locally in your browser. No server uploads, 100% data safety.</p>
             </div>`;
-
   } else if (toolName === "split") {
-    content = commonHeader + `
+    content =
+      commonHeader +
+      `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-cut me-2 text-warning"></i>Split PDF</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetTool('split', this)"><i class="fas fa-redo me-1"></i> Reset</button>
@@ -158,9 +177,10 @@ const commonHeader = "";
                 <h5 class="fw-bold text-warning"><i class="fas fa-cut me-2"></i> Fast Offline PDF Splitter</h5>
                 <p class="small text-muted">Extract specific pages from your PDF instantly with complete security.</p>
             </div>`;
-
   } else if (toolName === "compress") {
-    content = commonHeader + `
+    content =
+      commonHeader +
+      `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-compress-arrows-alt me-2 text-primary"></i>Compressor</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetCompressor()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -175,20 +195,34 @@ const commonHeader = "";
                     <div id="previewArea" class="mb-3 border rounded p-2" style="min-height:150px">Preview</div>
                     <button class="btn btn-primary w-100" onclick="compressImage()">Compress & Download</button>
                 </div>
-            </div>`;
-
+            </div>
+            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-primary"><i class="fas fa-compress me-2"></i> Smart Image Optimizer</h5>
+    <p class="small text-muted">Reduce image file size without losing quality. Adjust the quality slider to get the perfect balance between size and clarity. 
+    <strong>Privacy:</strong> Your photos are never uploaded to any server; compression happens entirely on your device.</p>
+</div>
+            `;
   } else if (toolName === "qrcode") {
-    content = commonHeader + `
+    content =
+      commonHeader +
+      `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-qrcode me-2 text-dark"></i>QR Generator</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetQR()"><i class="fas fa-trash me-1"></i> Reset</button>
             </div><hr>
             <input type="text" id="qrText" class="form-control mb-3" placeholder="Enter text or URL">
             <button class="btn btn-dark w-100" onclick="generateQR()">Generate QR Code</button>
-            <div id="qrResult" class="text-center mt-4"></div>`;
-
+            <div id="qrResult" class="text-center mt-4"></div>
+            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-dark"><i class="fas fa-qrcode me-2"></i> Free Custom QR Code Generator</h5>
+    <p class="small text-muted">Generate unlimited QR codes for URLs, text, or contact details. Our tool creates clean, scannable QR codes instantly. 
+    <strong>SEO Tip:</strong> Use these QR codes for business cards, marketing flyers, or personal websites for easy sharing.</p>
+</div>
+            `;
   } else if (toolName === "pdfToImg") {
-    content = commonHeader + `
+    content =
+      commonHeader +
+      `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-images me-2 text-info"></i>PDF to Image</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetPdfToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -197,9 +231,10 @@ const commonHeader = "";
             <button class="btn btn-info w-100 fw-bold mb-2" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
             <button class="btn btn-success w-100 fw-bold d-none" id="downloadAllBtn" onclick="downloadAllAsZip()">Download All as ZIP</button>
             <div id="pdfPreview" class="row g-3 mt-4"></div>`;
-  }
-  else if (toolName === "voice") {
-    content = commonHeader + `
+  } else if (toolName === "voice") {
+    content =
+      commonHeader +
+      `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-volume-up me-2 text-warning"></i>AI Voice</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetVoice()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -210,9 +245,10 @@ const commonHeader = "";
                 <h5 class="fw-bold text-warning"><i class="fas fa-microphone-alt me-2"></i> AI-Powered Text to Speech</h5>
                 <p class="small text-muted">Convert written text into a clear AI voice. All processing stays in your browser.</p>
             </div>`;
-
   } else if (toolName === "age") {
-    content = commonHeader + `
+    content =
+      commonHeader +
+      `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-birthday-cake me-2 text-danger"></i>Age Calculator</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="openTool('age')"><i class="fas fa-redo me-1"></i> Reset</button>
@@ -245,7 +281,13 @@ const commonHeader = "";
                     <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Weeks:</b><br><span id="totalWeeks">--</span></div></div>
                     <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Days:</b><br><span id="totalDays">--</span></div></div>
                 </div>
-            </div>`;
+            </div>
+            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-danger"><i class="fas fa-hourglass-half me-2"></i> Accurate Age Calculator by Date of Birth</h5>
+    <p class="small text-muted">Calculate your exact age in years, months, and days. We also provide a breakdown in total weeks and days. 
+    <strong>Useful for:</strong> Filling government job forms (SSC, UPSC), school admissions, and insurance applications.</p>
+</div>
+            `;
   }
 
   // Final rendering
@@ -334,7 +376,6 @@ async function handlePrint() {
     printWin.close(); // Print ke baad auto-close
   }, 500);
 }
-
 
 // QR Code
 async function generateQR() {
@@ -543,7 +584,6 @@ window.onpopstate = function (event) {
     goBack();
   }
 };
-
 
 async function calculateAge() {
   const dobValue = document.getElementById("dob").value;
