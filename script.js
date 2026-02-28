@@ -1,19 +1,36 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
-
+  const loadedScripts = new Set();
+function loadScript(src) {
+    if (loadedScripts.has(src)) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = () => { loadedScripts.add(src); resolve(); };
+        s.onerror = reject;
+        document.head.appendChild(s);
+    });
+}
 
 function injectAdIntoContainer(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = "";
-    const configScript = document.createElement("script");
-    configScript.type = "text/javascript";
-    configScript.text = `atOptions = { 'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };`;
-    const invokeScript = document.createElement("script");
-    invokeScript.type = "text/javascript";
-    invokeScript.src = "//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js";
-    container.appendChild(configScript);
-    container.appendChild(invokeScript);
+    if (!window.requestIdleCallback) return; // Fallback for old browsers
+    
+    window.requestIdleCallback(() => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        container.innerHTML = ''; // Purana ad saaf karo memory bachane ke liye
+        const iframe = document.createElement("iframe");
+        iframe.style = "width:728px; height:90px; border:none; overflow:hidden;";
+        iframe.srcdoc = `
+            <body style="margin:0; overflow:hidden;">
+                <script type="text/javascript">
+                    atOptions = { 'key' : 'b35ebb7fb08b0d4cfa955a277c2007ce', 'format' : 'iframe', 'height' : 90, 'width' : 728 };
+                <\/script>
+                <script src="//www.highperformanceformat.com/b35ebb7fb08b0d4cfa955a277c2007ce/invoke.js"><\/script>
+            </body>`;
+        container.appendChild(iframe);
+    });
 }
 
 async function showProcessingAd() {
@@ -68,56 +85,58 @@ function showNotify(type, message) {
 }
 
 function openTool(toolName) {
-  history.pushState({ page: "tool" }, "");
-  const toolsGrid = document.getElementById("toolsGrid");
-  const seoSection = document.getElementById("seoSection");
-  const activeTool = document.getElementById("activeTool");
-  const toolUI = document.getElementById("toolUI");
+    const toolsGrid = document.getElementById("toolsGrid");
+    const seoSection = document.getElementById("seoSection");
+    const activeTool = document.getElementById("activeTool");
+    const toolUI = document.getElementById("toolUI");
 
-  toolsGrid.classList.add("d-none");
-  if (seoSection) seoSection.classList.add("d-none");
-  toolUI.innerHTML = ""; // Purane tool ka kachra saaf
+    // Purana content gayab karo (Fade out)
+    toolsGrid.classList.add("d-none");
+    if (seoSection) seoSection.classList.add("d-none");
 
-  activeTool.classList.remove("d-none");
-  activeTool.classList.add("animate__animated", "animate__fadeInUp");
-  window.scrollTo(0, 0);
-  setTimeout(refreshNativeAd, 500);
-  if (toolName === "cash") {
-    toolUI.innerHTML = `
-            <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
-                <div id="dynamic-ad-container"></div>
-            </div>
+    // Naya tool dikhao
+    activeTool.classList.remove("d-none");
+    toolUI.innerHTML = ""; // Purana kachra saaf
+    
+    renderToolContent(toolName, toolUI); // Tool ka HTML load karo
+    
+    // Ad ko load hone do
+    setTimeout(() => injectAdIntoContainer("dynamic-ad-container"), 500);
+}
+
+function renderToolContent(toolName, container) {
+    // Sirf badalne wala part yahan rakho
+    let content = "";
+    
+    // Header & Ad Container (Reusable part)
+    const commonHeader = `
+        <div id="tool-banner-ad" class="text-center mb-3" style="min-height:95px;">
+            <small class="text-muted" style="font-size:10px;">ADVERTISEMENT</small>
+            <div id="dynamic-ad-container"></div>
+        </div>`;
+
+    if (toolName === "cash") {
+        content = commonHeader + `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-calculator me-2 text-success"></i>Cash Counter</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetCash()"><i class="fas fa-redo me-1"></i> Reset</button>
             </div><hr>
             <div class="row">
                 <div class="col-md-6">
-                    ${[2000, 500, 200, 100, 50, 20, 10, 5, 2, 1]
-                      .map(
-                        (note) => `
+                    ${[2000, 500, 200, 100, 50, 20, 10, 5, 2, 1].map(note => `
                         <div class="d-flex align-items-center mb-2">
                             <span class="fw-bold w-25">₹${note}</span>
-                            <input type="number" class="form-control note-input me-3" id="note-${note}" oninput="calcCash()" placeholder="0" min="0">
+                            <input type="number" class="form-control note-input" id="note-${note}" oninput="calcCash()" placeholder="0">
                             <span class="ms-3 fw-bold text-end" style="min-width:80px" id="res-${note}">₹0</span>
-                        </div>`,
-                      )
-                      .join("")}
+                        </div>`).join("")}
                 </div>
-                <div class="col-md-6 text-center border-start d-flex flex-column justify-content-center">
+                <div class="col-md-6 text-center border-start">
                     <h4 class="text-muted">Total Amount</h4>
                     <h1 class="display-4 fw-bold text-success">₹<span id="grandTotal">0</span></h1>
-                   <button class="btn btn-outline-primary mt-3" onclick="handlePrint()">
-    <i class="fas fa-print me-2"></i>Print Receipt
-    </button>
+                    <button class="btn btn-outline-primary mt-3" onclick="handlePrint()"><i class="fas fa-print me-2"></i>Print Receipt</button>
                 </div>
-                <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-success"><i class="fas fa-info-circle me-2"></i> How to use Cash Counter?</h5>
-    <p class="small text-muted">SwiftTool Pro's Cash Counter helps you calculate total currency fast. Simply enter the number of notes for each denomination (₹2000 to ₹1), and the tool will show the grand total in real-time. You can also print a professional receipt for your records.</p>
-    </div>
             </div>`;
-  } else if (toolName === "pdf") {
+    } else if (toolName === "pdf") {
     toolUI.innerHTML = `
             <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
@@ -242,7 +261,7 @@ function openTool(toolName) {
     <p class="small text-muted">Easily resize your photos for government job applications. Our tool automatically adjusts your photo to 350x450 pixels and ensures the file size stays under 50KB or 20KB as per official guidelines.</p>
     </div>
         </div>`;
-  } else if (toolName === "merge") {
+  }  else if (toolName === "merge") {
     toolUI.innerHTML = `  
          <div id="tool-banner-ad" class="text-center mb-3" style="min-height:90px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 <small class="text-muted" style="font-size:10px; letter-spacing:1px;">ADVERTISEMENT</small>
@@ -343,7 +362,9 @@ function openTool(toolName) {
             </div>`;
   
   }
-  setTimeout(() => injectAdIntoContainer("dynamic-ad-container"), 200);
+    // ... Baki tools ke liye bhi isi tarah content variable update karein ...
+    
+    container.innerHTML = content;
 }
 
 function resetTool(toolName, btn) {
