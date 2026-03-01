@@ -479,6 +479,7 @@ function goBack() {
   }
 
   window.scrollTo(0, 0);
+  document.title = "SwiftTool Pro - 20KB Image Compressor & Free PDF Tools";
 }
 
 function updateQDisplay(val) {
