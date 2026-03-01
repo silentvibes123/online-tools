@@ -16,26 +16,38 @@ function loadScript(src) {
 }
 
 function updateDynamicTitle(toolName) {
-  let newTitle = "SwiftTool Pro - Digital Toolkit"; // Default title
+  let newTitle = "SwiftTool Pro - Digital Toolkit"; // Default
 
   if (toolName === "cash") {
-    document.title = "Online Cash Counter & Denomination Calculator | SwiftTool Pro";
-    // Meta description update (Optional but good for SEO)
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculate total cash with Indian currency denominations (₹2000 to ₹1) and print receipts instantly.");
+    newTitle = "Online Cash Counter & Denomination Calculator | SwiftTool Pro";
   } else if (toolName === "resizer") {
-    document.title = "Exam Photo Resizer (20KB - 50KB) for SSC, UPSC, Bank | SwiftTool Pro";
+    newTitle =
+      "Exam Photo Resizer (20KB - 50KB) for SSC, UPSC, Bank | SwiftTool Pro";
   } else if (toolName === "age") {
-    document.title = "Accurate Age Calculator by Date of Birth (Years, Months, Days) | SwiftTool Pro";
+    newTitle =
+      "Accurate Age Calculator by Date of Birth (Exact Age) | SwiftTool Pro";
   } else if (toolName === "pdf") {
-    document.title = "Images to PDF Converter - High Quality & Secure | SwiftTool Pro";
+    newTitle =
+      "Images to PDF Converter - High Quality & Secure | SwiftTool Pro";
   } else if (toolName === "pdfToImg") {
-    document.title = "Convert PDF to High Resolution JPG/PNG Online | SwiftTool Pro";
+    newTitle = "Convert PDF to High Resolution JPG/PNG Online | SwiftTool Pro";
   } else if (toolName === "qrcode") {
-    document.title = "Free QR Code Generator for Text, URL & Contact | SwiftTool Pro";
+    newTitle = "Free QR Code Generator for Text, URL & Contact | SwiftTool Pro";
+  } else if (toolName === "compress") {
+    newTitle = "Compress Image to 20KB & 50KB Online | SwiftTool Pro";
+  } else if (toolName === "voice") {
+    newTitle = "AI Voice - Text to Speech Online | SwiftTool Pro";
+  } else if (toolName === "merge") {
+    newTitle = "Merge PDF Files Online - Fast & Secure | SwiftTool Pro";
+  } else if (toolName === "split") {
+    newTitle = "Split PDF Pages Online - Extract PDF | SwiftTool Pro";
   }
 
+  // Pehle title set karo
   document.title = newTitle;
-  console.log("Title updated to: " + document.title); // Isse aapko console mein dikh jayega
+
+  // Console mein check karne ke liye
+  console.log("Current Page Title: " + document.title);
 }
 
 function showNotify(type, message) {
@@ -73,7 +85,7 @@ function openTool(toolName) {
 
   history.pushState({ tool: toolName }, "");
 
-  updateDynamicTitle(toolName);
+  // updateDynamicTitle(toolName);
 
   // Purana content gayab karo (Fade out)
   toolsGrid.classList.add("d-none");
@@ -88,11 +100,7 @@ function openTool(toolName) {
 
 function renderToolContent(toolName, container) {
   let content = "";
-
-  // Common Header & Ad Container
   const commonHeader = "";
-
-
 
   if (toolName === "cash") {
     content =
