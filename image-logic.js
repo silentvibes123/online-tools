@@ -17,7 +17,7 @@ async function smartResize() {
     const btn = document.querySelector("button[onclick='smartResize()']");
     const originalText = btn.innerHTML;
     btn.disabled = true;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Resizing...';
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
 
     try {
         const data = await readFileAsDataURL(file);
@@ -27,29 +27,57 @@ async function smartResize() {
 
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
-        // Standard Exam Size
-        canvas.width = 350;
-        canvas.height = 450;
-        ctx.drawImage(img, 0, 0, 350, 450);
+
+        // TIP: Resolution double rakho (700x900) taaki quality na gire
+        // Browser download ke waqt ise wapas adjust kar lega
+        const targetWidth = 350; 
+        const targetHeight = 450;
+        
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+
+        // Image Smoothing enable karein (Bahut zaruri hai!)
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+
+        const imgRatio = img.width / img.height;
+        const targetRatio = targetWidth / targetHeight;
+        let dW, dH, oX, oY;
+
+        if (imgRatio > targetRatio) {
+            dH = targetHeight;
+            dW = targetHeight * imgRatio;
+            oX = -(dW - targetWidth) / 2;
+            oY = 0;
+        } else {
+            dW = targetWidth;
+            dH = targetWidth / imgRatio;
+            oX = 0;
+            oY = -(dH - targetHeight) / 2;
+        }
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(0, 0, targetWidth, targetHeight);
+        ctx.drawImage(img, oX, oY, dW, dH);
 
         let quality = 0.95;
         let blob;
         let sizeKB = Infinity;
 
-        // Smart Loop: Jab tak size target se bada hai, quality kam karo
-        while (sizeKB > targetKB && quality > 0.1) {
+        // Smart Loop: Quality ko bahut slow girao (0.02 step)
+        // Taaki target size ke bilkul kareeb pahunche bina quality kharab kiye
+        while (sizeKB > targetKB && quality > 0.05) {
             blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", quality));
             sizeKB = blob.size / 1024;
-            quality -= 0.08; // 8% quality drop per step
+            
+            if (sizeKB > targetKB + 10) quality -= 0.05; // Door hai toh tez girao
+            else quality -= 0.01; // Kareeb hai toh dhire girao
         }
-
-        // --- YAHAN APNI AD DIKHAO (IF ANY) ---
-        // if(window.showAd) await window.showAd();
 
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `Exam_Ready_${targetKB}KB.jpg`;
+        a.download = `Exam_Ready_${sizeKB.toFixed(0)}KB.jpg`;
         a.click();
 
         showNotify("success", `Perfect! Final Size: ${sizeKB.toFixed(1)}KB`);
@@ -59,6 +87,43 @@ async function smartResize() {
         btn.disabled = false;
         btn.innerHTML = originalText;
     }
+}
+
+function resizeImageWithAspect(img, targetWidth, targetHeight) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Canvas ka size fix rakho jo exam board ne manga hai
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+
+    // Image ki purani ratio nikalna
+    const imgRatio = img.width / img.height;
+    const targetRatio = targetWidth / targetHeight;
+
+    let drawWidth, drawHeight, offsetX, offsetY;
+
+    // "Object-fit: cover" jaisa logic taaki photo phate nahi
+    if (imgRatio > targetRatio) {
+        drawHeight = targetHeight;
+        drawWidth = targetHeight * imgRatio;
+        offsetX = -(drawWidth - targetWidth) / 2;
+        offsetY = 0;
+    } else {
+        drawWidth = targetWidth;
+        drawHeight = targetWidth / imgRatio;
+        offsetX = 0;
+        offsetY = -(drawHeight - targetHeight) / 2;
+    }
+
+    // Safed background dena taaki koi hissa khali na dikhe
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Image ko draw karna bina bigade
+    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+
+    return canvas.toDataURL('image/jpeg', 0.9); // 0.9 quality
 }
 
 // 2. Image Compressor (High Quality)
