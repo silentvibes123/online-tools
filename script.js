@@ -122,8 +122,10 @@ function renderToolContent(toolName, container) {
     <strong>Why use this?</strong> No software installation needed, works offline in your browser, and preserves the original quality of your documents.</p>
 </div>
             `;
-} else if (toolName === "resizer") {
-    content = commonHeader + `
+  } else if (toolName === "resizer") {
+    content =
+      commonHeader +
+      `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-expand-arrows-alt me-2 text-warning"></i>Exam Photo Resizer</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetResizer()"><i class="fas fa-redo me-1"></i> Reset</button>
@@ -223,8 +225,10 @@ function renderToolContent(toolName, container) {
     <strong>SEO Tip:</strong> Use these QR codes for business cards, marketing flyers, or personal websites for easy sharing.</p>
 </div>
             `;
-} else if (toolName === "pdfToImg") {
-    content = commonHeader + `
+  } else if (toolName === "pdfToImg") {
+    content =
+      commonHeader +
+      `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-images me-2 text-info"></i>PDF to Image</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetPdfToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -592,8 +596,10 @@ window.onpopstate = function (event) {
   const toolsGrid = document.getElementById("toolsGrid");
 
   // Agar koi tool ya extra screen (About/Contact) khuli hai, toh dashboard dikhao
-  if (!activeTool.classList.contains("d-none") || !extraScreens.classList.contains("d-none")) {
-    
+  if (
+    !activeTool.classList.contains("d-none") ||
+    !extraScreens.classList.contains("d-none")
+  ) {
     // Dashboard wapas dikhane ka logic
     activeTool.classList.add("d-none");
     extraScreens.classList.add("d-none");
@@ -602,7 +608,7 @@ window.onpopstate = function (event) {
     if (document.getElementById("seoSection")) {
       document.getElementById("seoSection").classList.remove("d-none");
     }
-    
+
     window.scrollTo(0, 0);
   } else {
     // Agar user pehle se dashboard par hai aur back dabaye, toh hi exit ho
@@ -670,33 +676,32 @@ async function calculateAge() {
 }
 
 function resetPDFTool() {
-    document.getElementById("imageInput").value = "";
-    showNotify("info", "PDF Tool Cleared");
+  document.getElementById("imageInput").value = "";
+  showNotify("info", "PDF Tool Cleared");
 }
 
-
 function resetCompressor() {
-    document.getElementById("compressInput").value = "";
-    document.getElementById("qualityRange").value = 0.7;
-    document.getElementById("qValue").innerText = "70%";
-    document.getElementById("previewArea").innerHTML = "Preview";
-    showNotify("info", "Compressor Cleared");
+  document.getElementById("compressInput").value = "";
+  document.getElementById("qualityRange").value = 0.7;
+  document.getElementById("qValue").innerText = "70%";
+  document.getElementById("previewArea").innerHTML = "Preview";
+  showNotify("info", "Compressor Cleared");
 }
 
 // PDF to Image Reset
 function resetPdfToImg() {
-    document.getElementById("pdfInput").value = "";
-    document.getElementById("pdfPreview").innerHTML = "";
-    document.getElementById("downloadAllBtn").classList.add("d-none");
-    showNotify("info", "PDF to Image Cleared");
+  document.getElementById("pdfInput").value = "";
+  document.getElementById("pdfPreview").innerHTML = "";
+  document.getElementById("downloadAllBtn").classList.add("d-none");
+  showNotify("info", "PDF to Image Cleared");
 }
 
 // Exam Resizer Reset
 function resetResizer() {
-    const input = document.getElementById("resizeInput");
-    if(input) input.value = "";
-    const preview = document.getElementById("resPreview");
-    if(preview) preview.innerHTML = "";
-    document.getElementById("targetSize").value = "50";
-    showNotify("info", "Resizer Cleared");
+  const input = document.getElementById("resizeInput");
+  if (input) input.value = "";
+  const preview = document.getElementById("resPreview");
+  if (preview) preview.innerHTML = "";
+  document.getElementById("targetSize").value = "50";
+  showNotify("info", "Resizer Cleared");
 }
