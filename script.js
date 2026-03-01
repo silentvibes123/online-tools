@@ -48,6 +48,8 @@ function openTool(toolName) {
   const activeTool = document.getElementById("activeTool");
   const toolUI = document.getElementById("toolUI");
 
+  history.pushState({ tool: toolName }, "");
+
   // Purana content gayab karo (Fade out)
   toolsGrid.classList.add("d-none");
   if (seoSection) seoSection.classList.add("d-none");
@@ -120,13 +122,14 @@ function renderToolContent(toolName, container) {
     <strong>Why use this?</strong> No software installation needed, works offline in your browser, and preserves the original quality of your documents.</p>
 </div>
             `;
-  } else if (toolName === "resizer") {
-    content =
-      commonHeader +
-      `
-            <div class="text-center">
+} else if (toolName === "resizer") {
+    content = commonHeader + `
+            <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-expand-arrows-alt me-2 text-warning"></i>Exam Photo Resizer</h3>
-                <p class="text-muted small">SSC, UPSC, Bank Forms (20KB - 50KB)</p><hr>
+                <button class="btn btn-sm btn-outline-danger" onclick="resetResizer()"><i class="fas fa-redo me-1"></i> Reset</button>
+            </div><hr>
+            <div class="text-center">
+                <p class="text-muted small">SSC, UPSC, Bank Forms (20KB - 50KB)</p>
                 <input type="file" id="resizeInput" accept="image/*" class="form-control mb-3" onchange="previewResize()">
                 <div id="resPreview" class="mb-3"></div>
                 <select id="targetSize" class="form-select mb-3">
@@ -137,7 +140,8 @@ function renderToolContent(toolName, container) {
                 <button class="btn btn-warning w-100 fw-bold" onclick="smartResize()">Download Perfect Size</button>
                 <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
                     <h5 class="fw-bold text-warning"><i class="fas fa-id-badge me-2"></i> Online Exam Photo Resizer</h5>
-                    <p class="small text-muted">Automatically adjusts your photo to 350x450 pixels and ensures the file size stays under the required limit.</p>
+                    <p class="small text-muted">Automatically adjusts your photo to 350x450 pixels and ensures the file size stays under the required limit. 
+                    <strong>Note:</strong> Perfect for SSC GD, UPSC, and IBPS applications where strict file size is mandatory.</p>
                 </div>
             </div>`;
   } else if (toolName === "merge") {
@@ -219,10 +223,8 @@ function renderToolContent(toolName, container) {
     <strong>SEO Tip:</strong> Use these QR codes for business cards, marketing flyers, or personal websites for easy sharing.</p>
 </div>
             `;
-  } else if (toolName === "pdfToImg") {
-    content =
-      commonHeader +
-      `
+} else if (toolName === "pdfToImg") {
+    content = commonHeader + `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3><i class="fas fa-images me-2 text-info"></i>PDF to Image</h3>
                 <button class="btn btn-sm btn-outline-danger" onclick="resetPdfToImg()"><i class="fas fa-trash me-1"></i> Clear</button>
@@ -230,7 +232,14 @@ function renderToolContent(toolName, container) {
             <input type="file" id="pdfInput" accept="application/pdf" class="form-control mb-3">
             <button class="btn btn-info w-100 fw-bold mb-2" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
             <button class="btn btn-success w-100 fw-bold d-none" id="downloadAllBtn" onclick="downloadAllAsZip()">Download All as ZIP</button>
-            <div id="pdfPreview" class="row g-3 mt-4"></div>`;
+            <div id="pdfPreview" class="row g-3 mt-4"></div>
+            
+            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+                <h5 class="fw-bold text-info"><i class="fas fa-file-image me-2"></i> High-Resolution PDF to JPG Converter</h5>
+                <p class="small text-muted">Our tool allows you to convert complex PDF pages into high-quality JPEG images instantly. 
+                <strong>Privacy First:</strong> The conversion happens entirely in your browser. No files are uploaded to any server, keeping your sensitive documents 100% private.</p>
+                <p class="small text-muted mb-0"><strong>Why use this?</strong> Best for extracting charts, certificates, or snapshots from large PDF files without losing clarity.</p>
+            </div>`;
   } else if (toolName === "voice") {
     content =
       commonHeader +
@@ -466,7 +475,7 @@ function previewImage() {
 }
 
 function showExtra(page) {
-  history.pushState({ page: "extra" }, "");
+  history.pushState({ page: page }, "");
   document.getElementById("toolsGrid").classList.add("d-none");
   document.getElementById("activeTool").classList.add("d-none");
   document.getElementById("extraScreens").classList.remove("d-none");
@@ -578,10 +587,26 @@ function showExtra(page) {
   }
 }
 window.onpopstate = function (event) {
-  // Check if tools grid is hidden (means some tool is open)
-  const grid = document.getElementById("toolsGrid");
-  if (grid && grid.classList.contains("d-none")) {
-    goBack();
+  const activeTool = document.getElementById("activeTool");
+  const extraScreens = document.getElementById("extraScreens");
+  const toolsGrid = document.getElementById("toolsGrid");
+
+  // Agar koi tool ya extra screen (About/Contact) khuli hai, toh dashboard dikhao
+  if (!activeTool.classList.contains("d-none") || !extraScreens.classList.contains("d-none")) {
+    
+    // Dashboard wapas dikhane ka logic
+    activeTool.classList.add("d-none");
+    extraScreens.classList.add("d-none");
+    toolsGrid.classList.remove("d-none");
+
+    if (document.getElementById("seoSection")) {
+      document.getElementById("seoSection").classList.remove("d-none");
+    }
+    
+    window.scrollTo(0, 0);
+  } else {
+    // Agar user pehle se dashboard par hai aur back dabaye, toh hi exit ho
+    history.back();
   }
 };
 
@@ -642,4 +667,36 @@ async function calculateAge() {
   btn.innerHTML = originalBtnText;
 
   showNotify("success", "Age Calculated!");
+}
+
+function resetPDFTool() {
+    document.getElementById("imageInput").value = "";
+    showNotify("info", "PDF Tool Cleared");
+}
+
+
+function resetCompressor() {
+    document.getElementById("compressInput").value = "";
+    document.getElementById("qualityRange").value = 0.7;
+    document.getElementById("qValue").innerText = "70%";
+    document.getElementById("previewArea").innerHTML = "Preview";
+    showNotify("info", "Compressor Cleared");
+}
+
+// PDF to Image Reset
+function resetPdfToImg() {
+    document.getElementById("pdfInput").value = "";
+    document.getElementById("pdfPreview").innerHTML = "";
+    document.getElementById("downloadAllBtn").classList.add("d-none");
+    showNotify("info", "PDF to Image Cleared");
+}
+
+// Exam Resizer Reset
+function resetResizer() {
+    const input = document.getElementById("resizeInput");
+    if(input) input.value = "";
+    const preview = document.getElementById("resPreview");
+    if(preview) preview.innerHTML = "";
+    document.getElementById("targetSize").value = "50";
+    showNotify("info", "Resizer Cleared");
 }
