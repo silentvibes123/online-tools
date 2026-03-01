@@ -67,6 +67,23 @@ function renderToolContent(toolName, container) {
   // Common Header & Ad Container
   const commonHeader = "";
 
+
+  if (toolName === "cash") {
+    document.title = "Online Cash Counter & Denomination Calculator | SwiftTool Pro";
+    // Meta description update (Optional but good for SEO)
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculate total cash with Indian currency denominations (₹2000 to ₹1) and print receipts instantly.");
+  } else if (toolName === "resizer") {
+    document.title = "Exam Photo Resizer (20KB - 50KB) for SSC, UPSC, Bank | SwiftTool Pro";
+  } else if (toolName === "age") {
+    document.title = "Accurate Age Calculator by Date of Birth (Years, Months, Days) | SwiftTool Pro";
+  } else if (toolName === "pdf") {
+    document.title = "Images to PDF Converter - High Quality & Secure | SwiftTool Pro";
+  } else if (toolName === "pdfToImg") {
+    document.title = "Convert PDF to High Resolution JPG/PNG Online | SwiftTool Pro";
+  } else if (toolName === "qrcode") {
+    document.title = "Free QR Code Generator for Text, URL & Contact | SwiftTool Pro";
+  }
+
   if (toolName === "cash") {
     content =
       commonHeader +
