@@ -16,38 +16,67 @@ function loadScript(src) {
 }
 
 function updateDynamicTitle(toolName) {
-  let newTitle = "SwiftTool Pro - Digital Toolkit"; // Default
+  let newTitle = "SwiftTool Pro - Free Online Digital Toolkit & PDF Tools";
+  let metaDesc = "SwiftTool Pro offers free, secure, and fast digital tools like Image Resizer for SSC/UPSC, Cash Counter, PDF Converter, and AI Voice. No file uploads, 100% private.";
 
+  // Tool wise Title and Description logic
   if (toolName === "cash") {
     newTitle = "Online Cash Counter & Denomination Calculator | SwiftTool Pro";
-  } else if (toolName === "resizer") {
-    newTitle =
-      "Exam Photo Resizer (20KB - 50KB) for SSC, UPSC, Bank | SwiftTool Pro";
-  } else if (toolName === "age") {
-    newTitle =
-      "Accurate Age Calculator by Date of Birth (Exact Age) | SwiftTool Pro";
-  } else if (toolName === "pdf") {
-    newTitle =
-      "Images to PDF Converter - High Quality & Secure | SwiftTool Pro";
-  } else if (toolName === "pdfToImg") {
-    newTitle = "Convert PDF to High Resolution JPG/PNG Online | SwiftTool Pro";
-  } else if (toolName === "qrcode") {
+    metaDesc = "Calculate total cash with Indian currency denominations (₹2000 to ₹1). Generate and print professional cash receipts instantly for banks and shops.";
+  } 
+  else if (toolName === "resizer") {
+    newTitle = "Exam Photo Resizer (20KB - 50KB) for SSC, UPSC, Bank | SwiftTool Pro";
+    metaDesc = "Perfectly resize your photos and signatures for SSC, UPSC, and IBPS exams. Compress to 20KB or 50KB with standard 350x450 dimensions without quality loss.";
+  } 
+  else if (toolName === "age") {
+    newTitle = "Accurate Age Calculator by Date of Birth - Exact Age | SwiftTool Pro";
+    metaDesc = "Calculate your exact age in years, months, and days. Perfect for government job forms and calculating age eligibility for exams like SSC and UPSC.";
+  } 
+  else if (toolName === "pdf") {
+    newTitle = "Images to PDF Converter - High Quality & Secure | SwiftTool Pro";
+    metaDesc = "Convert JPG, PNG, and WEBP images into a single high-quality PDF document. Fast, free, and works entirely in your browser for 100% privacy.";
+  } 
+  else if (toolName === "compress") {
+    newTitle = "Compress Image to 20KB & 50KB Online - Quality Optimizer | SwiftTool Pro";
+    metaDesc = "Reduce image file size online without losing clarity. Best tool for optimizing photos for web use and online application forms.";
+  } 
+  else if (toolName === "qrcode") {
     newTitle = "Free QR Code Generator for Text, URL & Contact | SwiftTool Pro";
-  } else if (toolName === "compress") {
-    newTitle = "Compress Image to 20KB & 50KB Online | SwiftTool Pro";
-  } else if (toolName === "voice") {
-    newTitle = "AI Voice - Text to Speech Online | SwiftTool Pro";
-  } else if (toolName === "merge") {
-    newTitle = "Merge PDF Files Online - Fast & Secure | SwiftTool Pro";
-  } else if (toolName === "split") {
-    newTitle = "Split PDF Pages Online - Extract PDF | SwiftTool Pro";
+    metaDesc = "Create custom QR codes for your website, business cards, or personal use for free. Instant download and high-resolution scan-ready QR codes.";
+  } 
+  else if (toolName === "pdfToImg") {
+    newTitle = "PDF to Image Converter Online - Extract High-Res JPG | SwiftTool Pro";
+    metaDesc = "Convert PDF pages into high-quality JPEG/PNG images. Secure browser-based conversion—no files are uploaded to our servers.";
+  } 
+  else if (toolName === "voice") {
+    newTitle = "AI Voice - Free Text to Speech Online | SwiftTool Pro";
+    metaDesc = "Convert your written text into a clear AI-powered human voice. Perfect for creating voiceovers and listening to long documents.";
+  }
+  else if (toolName === "merge") {
+    newTitle = "Merge PDF Files Online - Combine PDF Fast | SwiftTool Pro";
+    metaDesc = "Combine multiple PDF documents into one single file securely. Our PDF merger works offline in your browser for maximum data safety.";
+  }
+  else if (toolName === "split") {
+    newTitle = "Split PDF Pages - Extract Specific Pages Online | SwiftTool Pro";
+    metaDesc = "Extract pages from your PDF file or split one PDF into multiple documents instantly. Fast, free, and secure PDF splitting tool.";
   }
 
-  // Pehle title set karo
+  // --- Update Document Title ---
   document.title = newTitle;
 
-  // Console mein check karne ke liye
-  console.log("Current Page Title: " + document.title);
+  // --- Update Meta Description for SEO ---
+  let metaDescriptionTag = document.querySelector('meta[name="description"]');
+  if (metaDescriptionTag) {
+    metaDescriptionTag.setAttribute("content", metaDesc);
+  } else {
+    // Agar meta tag nahi hai toh naya bana dega
+    let newMeta = document.createElement('meta');
+    newMeta.name = "description";
+    newMeta.content = metaDesc;
+    document.head.appendChild(newMeta);
+  }
+
+  console.log("SEO Updated: " + newTitle);
 }
 
 function showNotify(type, message) {
