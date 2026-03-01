@@ -85,7 +85,7 @@ function openTool(toolName) {
 
   history.pushState({ tool: toolName }, "");
 
-  // updateDynamicTitle(toolName);
+  updateDynamicTitle(toolName);
 
   // Purana content gayab karo (Fade out)
   toolsGrid.classList.add("d-none");
