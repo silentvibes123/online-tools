@@ -144,7 +144,7 @@ window.stopVoice = function() {
 // 6. Manual Text Speech
 window.speakText = function() {
     const text = document.getElementById("speechText").value;
-    if (!text.trim()) return showNotify("error", "Kuch toh likho bhai!");
+    if (!text.trim()) return showNotify("error", "Enter some text!");
     
     window.stopVoice();
     const utterance = new SpeechSynthesisUtterance(text);
