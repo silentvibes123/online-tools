@@ -311,63 +311,68 @@ function renderToolContent(toolName, container) {
                 <strong>Privacy First:</strong> The conversion happens entirely in your browser. No files are uploaded to any server, keeping your sensitive documents 100% private.</p>
                 <p class="small text-muted mb-0"><strong>Why use this?</strong> Best for extracting charts, certificates, or snapshots from large PDF files without losing clarity.</p>
             </div>`;
-  } else if (toolName === "voice") {
-    content =
-      commonHeader +
-      `
-      <div class="voice-container p-1">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-              <h3><i class="fas fa-volume-up me-2 text-warning"></i>AI Voice & PDF Reader</h3>
-              <button class="btn btn-sm btn-outline-danger" onclick="resetVoice()"><i class="fas fa-trash me-1"></i> Clear</button>
-          </div><hr>
-          
-          <div id="uploadZone" class="border-dashed p-4 text-center rounded-3 bg-light mb-4" 
-               onclick="document.getElementById('pdfInputVoice').click()" style="cursor:pointer; border: 2px dashed #ffc107;">
-              <i class="fas fa-file-pdf fa-3x text-danger mb-2"></i>
-              <p class="mb-0 fw-bold">Click to Upload Digital PDF</p>
-              <small class="text-muted">(Reads English  Text)</small>
-              <input type="file" id="pdfInputVoice" hidden accept="application/pdf" onchange="processVoicePDF(this.files[0])">
-          </div>
+ // ... baaki tool logic ...
+} else if (toolName === "voice") {
+    content = commonHeader + `
+    <div class="voice-container p-1">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3><i class="fas fa-volume-up me-2 text-warning"></i>AI Voice & PDF Reader</h3>
+            <button class="btn btn-sm btn-outline-danger" onclick="resetVoice()"><i class="fas fa-trash me-1"></i> Clear</button>
+        </div><hr>
+        
+        <div id="uploadZone" class="border-dashed p-4 text-center rounded-3 bg-light mb-4" 
+             onclick="document.getElementById('pdfInputVoice').click()" style="cursor:pointer; border: 2px dashed #ffc107;">
+            <i class="fas fa-file-pdf fa-3x text-danger mb-2"></i>
+            <p class="mb-0 fw-bold">Click to Upload Digital PDF</p>
+            <input type="file" id="pdfInputVoice" hidden accept="application/pdf" onchange="processVoicePDF(this.files[0])">
+        </div>
 
-          <div id="voiceControls" class="d-none mb-3 p-3 bg-white border rounded shadow-sm">
-              <div class="row g-2 mb-3">
-                  <div class="col-6 text-start">
-                      <label class="small fw-bold">Select Page:</label>
-                      <select id="pageSelect" class="form-select form-select-sm" onchange="stopVoice()"></select>
-                  </div>
-                  <div class="col-6 text-start">
-                      <label class="small fw-bold">Speed:</label>
-                      <select id="voiceSpeed" class="form-select form-select-sm">
-                          <option value="0.8">Slow</option>
-                          <option value="1" selected>Normal</option>
-                          <option value="1.2">Fast</option>
-                          <option value="1.5">Very Fast</option>
-                      </select>
-                  </div>
-              </div>
-              <div class="form-check form-switch mb-3 text-start">
-                  <input class="form-check-input" type="checkbox" id="autoNext" checked>
-                  <label class="form-check-label small fw-bold" for="autoNext">Auto-read all pages</label>
-              </div>
-              <div class="d-flex gap-2 justify-content-center">
-                  <button class="btn btn-warning px-4 fw-bold" onclick="playVoice()"><i class="fas fa-play me-1"></i> Play</button>
-                  <button class="btn btn-secondary px-4 fw-bold" onclick="pauseVoice()"><i class="fas fa-pause me-1"></i> Pause</button>
-                  <button class="btn btn-danger px-4 fw-bold" onclick="stopVoice()"><i class="fas fa-stop me-1"></i> Stop</button>
-              </div>
-          </div>
+        <div id="voiceControls" class="mb-3 p-3 bg-white border rounded shadow-sm">
+            <div class="row g-2 mb-3">
+                <div id="pageSelectCol" class="col-6 text-start d-none">
+                    <label class="small fw-bold">Select Page:</label>
+                    <select id="pageSelect" class="form-select form-select-sm" onchange="stopVoice()"></select>
+                </div>
+                <div class="col text-start">
+                    <label class="small fw-bold">Speed Control:</label>
+                    <select id="voiceSpeed" class="form-select form-select-sm">
+                        <option value="0.8">Slow</option>
+                        <option value="1" selected>Normal</option>
+                        <option value="1.2">Fast</option>
+                        <option value="1.5">Very Fast</option>
+                    </select>
+                </div>
+            </div>
 
-          <div id="manualText">
-              <label class="form-label fw-bold d-block text-start">Or Type/Paste Text:</label>
-              <textarea id="speechText" class="form-control mb-3" rows="4" placeholder="Type here if you don't have a PDF..."></textarea>
-              <button class="btn btn-outline-warning w-100 fw-bold" onclick="speakText()">Speak Manual Text</button>
-          </div>
+            <div id="manualText">
+                <label class="form-label fw-bold d-block text-start">Type/Paste Text Below:</label>
+                <textarea id="speechText" class="form-control mb-3" rows="4" placeholder="Type here and click Play..."></textarea>
+            </div>
 
-          <div class="mt-4 p-3 bg-light rounded border text-start">
-              <h6 class="fw-bold text-warning"><i class="fas fa-info-circle me-2"></i> Important Note:</h6>
-              <p class="small text-muted mb-0">This tool only reads <b>Digital PDFs</b>. Handwritten notes or images of book pages are not supported. Only  English languages are currently optimized.</p>
-          </div>
-      </div>`;
-  } else if (toolName === "age") {
+            <div class="form-check form-switch mb-3 text-start" id="autoNextDiv">
+                <input class="form-check-input" type="checkbox" id="autoNext" checked>
+                <label class="form-check-label small fw-bold" for="autoNext">Auto-read all pages (PDF)</label>
+            </div>
+
+            <div class="d-flex gap-2 justify-content-center">
+                <button id="mainPlayBtn" class="btn btn-warning px-4 fw-bold flex-fill" onclick="playVoice()">
+                    <i class="fas fa-play me-1"></i> Play
+                </button>
+                <button class="btn btn-secondary px-3 fw-bold" onclick="pauseVoice()">
+                    <i class="fas fa-pause"></i>
+                </button>
+                <button class="btn btn-danger px-3 fw-bold" onclick="stopVoice()">
+                    <i class="fas fa-stop"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-4 p-3 bg-light rounded border text-start">
+            <h6 class="fw-bold text-warning"><i class="fas fa-info-circle me-2"></i> Quick Guide:</h6>
+            <p class="small text-muted mb-0">PDF upload karein ya niche text likhkar <b>Play</b> dabayein. Gujarati aur English dono support karta hai!</p>
+        </div>
+    </div>`;
+}else if (toolName === "age") {
     content =
       commonHeader +
       `
