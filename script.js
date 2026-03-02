@@ -325,7 +325,7 @@ function renderToolContent(toolName, container) {
                onclick="document.getElementById('pdfInputVoice').click()" style="cursor:pointer; border: 2px dashed #ffc107;">
               <i class="fas fa-file-pdf fa-3x text-danger mb-2"></i>
               <p class="mb-0 fw-bold">Click to Upload Digital PDF</p>
-              <small class="text-muted">(Reads English & Gujarati Text)</small>
+              <small class="text-muted">(Reads Only English  Text)</small>
               <input type="file" id="pdfInputVoice" hidden accept="application/pdf" onchange="processVoicePDF(this.files[0])">
           </div>
 
@@ -364,7 +364,7 @@ function renderToolContent(toolName, container) {
 
           <div class="mt-4 p-3 bg-light rounded border text-start">
               <h6 class="fw-bold text-warning"><i class="fas fa-info-circle me-2"></i> Important Note:</h6>
-              <p class="small text-muted mb-0">This tool only reads <b>Digital PDFs</b>. Handwritten notes or images of book pages are not supported. Only Gujarati and English languages are currently optimized.</p>
+              <p class="small text-muted mb-0">This tool only reads <b>Digital PDFs</b>. Handwritten notes or images of book pages are not supported. Only  English languages are currently optimized.</p>
           </div>
       </div>`;
   } else if (toolName === "age") {
