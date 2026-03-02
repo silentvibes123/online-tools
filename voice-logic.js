@@ -52,6 +52,37 @@ function setBestVoice(utterance, text) {
     }
 }
 
+window.resetVoice = function() {
+    // 1. Pehle voice stop karo
+    window.stopVoice();
+    
+    // 2. Data saaf karo
+    window.pdfPagesText = [];
+    window.isPaused = false;
+
+    // 3. UI Elements ko reset karo (Check karke ki wo page par hain)
+    const speechArea = document.getElementById("speechText");
+    if (speechArea) speechArea.value = "";
+
+    const uploadZone = document.getElementById("uploadZone");
+    if (uploadZone) uploadZone.classList.remove("d-none");
+
+    const voiceControls = document.getElementById("voiceControls");
+    if (voiceControls) voiceControls.classList.add("d-none");
+
+    const pageSelect = document.getElementById("pageSelect");
+    if (pageSelect) pageSelect.innerHTML = "";
+
+    // 4. Input file field ko reset karo taaki dubara wahi file upload ho sake
+    const fileInput = document.getElementById("pdfInputVoice");
+    if (fileInput) fileInput.value = "";
+
+    // 5. Button ko wapas 'Play' mode mein lao
+    updateButtonUI('idle');
+
+    showNotify("info", "Tool Reset ho gaya!");
+};
+
 // 3. Play Function
 window.playVoice = function() {
     if (window.isPaused) {
@@ -63,7 +94,7 @@ window.playVoice = function() {
     window.stopVoice();
     let pageIdx = parseInt(document.getElementById("pageSelect").value);
     let text = window.pdfPagesText[pageIdx];
-    if (!text) return showNotify("error", "Text nahi mila!");
+    if (!text) return showNotify("error", "Please Enter some Text!");
 
     window.currentSpeech = new SpeechSynthesisUtterance(text);
     window.currentSpeech.rate = parseFloat(document.getElementById("voiceSpeed").value) || 1;

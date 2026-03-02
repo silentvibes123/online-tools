@@ -325,7 +325,7 @@ function renderToolContent(toolName, container) {
                onclick="document.getElementById('pdfInputVoice').click()" style="cursor:pointer; border: 2px dashed #ffc107;">
               <i class="fas fa-file-pdf fa-3x text-danger mb-2"></i>
               <p class="mb-0 fw-bold">Click to Upload Digital PDF</p>
-              <small class="text-muted">(Reads Only English  Text)</small>
+              <small class="text-muted">(Reads English  Text)</small>
               <input type="file" id="pdfInputVoice" hidden accept="application/pdf" onchange="processVoicePDF(this.files[0])">
           </div>
 
