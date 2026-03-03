@@ -219,3 +219,16 @@ async function generatePDF() {
         btn.innerHTML = originalText;
     }
 }
+
+// Helper to show SweetAlert notifications
+function showNotify(icon, title) {
+    Swal.fire({
+        icon: icon,
+        title: title,
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
+}
