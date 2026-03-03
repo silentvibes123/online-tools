@@ -44,7 +44,7 @@ async function splitPDF() {
     const start = parseInt(document.getElementById("startPage").value);
     const end = parseInt(document.getElementById("endPage").value);
 
-    if (!file || isNaN(start) || isNaN(end)) return showNotify("error", "Range sahi se bharein!");
+    if (!file || isNaN(start) || isNaN(end)) return showNotify("error", "invalid range!");
 
     const btn = document.getElementById("splitBtn");
     const originalText = btn.innerHTML;
@@ -190,10 +190,10 @@ function downloadSingleImage(data, name) {
 // --- PDF to Text (Formatter) Logic ---
 window.processFormatPDF = async function(file) {
     if (!file || file.type !== "application/pdf") {
-        return showNotify("error", "Bhai, valid PDF file select karo!");
+        return showNotify("error", "please upload valid pdf file!");
     }
 
-    showNotify("info", "Extracting text... thoda rukiye.");
+    showNotify("info", "Extracting text....");
     
     try {
         const arrayBuffer = await file.arrayBuffer();
@@ -212,16 +212,16 @@ window.processFormatPDF = async function(file) {
         document.getElementById("editorZone").classList.remove("d-none");
         document.getElementById("pdfEditor").value = fullText;
         
-        showNotify("success", "Text extract ho gaya! Ab aap ise edit kar sakte hain.");
+        showNotify("success", "Text extracted.");
     } catch (err) {
         console.error(err);
-        showNotify("error", "PDF se text nikalne mein galti hui.");
+        showNotify("error", "cannot extract pdf text.");
     }
 };
 
 window.downloadFormattedPDF = function() {
     const text = document.getElementById("pdfEditor").value;
-    if (!text) return showNotify("error", "Editor khali hai!");
+    if (!text) return showNotify("error", "pdf cannot be empty!");
 
     const element = document.createElement("div");
     element.style.padding = "40px";

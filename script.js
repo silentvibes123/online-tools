@@ -20,48 +20,56 @@ function loadScript(src) {
 
 function updateDynamicTitle(toolName) {
   let newTitle = "SwiftTool Pro - Free Online Digital Toolkit & PDF Tools";
-  let metaDesc = "SwiftTool Pro offers free, secure, and fast digital tools like Image Resizer for SSC/UPSC, Cash Counter, PDF Converter, and AI Voice. No file uploads, 100% private.";
+  let metaDesc =
+    "SwiftTool Pro offers free, secure, and fast digital tools like Image Resizer for SSC/UPSC, Cash Counter, PDF Converter, and AI Voice. No file uploads, 100% private.";
 
   // Tool wise Title and Description logic
   if (toolName === "cash") {
     newTitle = "Online Cash Counter & Denomination Calculator | SwiftTool Pro";
-    metaDesc = "Calculate total cash with Indian currency denominations (₹2000 to ₹1). Generate and print professional cash receipts instantly for banks and shops.";
-  } 
-  else if (toolName === "resizer") {
-    newTitle = "Exam Photo Resizer (20KB - 50KB) for SSC, UPSC, Bank | SwiftTool Pro";
-    metaDesc = "Perfectly resize your photos and signatures for SSC, UPSC, and IBPS exams. Compress to 20KB or 50KB with standard 350x450 dimensions without quality loss.";
-  } 
-  else if (toolName === "age") {
-    newTitle = "Accurate Age Calculator by Date of Birth - Exact Age | SwiftTool Pro";
-    metaDesc = "Calculate your exact age in years, months, and days. Perfect for government job forms and calculating age eligibility for exams like SSC and UPSC.";
-  } 
-  else if (toolName === "pdf") {
-    newTitle = "Images to PDF Converter - High Quality & Secure | SwiftTool Pro";
-    metaDesc = "Convert JPG, PNG, and WEBP images into a single high-quality PDF document. Fast, free, and works entirely in your browser for 100% privacy.";
-  } 
-  else if (toolName === "compress") {
-    newTitle = "Compress Image to 20KB & 50KB Online - Quality Optimizer | SwiftTool Pro";
-    metaDesc = "Reduce image file size online without losing clarity. Best tool for optimizing photos for web use and online application forms.";
-  } 
-  else if (toolName === "qrcode") {
+    metaDesc =
+      "Calculate total cash with Indian currency denominations (₹2000 to ₹1). Generate and print professional cash receipts instantly for banks and shops.";
+  } else if (toolName === "resizer") {
+    newTitle =
+      "Exam Photo Resizer (20KB - 50KB) for SSC, UPSC, Bank | SwiftTool Pro";
+    metaDesc =
+      "Perfectly resize your photos and signatures for SSC, UPSC, and IBPS exams. Compress to 20KB or 50KB with standard 350x450 dimensions without quality loss.";
+  } else if (toolName === "age") {
+    newTitle =
+      "Accurate Age Calculator by Date of Birth - Exact Age | SwiftTool Pro";
+    metaDesc =
+      "Calculate your exact age in years, months, and days. Perfect for government job forms and calculating age eligibility for exams like SSC and UPSC.";
+  } else if (toolName === "pdf") {
+    newTitle =
+      "Images to PDF Converter - High Quality & Secure | SwiftTool Pro";
+    metaDesc =
+      "Convert JPG, PNG, and WEBP images into a single high-quality PDF document. Fast, free, and works entirely in your browser for 100% privacy.";
+  } else if (toolName === "compress") {
+    newTitle =
+      "Compress Image to 20KB & 50KB Online - Quality Optimizer | SwiftTool Pro";
+    metaDesc =
+      "Reduce image file size online without losing clarity. Best tool for optimizing photos for web use and online application forms.";
+  } else if (toolName === "qrcode") {
     newTitle = "Free QR Code Generator for Text, URL & Contact | SwiftTool Pro";
-    metaDesc = "Create custom QR codes for your website, business cards, or personal use for free. Instant download and high-resolution scan-ready QR codes.";
-  } 
-  else if (toolName === "pdfToImg") {
-    newTitle = "PDF to Image Converter Online - Extract High-Res JPG | SwiftTool Pro";
-    metaDesc = "Convert PDF pages into high-quality JPEG/PNG images. Secure browser-based conversion—no files are uploaded to our servers.";
-  } 
-  else if (toolName === "voice") {
+    metaDesc =
+      "Create custom QR codes for your website, business cards, or personal use for free. Instant download and high-resolution scan-ready QR codes.";
+  } else if (toolName === "pdfToImg") {
+    newTitle =
+      "PDF to Image Converter Online - Extract High-Res JPG | SwiftTool Pro";
+    metaDesc =
+      "Convert PDF pages into high-quality JPEG/PNG images. Secure browser-based conversion—no files are uploaded to our servers.";
+  } else if (toolName === "voice") {
     newTitle = "AI Voice - Free Text to Speech Online | SwiftTool Pro";
-    metaDesc = "Convert your written text into a clear AI-powered human voice. Perfect for creating voiceovers and listening to long documents.";
-  }
-  else if (toolName === "merge") {
+    metaDesc =
+      "Convert your written text into a clear AI-powered human voice. Perfect for creating voiceovers and listening to long documents.";
+  } else if (toolName === "merge") {
     newTitle = "Merge PDF Files Online - Combine PDF Fast | SwiftTool Pro";
-    metaDesc = "Combine multiple PDF documents into one single file securely. Our PDF merger works offline in your browser for maximum data safety.";
-  }
-  else if (toolName === "split") {
-    newTitle = "Split PDF Pages - Extract Specific Pages Online | SwiftTool Pro";
-    metaDesc = "Extract pages from your PDF file or split one PDF into multiple documents instantly. Fast, free, and secure PDF splitting tool.";
+    metaDesc =
+      "Combine multiple PDF documents into one single file securely. Our PDF merger works offline in your browser for maximum data safety.";
+  } else if (toolName === "split") {
+    newTitle =
+      "Split PDF Pages - Extract Specific Pages Online | SwiftTool Pro";
+    metaDesc =
+      "Extract pages from your PDF file or split one PDF into multiple documents instantly. Fast, free, and secure PDF splitting tool.";
   }
 
   // --- Update Document Title ---
@@ -73,7 +81,7 @@ function updateDynamicTitle(toolName) {
     metaDescriptionTag.setAttribute("content", metaDesc);
   } else {
     // Agar meta tag nahi hai toh naya bana dega
-    let newMeta = document.createElement('meta');
+    let newMeta = document.createElement("meta");
     newMeta.name = "description";
     newMeta.content = metaDesc;
     document.head.appendChild(newMeta);
@@ -161,11 +169,13 @@ function renderToolContent(toolName, container) {
                     <button class="btn btn-outline-primary mt-3" onclick="handlePrint()"><i class="fas fa-print me-2"></i>Print Receipt</button>
                 </div>
             </div> 
-            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-success"><i class="fas fa-coins me-2"></i> Online Cash Counter & Denomination Calculator</h5>
-    <p class="small text-muted">SwiftTool Pro's Cash Counter helps you calculate total currency value instantly. Perfect for shopkeepers, bank deposits, and daily accounting. 
-    <strong>Key Features:</strong> Supports all Indian denominations (₹2000 to ₹1), real-time calculation, and professional print-ready receipts.</p>
-</div>
+           <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-success"><i class="fas fa-coins me-2"></i> Online Cash Counter & Denomination Calculator for India</h5>
+    <p class="small text-muted">SwiftTool Pro offers the most reliable <strong>Indian Cash Counter</strong> designed specifically for business owners, bank employees, and individuals handling daily cash transactions. Calculating bundles of cash can be time-consuming and prone to human error; our tool automates this process instantly.</p>
+    <p class="small text-muted"><strong>How it works:</strong> Simply enter the number of notes you have for each denomination (₹2000, ₹500, ₹200, ₹100, ₹50, ₹20, ₹10, ₹5, ₹2, ₹1). The tool automatically calculates the total amount for each row and provides a <strong>Grand Total</strong> in real-time. We follow the official Indian currency format (₹) and ensure that your calculations are 100% accurate every single time.</p>
+    <p class="small text-muted"><strong>Key Benefits:</strong> 1. <strong>Printable Receipts:</strong> Generate a professional cash memo to attach with your bank deposit slip (Challan) for SBI, PNB, ICICI, or HDFC banks. 2. <strong>Error-Free:</strong> Eliminate manual counting mistakes that happen during busy shop hours. 3. <strong>Privacy:</strong> Unlike other tools, we do not store your financial data. Everything happens locally in your browser. Whether you are managing a retail shop, a gas station, or personal savings, our <strong>Cash Denomination Calculator</strong> is your perfect digital companion.</p>
+    <p class="small text-muted"><strong>SEO Tip:</strong> Use this tool to save time during end-of-day accounting. It is a perfect alternative to physical cash counting machines for small to medium-sized businesses.</p>
+  </div>
             `;
   } else if (toolName === "pdf") {
     content =
@@ -183,10 +193,12 @@ function renderToolContent(toolName, container) {
                 <h5 class="fw-bold text-danger"><i class="fas fa-file-pdf me-2"></i> Professional Image to PDF Converter</h5>
                 <p class="small text-muted">Convert JPG, PNG, or WEBP images into a single high-quality PDF document instantly.</p>
             </div>
-            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-info"><i class="fas fa-file-image me-2"></i> High-Quality PDF to JPG Converter</h5>
-    <p class="small text-muted">Convert each page of your PDF document into separate high-resolution images. 
-    <strong>Why use this?</strong> No software installation needed, works offline in your browser, and preserves the original quality of your documents.</p>
+           <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-danger"><i class="fas fa-file-pdf me-2"></i> Fast & Secure Image to PDF Converter Online</h5>
+    <p class="small text-muted">SwiftTool Pro's <strong>Image to PDF Converter</strong> is a versatile tool designed for students, office workers, and anyone needing to organize photos into a single document. Whether you have JPG, PNG, or WEBP images, our tool combines them into a professional-grade PDF instantly. This is particularly useful for creating digital assignments, scanning handwritten notes, or submitting KYC documents on government portals.</p>
+    <p class="small text-muted"><strong>Why Privacy is Our Priority:</strong> Most online converters upload your personal photos to their cloud servers, which can be a huge privacy risk. Our <strong>Offline Image to PDF</strong> tool works entirely within your browser. This means your images never leave your device, making it the safest choice for sensitive documents like Aadhaar cards, PAN cards, or private certificates.</p>
+    <p class="small text-muted"><strong>Key Features:</strong> 1. <strong>Bulk Conversion:</strong> Upload multiple images at once and arrange them in order. 2. <strong>No Quality Loss:</strong> We ensure that your photos remain sharp and readable in the final PDF. 3. <strong>Zero Limits:</strong> Convert as many images as you want without any hidden fees or watermarks. 4. <strong>Universal Compatibility:</strong> The generated PDF is standard-compliant and opens perfectly on all devices, including Android, iOS, Windows, and Mac.</p>
+    <p class="small text-muted"><strong>Pro Tip:</strong> Before generating, ensure your images are in the correct sequence. This tool is a great free alternative to paid software like Adobe Acrobat for daily document management.</p>
 </div>
             `;
   } else if (toolName === "resizer") {
@@ -207,12 +219,13 @@ function renderToolContent(toolName, container) {
                     <option value="100">Target: Under 100KB</option>
                 </select>
                 <button class="btn btn-warning w-100 fw-bold" onclick="smartResize()">Download Perfect Size</button>
-                <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-                    <h5 class="fw-bold text-warning"><i class="fas fa-id-badge me-2"></i> Online Exam Photo Resizer</h5>
-                    <p class="small text-muted">Automatically adjusts your photo to 350x450 pixels and ensures the file size stays under the required limit. 
-                    <strong>Note:</strong> Perfect for SSC GD, UPSC, and IBPS applications where strict file size is mandatory.</p>
-                </div>
-            </div>`;
+               <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-warning"><i class="fas fa-id-badge me-2"></i> Professional Exam Photo & Signature Resizer (20KB - 50KB)</h5>
+    <p class="small text-muted">Filling out government job applications like <strong>SSC GD, UPSC, IBPS, or Railway (RRB)</strong> can be frustrating when your photo or signature gets rejected due to incorrect file size. SwiftTool Pro's <strong>Online Image Resizer</strong> is specially programmed to meet the exact dimensions and KB requirements of Indian competitive exams.</p>
+    <p class="small text-muted"><strong>Standard Specifications:</strong> Most exams require a photograph of <strong>3.5cm x 4.5cm (350x450 pixels)</strong> with a file size between 20KB to 50KB, and signatures between 10KB to 20KB. Our smart algorithm automatically adjusts the aspect ratio and applies the right amount of compression to hit these targets without making your face blurry or unreadable.</p>
+    <p class="small text-muted"><strong>Why Choose SwiftTool Pro?</strong> 1. <strong>Privacy:</strong> Your personal photos are sensitive. We process them 100% offline in your browser, meaning your data never reaches any server. 2. <strong>Instant Download:</strong> No waiting, no watermarks, just high-quality resized images ready for upload. 3. <strong>Format Support:</strong> Works perfectly with JPG, JPEG, and PNG formats.</p>
+    <p class="small text-muted"><strong>Step-by-Step Guide:</strong> Select your file, choose your target size (20KB for signature or 50KB for photo), and click 'Download'. This tool is a must-have for students preparing for government exams who want to avoid the 'File size too large' error on official portals.</p>
+    </div>`;
   } else if (toolName === "merge") {
     content =
       commonHeader +
@@ -226,10 +239,13 @@ function renderToolContent(toolName, container) {
             <button class="btn btn-primary w-100 fw-bold" id="mergeBtn" onclick="mergePDFs()">
                 <i class="fas fa-layer-group me-2"></i>Merge & Download PDF
             </button>
-            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-                <h5 class="fw-bold text-primary"><i class="fas fa-shield-alt me-2"></i> Private PDF Merger</h5>
-                <p class="small text-muted">Merge PDFs locally in your browser. No server uploads, 100% data safety.</p>
-            </div>`;
+           <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-primary"><i class="fas fa-object-group me-2"></i> Combine Multiple PDF Files Securely - PDF Merger</h5>
+    <p class="small text-muted">Managing multiple PDF documents can be messy. SwiftTool Pro's <strong>Merge PDF tool</strong> allows you to combine several PDF files into one neatly organized document in seconds. This is an essential feature for lawyers, accountants, and students who need to merge different chapters or reports into a single submission-ready file.</p>
+    <p class="small text-muted"><strong>Unlimited & Free:</strong> Most online mergers limit the number of files you can join or charge for "Pro" features. Our <strong>PDF Combiner</strong> is completely free with no restrictions. You can upload two or twenty PDFs and merge them instantly. The formatting, links, and text within your original PDFs will remain perfectly intact in the merged version.</p>
+    <p class="small text-muted"><strong>Data Protection:</strong> Since we use browser-side JavaScript technology, your documents are never uploaded to any external server. This "Offline-First" approach makes us the most trusted <strong>Private PDF Merger</strong> for handling bank statements, legal contracts, and personal records. You can merge your files even without an active internet connection once the tool is loaded.</p>
+    <p class="small text-muted"><strong>How to use:</strong> Simply select the PDF files you wish to join, and click 'Merge & Download'. Your new combined document will be ready immediately, saving you the hassle of sending multiple attachments in emails.</p>
+</div>`;
   } else if (toolName === "split") {
     content =
       commonHeader +
@@ -246,10 +262,13 @@ function renderToolContent(toolName, container) {
             <button class="btn btn-warning w-100 fw-bold" id="splitBtn" onclick="splitPDF()">
                 <i class="fas fa-file-export me-2"></i>Split & Download
             </button>
-            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-                <h5 class="fw-bold text-warning"><i class="fas fa-cut me-2"></i> Fast Offline PDF Splitter</h5>
-                <p class="small text-muted">Extract specific pages from your PDF instantly with complete security.</p>
-            </div>`;
+           <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-warning"><i class="fas fa-cut me-2"></i> Professional PDF Splitter - Extract Specific Pages Online</h5>
+    <p class="small text-muted">Sometimes, a 50-page PDF contains only one or two pages that you actually need. SwiftTool Pro's <strong>Split PDF tool</strong> allows you to extract specific pages or a range of pages from any PDF document effortlessly. This is a must-have tool for teachers sharing specific lessons or employees extracting certain invoices from a large monthly report.</p>
+    <p class="small text-muted"><strong>Precise Page Extraction:</strong> You can define a custom range, such as "Page 5 to Page 10", and our tool will create a new PDF containing only those pages. The original file remains untouched. This <strong>Offline PDF Splitter</strong> ensures that the quality of images and the layout of text are preserved perfectly in the extracted document.</p>
+    <p class="small text-muted"><strong>Why SwiftTool Pro?</strong> 1. <strong>High Speed:</strong> Processing happens on your device's hardware, making it much faster than cloud-based alternatives. 2. <strong>Complete Privacy:</strong> Your sensitive reports and documents stay on your computer. 3. <strong>Free to Use:</strong> No watermarks or page limits—split even the largest PDF files for free.</p>
+    <p class="small text-muted"><strong>How it works:</strong> Upload your PDF, enter the 'From' and 'To' page numbers, and hit 'Split & Download'. It’s that simple. Extract what you need and keep your documents lightweight and relevant.</p>
+</div>`;
   } else if (toolName === "compress") {
     content =
       commonHeader +
@@ -269,10 +288,12 @@ function renderToolContent(toolName, container) {
                     <button class="btn btn-primary w-100" onclick="compressImage()">Compress & Download</button>
                 </div>
             </div>
-            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-primary"><i class="fas fa-compress me-2"></i> Smart Image Optimizer</h5>
-    <p class="small text-muted">Reduce image file size without losing quality. Adjust the quality slider to get the perfect balance between size and clarity. 
-    <strong>Privacy:</strong> Your photos are never uploaded to any server; compression happens entirely on your device.</p>
+           <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-primary"><i class="fas fa-compress-arrows-alt me-2"></i> Smart Image Compressor - Reduce KB Without Losing Quality</h5>
+    <p class="small text-muted">Reducing image file size is a common challenge when uploading documents to job portals or websites. SwiftTool Pro's <strong>Online Image Compressor</strong> uses an advanced compression algorithm that shrinks your photos (JPG/PNG) to 20KB, 50KB, or 100KB while maintaining excellent visual clarity. This is the perfect tool for web developers looking to improve site speed and students filling out exam forms.</p>
+    <p class="small text-muted"><strong>Customizable Compression:</strong> Unlike "one-size-fits-all" tools, we provide a <strong>Quality Slider</strong>. You can manually adjust the compression level from 10% to 100% to find the perfect balance between file size and image sharpness. You can see a real-time preview of how the compressed image looks before downloading it.</p>
+    <p class="small text-muted"><strong>Key Benefits:</strong> 1. <strong>Save Storage:</strong> Free up space on your phone or computer by optimizing large photos. 2. <strong>Faster Uploads:</strong> Smaller files upload quickly on slow internet connections. 3. <strong>Exam Ready:</strong> Specifically designed to meet the strict KB limits of <strong>SSC, UPSC, and IBPS</strong> portals. 4. <strong>100% Secure:</strong> No server-side processing—your data stays on your machine.</p>
+    <p class="small text-muted"><strong>Usage Guide:</strong> Select your image, adjust the quality slider, and check the preview. Once satisfied, click download. This tool ensures your "File size too large" errors are a thing of the past.</p>
 </div>
             `;
   } else if (toolName === "qrcode") {
@@ -286,11 +307,13 @@ function renderToolContent(toolName, container) {
             <input type="text" id="qrText" class="form-control mb-3" placeholder="Enter text or URL">
             <button class="btn btn-dark w-100" onclick="generateQR()">Generate QR Code</button>
             <div id="qrResult" class="text-center mt-4"></div>
-            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-dark"><i class="fas fa-qrcode me-2"></i> Free Custom QR Code Generator</h5>
-    <p class="small text-muted">Generate unlimited QR codes for URLs, text, or contact details. Our tool creates clean, scannable QR codes instantly. 
-    <strong>SEO Tip:</strong> Use these QR codes for business cards, marketing flyers, or personal websites for easy sharing.</p>
-</div>
+           <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-info"><i class="fas fa-images me-2"></i> High-Resolution PDF to Image Converter</h5>
+    <p class="small text-muted">Do you need to extract a specific page from a PDF as a high-quality photo? Our <strong>PDF to JPG Converter</strong> allows you to turn every page of a document into a separate image file instantly. This is essential for designers, social media managers, and students who need to share PDF content as snapshots on WhatsApp or Instagram.</p>
+    <p class="small text-muted"><strong>Superior Quality:</strong> We use the industry-standard PDF.js library to render pages at high DPI, ensuring that the text remains sharp and the images inside the PDF do not lose their clarity. You can view all pages in a beautiful grid preview before deciding to download them. Our tool also provides a <strong>'Download All as ZIP'</strong> feature, saving you time when dealing with large documents.</p>
+    <p class="small text-muted"><strong>Why Privacy Matters:</strong> Most online PDF tools keep a copy of your file on their server for hours. At SwiftTool Pro, your PDF is processed locally. Once you close the tab, everything is gone. This makes our tool the safest choice for bank statements, ID cards, and private certificates.</p>
+    <p class="small text-muted"><strong>Technical Advantage:</strong> No software like Adobe Acrobat is required. Our browser-based solution works on any modern device, providing a seamless experience whether you are on a desktop or a mobile phone.</p>
+  </div>
             `;
   } else if (toolName === "pdfToImg") {
     content =
@@ -311,9 +334,11 @@ function renderToolContent(toolName, container) {
                 <strong>Privacy First:</strong> The conversion happens entirely in your browser. No files are uploaded to any server, keeping your sensitive documents 100% private.</p>
                 <p class="small text-muted mb-0"><strong>Why use this?</strong> Best for extracting charts, certificates, or snapshots from large PDF files without losing clarity.</p>
             </div>`;
- // ... baaki tool logic ...
-} else if (toolName === "voice") {
-    content = commonHeader + `
+    // ... baaki tool logic ...
+  } else if (toolName === "voice") {
+    content =
+      commonHeader +
+      `
     <div class="voice-container p-1">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="fas fa-volume-up me-2 text-warning"></i>AI Voice & PDF Reader</h3>
@@ -367,12 +392,14 @@ function renderToolContent(toolName, container) {
             </div>
         </div>
 
-        <div class="mt-4 p-3 bg-light rounded border text-start">
-            <h6 class="fw-bold text-warning"><i class="fas fa-info-circle me-2"></i> Quick Guide:</h6>
-            <p class="small text-muted mb-0">PDF upload karein ya niche text likhkar <b>Play</b> dabayein. Gujarati aur English dono support karta hai!</p>
-        </div>
+       <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-warning"><i class="fas fa-microphone-alt me-2"></i> Free AI Text-to-Speech & PDF Audio Reader</h5>
+    <p class="small text-muted">SwiftTool Pro's <strong>AI Voice tool</strong> is a powerful accessibility and productivity feature. It allows you to convert any written text or digital PDF into a natural-sounding human voice. This is perfect for students who want to listen to their notes, content creators looking for voiceovers, or individuals with visual impairments.</p>
+    <p class="small text-muted"><strong>How it enhances productivity:</strong> Instead of straining your eyes reading long documents, simply upload your PDF or paste your text and let our AI read it for you. You can adjust the <strong>Speech Speed</strong> (Slow to Very Fast) to match your listening comfort. Our tool supports multiple languages including English and Hindi, providing a versatile experience for Indian users.</p>
+    <p class="small text-muted"><strong>Features at a Glance:</strong> 1. <strong>PDF Reader:</strong> Upload any digital PDF and navigate through pages effortlessly. 2. <strong>Manual Text:</strong> Paste scripts or articles to hear them instantly. 3. <strong>Auto-Read:</strong> Enable 'Auto-read all pages' for an uninterrupted audiobook-like experience. 4. <strong>No Cloud Fees:</strong> We use your browser's native Speech Synthesis API, making it completely free and private.</p>
+    <p class="small text-muted"><strong>Ideal for:</strong> Proofreading your own writing, learning new languages by hearing correct pronunciations, and multitasking while consuming long-form content. Experience the future of text-to-voice technology today with SwiftTool Pro.</p>
     </div>`;
-}else if (toolName === "age") {
+  } else if (toolName === "age") {
     content =
       commonHeader +
       `
@@ -409,14 +436,16 @@ function renderToolContent(toolName, container) {
                     <div class="col-4"><div class="p-2 border rounded bg-white small"><b>Days:</b><br><span id="totalDays">--</span></div></div>
                 </div>
             </div>
-            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-danger"><i class="fas fa-hourglass-half me-2"></i> Accurate Age Calculator by Date of Birth</h5>
-    <p class="small text-muted">Calculate your exact age in years, months, and days. We also provide a breakdown in total weeks and days. 
-    <strong>Useful for:</strong> Filling government job forms (SSC, UPSC), school admissions, and insurance applications.</p>
-</div>
+           <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-danger"><i class="fas fa-birthday-cake me-2"></i> Accurate Age Calculator - Find Your Exact Age in Seconds</h5>
+    <p class="small text-muted">Are you filling out a government job form and need to know your exact age as of a specific date? SwiftTool Pro's <strong>Age Calculator by Date of Birth</strong> provides an instant and high-precision breakdown of your age. Whether it is for <strong>SSC eligibility, UPSC age limits, or retirement planning</strong>, our tool gives you the data you need with 100% accuracy.</p>
+    <p class="small text-muted"><strong>Comprehensive Data:</strong> We don't just show years. Our tool calculates your age in <strong>Years, Months, and Days</strong>. Additionally, we provide a detailed summary of your life in <strong>Total Months, Total Weeks, and Total Days</strong>. This level of detail is perfect for calculating a baby's age in weeks or finding out exactly how many days are left until your next big milestone.</p>
+    <p class="small text-muted"><strong>User-Friendly Design:</strong> Simply select your 'Date of Birth' and the 'Target Date' (which defaults to today). The calculation happens instantly. 1. <strong>Exam Eligibility:</strong> Easily check if you fall within the 18-27 or 21-32 age brackets for various competitive exams. 2. <strong>Special Occasions:</strong> Find out the exact day of the week you were born. 3. <strong>Fast & Free:</strong> No complex forms or registrations required.</p>
+    <p class="small text-muted"><strong>SEO Tip:</strong> This tool is a favorite among job seekers in India. Bookmark this page to quickly verify your age eligibility for the latest sarkari naukri notifications.</p>
+  </div>
             `;
- } else if (toolName === "wordToPdf" || toolName === "formatter") {
-      content = `
+  } else if (toolName === "wordToPdf" || toolName === "formatter") {
+    content = `
       <div class="formatter-container p-1 text-start">
           <div class="d-flex justify-content-between align-items-center mb-3">
               <h3><i class="fas fa-file-word me-2 text-primary"></i>Word to PDF Converter</h3>
@@ -442,19 +471,18 @@ function renderToolContent(toolName, container) {
               </button>
           </div>
 
-          <div class="mt-5 p-4 bg-white rounded border shadow-sm">
-              <h6 class="fw-bold text-primary"><i class="fas fa-info-circle me-2"></i> Why use SwiftTool Pro?</h6>
-              <ul class="small text-muted ps-3 mb-0">
-                  <li><b>100% Private:</b> Conversion happens in your browser.</li>
-                  <li><b>Fast & Free:</b> No limits, no watermarks.</li>
-              </ul>
-          </div>
-      </div>`;
+         <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-primary"><i class="fas fa-file-word me-2"></i> Best Offline Word to PDF Converter - 100% Private</h5>
+    <p class="small text-muted">Converting <strong>DOCX to PDF</strong> is a daily necessity for students and professionals. However, most online converters upload your sensitive documents to their servers, posing a security risk. SwiftTool Pro solves this with our <strong>Browser-Based Word to PDF Converter</strong>. Your document stays on your computer throughout the entire process.</p>
+    <p class="small text-muted"><strong>Professional Quality:</strong> Our tool preserves the original formatting of your Word document, including fonts, tables, bullet points, and images. Whether it's a resume, an assignment, or a business proposal, the output PDF will look exactly like the original Word file. We use advanced libraries like Mammoth.js to ensure high fidelity during the HTML-to-PDF transition.</p>
+    <p class="small text-muted"><strong>Key Features:</strong> 1. <strong>Unlimited Conversions:</strong> No daily limits or subscriptions required. 2. <strong>No Registration:</strong> Start converting immediately without giving your email address. 3. <strong>Device Compatible:</strong> Works on Windows, Mac, Android, and iOS browsers. 4. <strong>Secure:</strong> Since it works offline, even your ISP cannot see the content of your converted documents.</p>
+    <p class="small text-muted"><strong>SEO Guide:</strong> PDF is the standard for sharing documents because it locks the layout. Use our tool to convert your DOCX files before emailing them or uploading them to job portals to ensure your document looks professional on every screen.</p>
+    </div>`;
   }
 
-// PDF to Text (Formatter) UI
-else if (toolName === 'pdfToWord') {
-      content = `
+  // PDF to Text (Formatter) UI
+  else if (toolName === "pdfToWord") {
+    content = `
       <div class="text-center">
           <h3 class="fw-bold mb-3"><i class="fas fa-file-alt text-info me-2"></i>PDF to Text Formatter</h3>
           <p class="text-muted">Extract text from PDF, edit and save.</p>
@@ -473,10 +501,18 @@ else if (toolName === 'pdfToWord') {
                 </button>
               </div>
           </div>
-      </div>`;
-  }
+      </div>
+      <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-info"><i class="fas fa-file-alt me-2"></i> Advanced PDF to Text Formatter & Editor</h5>
+    <p class="small text-muted">Extracting editable text from a PDF can be a nightmare if you don't have the right tools. SwiftTool Pro's <strong>PDF to Text Formatter</strong> uses high-performance text extraction technology to pull content directly from your PDF files and place it into a built-in <strong>Smart Editor</strong>. This is perfect for converting reports into blog posts, notes into assignments, or data into emails.</p>
+    <p class="small text-muted"><strong>Edit Before You Save:</strong> Unlike basic converters, we provide an interactive workspace. Once the text is extracted, you can manually edit, delete, or add new content within our editor zone. This ensures that the final text file you download is exactly how you want it, without any weird symbols or broken sentences often found in PDF exports.</p>
+    <p class="small text-muted"><strong>Benefits of Text Extraction:</strong> 1. <strong>Lightweight Files:</strong> Text files (.txt) are thousands of times smaller than PDFs. 2. <strong>Searchability:</strong> Make your document content easily searchable and indexable. 3. <strong>Browser-Based Security:</strong> Your PDF content is never uploaded to a server, ensuring 100% confidentiality for your business or personal notes.</p>
+    <p class="small text-muted"><strong>Pro Guide:</strong> Upload your PDF, review the extracted text in the editor, make your changes, and click 'Download Text'. This tool is a lifesaver for researchers and writers who deal with digital documents daily.</p>
+  </div>
+      `;
 
-  
+
+  }
 
   // Final rendering
   container.innerHTML = content;
@@ -584,7 +620,6 @@ async function generateQR() {
   showNotify("success", "QR Code Ready!");
 }
 
-
 // --- 4. RESET & UTILS ---
 function resetCash() {
   [2000, 500, 200, 100, 50, 20, 10, 5, 2, 1].forEach((n) => {
@@ -600,7 +635,6 @@ function resetQR() {
   document.getElementById("qrResult").innerHTML = "";
   showNotify("info", "QR Cleared");
 }
-
 
 function goBack() {
   document.getElementById("activeTool").classList.add("d-none");
