@@ -186,3 +186,56 @@ function downloadSingleImage(data, name) {
     a.click();
     setTimeout(() => document.body.removeChild(a), 200);
 }
+
+// --- PDF to Text (Formatter) Logic ---
+window.processFormatPDF = async function(file) {
+    if (!file || file.type !== "application/pdf") {
+        return showNotify("error", "Bhai, valid PDF file select karo!");
+    }
+
+    showNotify("info", "Extracting text... thoda rukiye.");
+    
+    try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        let fullText = "";
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            const pageText = content.items.map(item => item.str).join(" ");
+            fullText += `--- Page ${i} ---\n${pageText}\n\n`;
+        }
+
+        // UI Update
+        document.getElementById("pdfUploadZone").classList.add("d-none");
+        document.getElementById("editorZone").classList.remove("d-none");
+        document.getElementById("pdfEditor").value = fullText;
+        
+        showNotify("success", "Text extract ho gaya! Ab aap ise edit kar sakte hain.");
+    } catch (err) {
+        console.error(err);
+        showNotify("error", "PDF se text nikalne mein galti hui.");
+    }
+};
+
+window.downloadFormattedPDF = function() {
+    const text = document.getElementById("pdfEditor").value;
+    if (!text) return showNotify("error", "Editor khali hai!");
+
+    const element = document.createElement("div");
+    element.style.padding = "40px";
+    element.style.fontSize = "14px";
+    element.style.whiteSpace = "pre-wrap"; // Line breaks maintain karne ke liye
+    element.innerText = text;
+
+    const opt = {
+        margin: [0.7, 0.7],
+        filename: 'Formatted_Document.pdf',
+        jsPDF: { unit: 'in', format: 'a4' }
+    };
+
+    html2pdf().set(opt).from(element).save().then(() => {
+        showNotify("success", "Formatted PDF saved!");
+    });
+};

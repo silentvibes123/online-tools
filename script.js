@@ -415,7 +415,68 @@ function renderToolContent(toolName, container) {
     <strong>Useful for:</strong> Filling government job forms (SSC, UPSC), school admissions, and insurance applications.</p>
 </div>
             `;
+ } else if (toolName === "wordToPdf" || toolName === "formatter") {
+      content = `
+      <div class="formatter-container p-1 text-start">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3><i class="fas fa-file-word me-2 text-primary"></i>Word to PDF Converter</h3>
+              <button class="btn btn-sm btn-outline-danger" onclick="openTool('wordToPdf')"><i class="fas fa-redo"></i> Reset</button>
+          </div><hr>
+
+          <div id="dropZone" class="border-dashed p-5 text-center rounded-3 bg-light mb-4" 
+               onclick="document.getElementById('docInput').click()" style="cursor:pointer; border: 2px dashed #0d6efd;">
+              <i class="fas fa-file-import fa-3x text-primary mb-2"></i>
+              <h5 class="fw-bold">Select Word Document (.docx)</h5>
+              <p class="text-muted small">Choose a file to convert it into high-quality PDF</p>
+              <input type="file" id="docInput" hidden accept=".docx" onchange="convertWordToPdf(this.files[0])">
+          </div>
+
+          <div id="previewContainer" class="d-none animate__animated animate__fadeIn">
+              <div class="alert alert-success d-flex align-items-center">
+                  <i class="fas fa-check-circle me-2"></i> File Ready to Convert!
+              </div>
+              <div id="wordPreview" class="p-3 border bg-white mb-3 shadow-sm" style="max-height:400px; overflow-y:auto; font-family:serif; line-height:1.6;">
+              </div>
+              <button id="downloadPdfBtn" class="btn btn-primary w-100 btn-lg fw-bold shadow" onclick="downloadGeneratedPDF()">
+                  <i class="fas fa-file-pdf me-2"></i>Download as PDF
+              </button>
+          </div>
+
+          <div class="mt-5 p-4 bg-white rounded border shadow-sm">
+              <h6 class="fw-bold text-primary"><i class="fas fa-info-circle me-2"></i> Why use SwiftTool Pro?</h6>
+              <ul class="small text-muted ps-3 mb-0">
+                  <li><b>100% Private:</b> Conversion happens in your browser.</li>
+                  <li><b>Fast & Free:</b> No limits, no watermarks.</li>
+              </ul>
+          </div>
+      </div>`;
   }
+
+// PDF to Text (Formatter) UI
+else if (toolName === 'pdfToWord') {
+      content = `
+      <div class="text-center">
+          <h3 class="fw-bold mb-3"><i class="fas fa-file-alt text-info me-2"></i>PDF to Text Formatter</h3>
+          <p class="text-muted">Extract text from PDF, edit and save.</p>
+          <div id="pdfUploadZone" class="upload-area p-5 border-dashed rounded-4 bg-light mb-3" 
+               onclick="document.getElementById('pdfFormatInput').click()" style="cursor:pointer; border: 2px dashed #17a2b8;">
+              <i class="fas fa-file-import fa-3x text-info mb-3"></i>
+              <h5>Select PDF File</h5>
+              <input type="file" id="pdfFormatInput" hidden accept="application/pdf" onchange="processFormatPDF(this.files[0])">
+          </div>
+          <div id="editorZone" class="d-none animate__animated animate__fadeIn">
+              <textarea id="pdfEditor" class="form-control mb-3" rows="12" style="font-size:14px;" placeholder="Edit extracted text here..."></textarea>
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary w-50" onclick="openTool('pdfToWord')">Cancel</button>
+                <button class="btn btn-info w-50 text-white fw-bold" onclick="downloadFormattedPDF()">
+                    <i class="fas fa-download me-2"></i>Download Text
+                </button>
+              </div>
+          </div>
+      </div>`;
+  }
+
+  
 
   // Final rendering
   container.innerHTML = content;

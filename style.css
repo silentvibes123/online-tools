@@ -126,3 +126,26 @@ body {
     #toolUI { display: block !important; border: none; }
     body { background: white !important; }
 }
+
+/* Perfect A4 Wrapper */
+.word-content-area {
+    width: 210mm !important; /* Standard A4 Width */
+    min-height: 297mm;
+    padding: 20mm !important;
+    margin: 0 auto !important;
+    background: white !important;
+    color: black !important;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    font-family: 'Times New Roman', serif;
+    text-align: left;
+}
+
+/* Responsive adjustment for preview only */
+@media screen and (max-width: 800px) {
+    .word-content-area {
+        width: 100% !important;
+        padding: 10mm !important;
+    }
+}
