@@ -637,19 +637,22 @@ function resetQR() {
 }
 
 function goBack() {
+  // 1. Screens reset karo
   document.getElementById("activeTool").classList.add("d-none");
   document.getElementById("extraScreens").classList.add("d-none");
+  
+  // 2. Dashboard aur SEO section wapas dikhao
   document.getElementById("toolsGrid").classList.remove("d-none");
-
-  // Ye line zaroori hai description wapas dikhane ke liye
   if (document.getElementById("seoSection")) {
     document.getElementById("seoSection").classList.remove("d-none");
   }
-
-  window.scrollTo(0, 0);
+  
+  // 3. URL aur Title reset
+  history.pushState(null, "", window.location.pathname);
   document.title = "SwiftTool Pro - 20KB Image Compressor & Free PDF Tools";
+  
+  window.scrollTo(0, 0);
 }
-
 function updateQDisplay(val) {
   document.getElementById("qValue").innerText = Math.round(val * 100) + "%";
 }
@@ -675,10 +678,21 @@ function previewImage() {
 }
 
 function showExtra(page) {
-  history.pushState({ page: page }, "");
+// 1. URL badlo (taaki user ko naya link dikhe)
+  history.pushState({ page: page }, "", `#${page}`);
+
+  // 2. Dashboard, Tools aur SEO Section sab ko hide kar do
   document.getElementById("toolsGrid").classList.add("d-none");
   document.getElementById("activeTool").classList.add("d-none");
-  document.getElementById("extraScreens").classList.remove("d-none");
+  if (document.getElementById("seoSection")) {
+    document.getElementById("seoSection").classList.add("d-none");
+  }
+
+  // 3. Extra screen dikhao aur page ke ekdum top par jao
+  const extraScreens = document.getElementById("extraScreens");
+  extraScreens.classList.remove("d-none");
+  window.scrollTo(0, 0); 
+
   const content = document.getElementById("extraContent");
 
   if (page === "about") {
