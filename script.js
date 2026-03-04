@@ -727,6 +727,27 @@ function goBack() {
   
   window.scrollTo(0, 0);
 }
+function showDashboard() {
+    const toolsGrid = document.getElementById("toolsGrid");
+    const seoSection = document.getElementById("seoSection");
+    const activeTool = document.getElementById("activeTool");
+    const extraScreens = document.getElementById("extraScreens");
+
+    // 1. URL wapas main domain par le jao (URL se tool name hata do)
+    window.history.pushState({}, "", "/");
+
+    // 2. Title ko original default title kar do
+    document.title = "SwiftTool Pro - Free Online Digital Toolkit & PDF Tools";
+
+    // 3. UI logic: Tool hide karo aur Dashboard dikhao
+    if (activeTool) activeTool.classList.add("d-none");
+    if (extraScreens) extraScreens.classList.add("d-none");
+    if (toolsGrid) toolsGrid.classList.remove("d-none");
+    if (seoSection) seoSection.classList.remove("d-none");
+
+    window.scrollTo(0, 0);
+}
+
 function updateQDisplay(val) {
   document.getElementById("qValue").innerText = Math.round(val * 100) + "%";
 }
@@ -856,29 +877,24 @@ function showExtra(page) {
   }
 }
 window.onpopstate = function (event) {
-  const activeTool = document.getElementById("activeTool");
-  const extraScreens = document.getElementById("extraScreens");
-  const toolsGrid = document.getElementById("toolsGrid");
+    const activeTool = document.getElementById("activeTool");
+    const extraScreens = document.getElementById("extraScreens");
+    const toolsGrid = document.getElementById("toolsGrid");
+    const seoSection = document.getElementById("seoSection");
 
-  // Agar koi tool ya extra screen (About/Contact) khuli hai, toh dashboard dikhao
-  if (
-    !activeTool.classList.contains("d-none") ||
-    !extraScreens.classList.contains("d-none")
-  ) {
-    // Dashboard wapas dikhane ka logic
-    activeTool.classList.add("d-none");
-    extraScreens.classList.add("d-none");
-    toolsGrid.classList.remove("d-none");
-
-    if (document.getElementById("seoSection")) {
-      document.getElementById("seoSection").classList.remove("d-none");
+    // Agar state khali hai (yani user home par aa gaya hai)
+    if (!event.state || !event.state.tool) {
+        activeTool.classList.add("d-none");
+        extraScreens.classList.add("d-none");
+        toolsGrid.classList.remove("d-none");
+        if (seoSection) seoSection.classList.remove("d-none");
+        
+        // Title reset
+        document.title = "SwiftTool Pro - Free Online Digital Toolkit & PDF Tools";
+    } else {
+        // Agar user back karte waqt kisi aur tool par gaya hai
+        openTool(event.state.tool);
     }
-
-    window.scrollTo(0, 0);
-  } else {
-    // Agar user pehle se dashboard par hai aur back dabaye, toh hi exit ho
-    history.back();
-  }
 };
 
 async function calculateAge() {
