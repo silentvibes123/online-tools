@@ -123,7 +123,7 @@ function openTool(toolName) {
   const activeTool = document.getElementById("activeTool");
   const toolUI = document.getElementById("toolUI");
 
-  history.pushState({ tool: toolName }, "");
+ window.history.pushState({ tool: toolName }, "", "/" + toolName);
 
   updateDynamicTitle(toolName);
 
@@ -723,7 +723,7 @@ function goBack() {
   
   // 3. URL aur Title reset
   history.pushState(null, "", window.location.pathname);
-  document.title = "SwiftTool Pro - 20KB Image Compressor & Free PDF Tools";
+  document.title = toolName.charAt(0).toUpperCase() + toolName.slice(1) + " | SwiftTool Pro";
   
   window.scrollTo(0, 0);
 }
