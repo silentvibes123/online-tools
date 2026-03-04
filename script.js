@@ -121,8 +121,12 @@ function openTool(toolName) {
 }
 function renderToolContent(toolName, container) {
   let content = "";
-  const commonHeader = "";
-
+  const commonHeader = `
+    <div class="mb-4 text-start">
+        <button class="btn btn-sm btn-light border shadow-sm px-3" onclick="goToDashboard()">
+            <i class="fas fa-arrow-left me-2 text-primary"></i>Back to Dashboard
+        </button>
+    </div>`;
   if (toolName === "cash") {
     content =
       commonHeader +
@@ -751,28 +755,26 @@ function previewImage() {
 }
 
 function goToDashboard() {
-    // 1. URL se tool name hatao (e.g., /cash se wapas / par)
-    window.history.pushState({ tool: null }, "", "/");
-
-    // 2. Title ko wapas original karo
-    updateDynamicTitle(null);
-
-    // 3. UI Elements ko toggle karo
     const toolsGrid = document.getElementById("toolsGrid");
     const seoSection = document.getElementById("seoSection");
     const activeTool = document.getElementById("activeTool");
     const toolUI = document.getElementById("toolUI");
 
+    // 1. URL reset karo (e.g., /cash se wapas / par)
+    window.history.pushState({ tool: null }, "", "/");
+
+    // 2. Title reset karo (SwiftTool Pro default)
+    updateDynamicTitle(null); 
+
+    // 3. UI logic: Tool chupao aur Dashboard dikhao
     if (activeTool) activeTool.classList.add("d-none");
-    if (toolUI) toolUI.innerHTML = ""; // Purana tool content flush karo
+    if (toolUI) toolUI.innerHTML = ""; // Tool ka content delete karo
     
     if (toolsGrid) toolsGrid.classList.remove("d-none");
     if (seoSection) seoSection.classList.remove("d-none");
 
-    // 4. Page ko upar scroll karo
+    // 4. Page ke top par jao
     window.scrollTo(0, 0);
-    
-    console.log("Dashboard restored successfully.");
 }
 
 function showExtra(page) {
@@ -881,22 +883,21 @@ function showExtra(page) {
   }
 }
 window.onpopstate = function (event) {
-  if (event.state && event.state.tool) {
-    // Agar user kisi tool page par back ja raha hai
-    openTool(event.state.tool);
-  } else {
-    // Agar user Home/Dashboard par wapas aa raha hai
-    const toolsGrid = document.getElementById("toolsGrid");
-    const seoSection = document.getElementById("seoSection");
-    const activeTool = document.getElementById("activeTool");
+    if (event.state && event.state.tool) {
+        // Agar tool page par ja rahe ho
+        openTool(event.state.tool);
+    } else {
+        // Agar dashboard/home par wapas aa rahe ho
+        const toolsGrid = document.getElementById("toolsGrid");
+        const seoSection = document.getElementById("seoSection");
+        const activeTool = document.getElementById("activeTool");
 
-    activeTool.classList.add("d-none");
-    toolsGrid.classList.remove("d-none");
-    if (seoSection) seoSection.classList.remove("d-none");
+        if (activeTool) activeTool.classList.add("d-none");
+        if (toolsGrid) toolsGrid.classList.remove("d-none");
+        if (seoSection) seoSection.classList.remove("d-none");
 
-    // Force Title Reset
-    updateDynamicTitle(null);
-  }
+        updateDynamicTitle(null);
+    }
 };
 
 async function calculateAge() {
