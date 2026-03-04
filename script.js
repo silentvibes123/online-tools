@@ -19,70 +19,49 @@ function loadScript(src) {
 }
 
 function updateDynamicTitle(toolName) {
+  // Default Dashboard Values
   let newTitle = "SwiftTool Pro - Free Online Digital Toolkit & PDF Tools";
-  let metaDesc =
-    "SwiftTool Pro offers free, secure, and fast digital tools like Image Resizer for SSC/UPSC, Cash Counter, PDF Converter, and AI Voice. No file uploads, 100% private.";
+  let metaDesc = "SwiftTool Pro offers free, secure, and fast digital tools like Image Resizer, Cash Counter, PDF Converter, and AI Voice. No file uploads, 100% private.";
 
-  // Tool wise Title and Description logic
+  // Tool wise Title and Description
   if (toolName === "cash") {
     newTitle = "Online Cash Counter & Denomination Calculator | SwiftTool Pro";
-    metaDesc =
-      "Calculate total cash with Indian currency denominations (₹2000 to ₹1). Generate and print professional cash receipts instantly for banks and shops.";
+    metaDesc = "Calculate total cash with Indian currency denominations (₹2000 to ₹1). Generate and print professional cash receipts instantly.";
   } else if (toolName === "resizer") {
-    newTitle =
-      "Exam Photo Resizer (20KB - 50KB) for SSC, UPSC, Bank | SwiftTool Pro";
-    metaDesc =
-      "Perfectly resize your photos and signatures for SSC, UPSC, and IBPS exams. Compress to 20KB or 50KB with standard 350x450 dimensions without quality loss.";
+    newTitle = "Exam Photo Resizer (20KB - 50KB) for SSC, UPSC, Bank | SwiftTool Pro";
+    metaDesc = "Perfectly resize photos and signatures for SSC, UPSC, and IBPS exams. Compress to 20KB/50KB without quality loss.";
   } else if (toolName === "age") {
-    newTitle =
-      "Accurate Age Calculator by Date of Birth - Exact Age | SwiftTool Pro";
-    metaDesc =
-      "Calculate your exact age in years, months, and days. Perfect for government job forms and calculating age eligibility for exams like SSC and UPSC.";
+    newTitle = "Accurate Age Calculator by Date of Birth | SwiftTool Pro";
+    metaDesc = "Calculate your exact age in years, months, and days. Perfect for government job forms and SSC/UPSC eligibility.";
   } else if (toolName === "pdf") {
-    newTitle =
-      "Images to PDF Converter - High Quality & Secure | SwiftTool Pro";
-    metaDesc =
-      "Convert JPG, PNG, and WEBP images into a single high-quality PDF document. Fast, free, and works entirely in your browser for 100% privacy.";
+    newTitle = "Images to PDF Converter - High Quality & Secure | SwiftTool Pro";
+    metaDesc = "Convert JPG, PNG, and WEBP images into a single high-quality PDF document instantly.";
   } else if (toolName === "compress") {
-    newTitle =
-      "Compress Image to 20KB & 50KB Online - Quality Optimizer | SwiftTool Pro";
-    metaDesc =
-      "Reduce image file size online without losing clarity. Best tool for optimizing photos for web use and online application forms.";
+    newTitle = "Compress Image to 20KB & 50KB Online | SwiftTool Pro";
+    metaDesc = "Reduce image file size online without losing clarity. Best for optimizing photos for web use.";
   } else if (toolName === "qrcode") {
-    newTitle = "Free QR Code Generator for Text, URL & Contact | SwiftTool Pro";
-    metaDesc =
-      "Create custom QR codes for your website, business cards, or personal use for free. Instant download and high-resolution scan-ready QR codes.";
+    newTitle = "Free QR Code Generator for Text & URL | SwiftTool Pro";
+    metaDesc = "Create custom QR codes for your website or business cards for free. Instant download.";
   } else if (toolName === "pdfToImg") {
-    newTitle =
-      "PDF to Image Converter Online - Extract High-Res JPG | SwiftTool Pro";
-    metaDesc =
-      "Convert PDF pages into high-quality JPEG/PNG images. Secure browser-based conversion—no files are uploaded to our servers.";
+    newTitle = "PDF to Image Converter Online - Extract JPG | SwiftTool Pro";
+    metaDesc = "Convert PDF pages into high-quality JPEG/PNG images securely in your browser.";
   } else if (toolName === "voice") {
     newTitle = "AI Voice - Free Text to Speech Online | SwiftTool Pro";
-    metaDesc =
-      "Convert your written text into a clear AI-powered human voice. Perfect for creating voiceovers and listening to long documents.";
+    metaDesc = "Convert your written text into a clear AI-powered human voice. Perfect for voiceovers.";
   } else if (toolName === "merge") {
     newTitle = "Merge PDF Files Online - Combine PDF Fast | SwiftTool Pro";
-    metaDesc =
-      "Combine multiple PDF documents into one single file securely. Our PDF merger works offline in your browser for maximum data safety.";
+    metaDesc = "Combine multiple PDF documents into one single file securely and offline.";
   } else if (toolName === "split") {
-    newTitle =
-      "Split PDF Pages - Extract Specific Pages Online | SwiftTool Pro";
-    metaDesc =
-      "Extract pages from your PDF file or split one PDF into multiple documents instantly. Fast, free, and secure PDF splitting tool.";
-  }
-  else if (!toolName || toolName === "home") {
-      newTitle = "SwiftTool Pro - Free Online Digital Toolkit & PDF Tools";
-      metaDesc = "SwiftTool Pro offers free, secure, and fast digital tools like Image Resizer, Cash Counter, and PDF Converter.";
+    newTitle = "Split PDF Pages - Extract Specific Pages | SwiftTool Pro";
+    metaDesc = "Extract pages from your PDF file or split one PDF into multiple documents instantly.";
   }
 
-  // --- Update Document Title ---
+  // --- Final Update ---
   document.title = newTitle;
-
-  // --- Update Meta Description for SEO ---
   let metaDescriptionTag = document.querySelector('meta[name="description"]');
-  if (metaDescriptionTag) metaDescriptionTag.setAttribute("content", metaDesc);
-  console.log("SEO Updated: " + newTitle);
+  if (metaDescriptionTag) {
+    metaDescriptionTag.setAttribute("content", metaDesc);
+  }
 }
 
 function showNotify(type, message) {
@@ -118,21 +97,21 @@ function openTool(toolName) {
   const activeTool = document.getElementById("activeTool");
   const toolUI = document.getElementById("toolUI");
 
+  // URL badlo (e.g., /resizer)
   window.history.pushState({ tool: toolName }, "", "/" + toolName);
 
+  // Title badlo
   updateDynamicTitle(toolName);
 
-  // Purana content gayab karo (Fade out)
+  // UI Hide/Show
   toolsGrid.classList.add("d-none");
   if (seoSection) seoSection.classList.add("d-none");
-
-  // Naya tool dikhao
   activeTool.classList.remove("d-none");
-  toolUI.innerHTML = ""; // Purana kachra saaf
-
-  renderToolContent(toolName, toolUI); // Tool ka HTML load karo
+  
+  toolUI.innerHTML = ""; // Purana data saaf
+  window.scrollTo(0, 0); // Upar scroll karo
+  renderToolContent(toolName, toolUI);
 }
-
 function renderToolContent(toolName, container) {
   let content = "";
   const commonHeader = "";
@@ -725,23 +704,19 @@ function showDashboard() {
   const toolsGrid = document.getElementById("toolsGrid");
   const seoSection = document.getElementById("seoSection");
   const activeTool = document.getElementById("activeTool");
-  const toolUI = document.getElementById("toolUI");
 
-  // 1. URL reset - Ab swifttoolpro.com/ ke baad kuch nahi dikhega
+  // URL reset (Ab /resizer hat jayega)
   window.history.pushState({ tool: null }, "", "/");
 
-  // 2. Title & Meta Reset - Tool ka naam yahan se hat jayega
-  updateDynamicTitle(null); 
+  // Title reset (Ab SwiftTool Pro dikhega)
+  updateDynamicTitle(null);
 
-  // 3. UI logic
-  if (activeTool) activeTool.classList.add("d-none");
-  if (toolUI) toolUI.innerHTML = ""; // Tool ka HTML saaf karo
-  
-  if (toolsGrid) toolsGrid.classList.remove("d-none");
+  // UI Restore
+  activeTool.classList.add("d-none");
+  toolsGrid.classList.remove("d-none");
   if (seoSection) seoSection.classList.remove("d-none");
-
+  
   window.scrollTo(0, 0);
-  console.log("Dashboard Restored: Title & URL Cleaned");
 }
 
 function updateQDisplay(val) {
@@ -875,20 +850,20 @@ function showExtra(page) {
 }
 window.onpopstate = function (event) {
   if (event.state && event.state.tool) {
-    // Agar kisi tool par wapas ja rahe ho
+    // Agar user kisi tool page par back ja raha hai
     openTool(event.state.tool);
   } else {
-    // Agar dashboard (home) par wapas aa rahe ho
-    const activeTool = document.getElementById("activeTool");
+    // Agar user Home/Dashboard par wapas aa raha hai
     const toolsGrid = document.getElementById("toolsGrid");
     const seoSection = document.getElementById("seoSection");
+    const activeTool = document.getElementById("activeTool");
 
     activeTool.classList.add("d-none");
     toolsGrid.classList.remove("d-none");
     if (seoSection) seoSection.classList.remove("d-none");
-    
-    // Forcefully reset title on back button
-    updateDynamicTitle(null); 
+
+    // Force Title Reset
+    updateDynamicTitle(null);
   }
 };
 
