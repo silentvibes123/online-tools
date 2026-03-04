@@ -168,6 +168,12 @@ function renderToolContent(toolName, container) {
                     <h1 class="display-4 fw-bold text-success">₹<span id="grandTotal">0</span></h1>
                     <button class="btn btn-outline-primary mt-3" onclick="handlePrint()"><i class="fas fa-print me-2"></i>Print Receipt</button>
                 </div>
+                <div class="mt-4 text-center border-top pt-2">
+      <p class="x-small text-muted mb-0">
+          <i class="fas fa-shield-alt text-success me-1"></i> 
+          Privacy: No files are uploaded. Processing is 100% Local.
+      </p>
+  </div>
             </div> 
            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-success"><i class="fas fa-coins me-2"></i> Online Cash Counter & Denomination Calculator for India</h5>
@@ -189,6 +195,12 @@ function renderToolContent(toolName, container) {
                 <input type="file" id="imageInput" multiple accept="image/*" class="form-control mb-3">
                 <button class="btn btn-danger btn-lg w-100" id="pdfBtn" onclick="generatePDF()"><i class="fas fa-magic me-2"></i>Generate PDF</button>
             </div>
+            <div class="mt-4 text-center border-top pt-2">
+      <p class="x-small text-muted mb-0">
+          <i class="fas fa-shield-alt text-success me-1"></i> 
+          Privacy: No files are uploaded. Processing is 100% Local.
+      </p>
+  </div>
             <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
                 <h5 class="fw-bold text-danger"><i class="fas fa-file-pdf me-2"></i> Professional Image to PDF Converter</h5>
                 <p class="small text-muted">Convert JPG, PNG, or WEBP images into a single high-quality PDF document instantly.</p>
@@ -219,6 +231,12 @@ function renderToolContent(toolName, container) {
                     <option value="100">Target: Under 100KB</option>
                 </select>
                 <button class="btn btn-warning w-100 fw-bold" onclick="smartResize()">Download Perfect Size</button>
+                <div class="mt-4 text-center border-top pt-2">
+      <p class="x-small text-muted mb-0">
+          <i class="fas fa-shield-alt text-success me-1"></i> 
+          Privacy: No files are uploaded. Processing is 100% Local.
+      </p>
+  </div>
                <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-warning"><i class="fas fa-id-badge me-2"></i> Professional Exam Photo & Signature Resizer (20KB - 50KB)</h5>
     <p class="small text-muted">Filling out government job applications like <strong>SSC GD, UPSC, IBPS, or Railway (RRB)</strong> can be frustrating when your photo or signature gets rejected due to incorrect file size. SwiftTool Pro's <strong>Online Image Resizer</strong> is specially programmed to meet the exact dimensions and KB requirements of Indian competitive exams.</p>
@@ -239,6 +257,12 @@ function renderToolContent(toolName, container) {
             <button class="btn btn-primary w-100 fw-bold" id="mergeBtn" onclick="mergePDFs()">
                 <i class="fas fa-layer-group me-2"></i>Merge & Download PDF
             </button>
+            <div class="mt-4 text-center border-top pt-2">
+      <p class="x-small text-muted mb-0">
+          <i class="fas fa-shield-alt text-success me-1"></i> 
+          Privacy: No files are uploaded. Processing is 100% Local.
+      </p>
+  </div>
            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-primary"><i class="fas fa-object-group me-2"></i> Combine Multiple PDF Files Securely - PDF Merger</h5>
     <p class="small text-muted">Managing multiple PDF documents can be messy. SwiftTool Pro's <strong>Merge PDF tool</strong> allows you to combine several PDF files into one neatly organized document in seconds. This is an essential feature for lawyers, accountants, and students who need to merge different chapters or reports into a single submission-ready file.</p>
@@ -262,6 +286,12 @@ function renderToolContent(toolName, container) {
             <button class="btn btn-warning w-100 fw-bold" id="splitBtn" onclick="splitPDF()">
                 <i class="fas fa-file-export me-2"></i>Split & Download
             </button>
+            <div class="mt-4 text-center border-top pt-2">
+      <p class="x-small text-muted mb-0">
+          <i class="fas fa-shield-alt text-success me-1"></i> 
+          Privacy: No files are uploaded. Processing is 100% Local.
+      </p>
+  </div>
            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-warning"><i class="fas fa-cut me-2"></i> Professional PDF Splitter - Extract Specific Pages Online</h5>
     <p class="small text-muted">Sometimes, a 50-page PDF contains only one or two pages that you actually need. SwiftTool Pro's <strong>Split PDF tool</strong> allows you to extract specific pages or a range of pages from any PDF document effortlessly. This is a must-have tool for teachers sharing specific lessons or employees extracting certain invoices from a large monthly report.</p>
@@ -286,6 +316,12 @@ function renderToolContent(toolName, container) {
                 <div class="col-md-6 text-center border-start">
                     <div id="previewArea" class="mb-3 border rounded p-2" style="min-height:150px">Preview</div>
                     <button class="btn btn-primary w-100" onclick="compressImage()">Compress & Download</button>
+                    <div class="mt-4 text-center border-top pt-2">
+      <p class="x-small text-muted mb-0">
+          <i class="fas fa-shield-alt text-success me-1"></i> 
+          Privacy: No files are uploaded. Processing is 100% Local.
+      </p>
+  </div>
                 </div>
             </div>
            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
@@ -306,6 +342,12 @@ function renderToolContent(toolName, container) {
             </div><hr>
             <input type="text" id="qrText" class="form-control mb-3" placeholder="Enter text or URL">
             <button class="btn btn-dark w-100" onclick="generateQR()">Generate QR Code</button>
+            <div class="mt-4 text-center border-top pt-2">
+      <p class="x-small text-muted mb-0">
+          <i class="fas fa-shield-alt text-success me-1"></i> 
+          Privacy: No files are uploaded. Processing is 100% Local.
+      </p>
+  </div>
             <div id="qrResult" class="text-center mt-4"></div>
            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-info"><i class="fas fa-images me-2"></i> High-Resolution PDF to Image Converter</h5>
@@ -326,6 +368,12 @@ function renderToolContent(toolName, container) {
             <input type="file" id="pdfInput" accept="application/pdf" class="form-control mb-3">
             <button class="btn btn-info w-100 fw-bold mb-2" id="pdfImgBtn" onclick="convertPdfToImg()">Extract All Pages</button>
             <button class="btn btn-success w-100 fw-bold d-none" id="downloadAllBtn" onclick="downloadAllAsZip()">Download All as ZIP</button>
+            <div class="mt-4 text-center border-top pt-2">
+      <p class="x-small text-muted mb-0">
+          <i class="fas fa-shield-alt text-success me-1"></i> 
+          Privacy: No files are uploaded. Processing is 100% Local.
+      </p>
+  </div>
             <div id="pdfPreview" class="row g-3 mt-4"></div>
             
             <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
@@ -389,6 +437,12 @@ function renderToolContent(toolName, container) {
                 <button class="btn btn-danger px-3 fw-bold" onclick="stopVoice()">
                     <i class="fas fa-stop"></i>
                 </button>
+                <div class="mt-4 text-center border-top pt-2">
+      <p class="x-small text-muted mb-0">
+          <i class="fas fa-shield-alt text-success me-1"></i> 
+          Privacy: No files are uploaded. Processing is 100% Local.
+      </p>
+  </div>
             </div>
         </div>
 
@@ -420,7 +474,14 @@ function renderToolContent(toolName, container) {
                     <button class="btn btn-primary w-100 py-3 fw-bold shadow-sm" onclick="calculateAge()">
                         <i class="fas fa-calculator me-2"></i> Calculate Exact Age
                     </button>
+                    
                 </div>
+                <div class="mt-4 text-center border-top pt-2">
+      <p class="x-small text-muted mb-0">
+          <i class="fas fa-shield-alt text-success me-1"></i> 
+          Privacy: No files are uploaded. Processing is 100% Local.
+      </p>
+  </div>
             </div>
             <div id="ageResult" class="mt-4 d-none">
                 <div class="card border-0 bg-light shadow-sm mb-3">
@@ -470,6 +531,12 @@ function renderToolContent(toolName, container) {
                   <i class="fas fa-file-pdf me-2"></i>Download as PDF
               </button>
           </div>
+          <div class="mt-4 text-center border-top pt-2">
+      <p class="x-small text-muted mb-0">
+          <i class="fas fa-shield-alt text-success me-1"></i> 
+          Privacy: No files are uploaded. Processing is 100% Local.
+      </p>
+  </div>
 
          <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-primary"><i class="fas fa-file-word me-2"></i> Best Offline Word to PDF Converter - 100% Private</h5>
@@ -500,8 +567,15 @@ function renderToolContent(toolName, container) {
                     <i class="fas fa-download me-2"></i>Download Text
                 </button>
               </div>
+              
           </div>
       </div>
+      <div class="mt-4 text-center border-top pt-2">
+      <p class="x-small text-muted mb-0">
+          <i class="fas fa-shield-alt text-success me-1"></i> 
+          Privacy: No files are uploaded. Processing is 100% Local.
+      </p>
+  </div>
       <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-info"><i class="fas fa-file-alt me-2"></i> Advanced PDF to Text Formatter & Editor</h5>
     <p class="small text-muted">Extracting editable text from a PDF can be a nightmare if you don't have the right tools. SwiftTool Pro's <strong>PDF to Text Formatter</strong> uses high-performance text extraction technology to pull content directly from your PDF files and place it into a built-in <strong>Smart Editor</strong>. This is perfect for converting reports into blog posts, notes into assignments, or data into emails.</p>
@@ -678,103 +752,86 @@ function previewImage() {
 }
 
 function showExtra(page) {
-// 1. URL badlo (taaki user ko naya link dikhe)
   history.pushState({ page: page }, "", `#${page}`);
-
-  // 2. Dashboard, Tools aur SEO Section sab ko hide kar do
   document.getElementById("toolsGrid").classList.add("d-none");
   document.getElementById("activeTool").classList.add("d-none");
   if (document.getElementById("seoSection")) {
     document.getElementById("seoSection").classList.add("d-none");
   }
 
-  // 3. Extra screen dikhao aur page ke ekdum top par jao
   const extraScreens = document.getElementById("extraScreens");
   extraScreens.classList.remove("d-none");
   window.scrollTo(0, 0); 
-
   const content = document.getElementById("extraContent");
 
   if (page === "about") {
     content.innerHTML = `
       <div class="text-start p-3">
         <h2 class="fw-bold text-primary mb-4 text-center">About SwiftTool Pro</h2>
-        <p class="lead">Welcome to <b>SwiftTool Pro</b>, a professional platform providing high-quality digital utility tools.</p>
-        <p>Our mission is simple: to make complex digital tasks easy, fast, and secure. We specialize in web-based tools that help students and professionals handle daily tasks like document conversion and image optimization without downloading heavy software.</p>
+        <p class="lead text-center"><b>Your Trusted Browser-Based Utility Hub</b></p>
+        <p>SwiftTool Pro is a high-performance digital toolkit designed for students, professionals, and job seekers. Founded in 2026, we specialize in <b>exam-ready photo resizing</b> and <b>secure document conversion</b>. Our core philosophy is to provide premium features for free without compromising user data.</p>
         
-        <h5 class="mt-4"><i class="fas fa-check-circle text-success me-2"></i>What We Offer:</h5>
-        <ul>
-            <li><b>Exam Ready Tools:</b> Specialized resizers for SSC, UPSC, and Banking exams.</li>
-            <li><b>Document Management:</b> High-speed PDF to Image and Image to PDF conversion.</li>
-            <li><b>Financial Utilities:</b> Simple and accurate Cash Counter for daily accounting.</li>
-            <li><b>AI Powered Features:</b> QR generation and Text-to-Speech (AI Voice) capabilities.</li>
+        <h5 class="mt-4 text-primary"><i class="fas fa-microchip me-2"></i>Advanced Edge Technology</h5>
+        <p>Unlike traditional converters, SwiftTool Pro utilizes <b>Client-Side Processing</b>. This means your files are processed directly on your device using high-speed JavaScript libraries. Your sensitive documents never touch a cloud server, ensuring absolute privacy and security.</p>
+
+        <h5 class="mt-4 text-primary"><i class="fas fa-check-double me-2"></i>Our Specialized Tools:</h5>
+        <ul class="list-group list-group-flush mb-4">
+            <li class="list-group-item"><b>✓ Exam Resizer:</b> 20KB/50KB target compression for SSC & UPSC.</li>
+            <li class="list-group-item"><b>✓ PDF Suite:</b> Merge, Split, and Convert with Zero Loss.</li>
+            <li class="list-group-item"><b>✓ Business Tools:</b> Smart Cash Counter and QR Generator.</li>
         </ul>
 
-        <h5 class="mt-4"><i class="fas fa-shield-alt text-primary me-2"></i>Why Trust Us?</h5>
-        <p>At SwiftTool Pro, we prioritize <b>User Privacy</b>. Unlike other online converters, we process all your data <b>locally in your browser</b>. Your photos, documents, and calculations never reach our servers, ensuring 100% data safety.</p>
-        
-        <div class="alert alert-info mt-4">
-            Founded in 2026, we are committed to continuous improvement. For suggestions, visit our Contact page.
+        <div class="alert alert-primary mt-3 text-center">
+            <b>Safety First:</b> We are committed to a safe, ad-supported environment for free users worldwide.
         </div>
       </div>`;
   } else if (page === "terms") {
     content.innerHTML = `
       <div class="text-start p-3">
         <h2 class="fw-bold text-dark mb-4 text-center">Privacy Policy & Terms</h2>
-        <p class="small text-muted">Last Updated: February 2026</p>
+        <p class="small text-muted text-center">Effective Date: February 2026</p>
         
-        <h5 class="mt-4 text-primary">1. Privacy Commitment</h5>
-        <p>At SwiftTool Pro, we do not collect, store, or share your personal files. All tools (Image Compressor, PDF Tools, etc.) work using <b>Client-Side JavaScript</b>. This means your files stay on your device.</p>
+        <h5 class="mt-4 text-primary">1. Data Privacy Policy</h5>
+        <p>We respect your privacy. All file processing (Image Compression, PDF conversions) occurs locally. <b>We do not upload your files to our servers.</b> No document data is permanently stored on SwiftTool Pro.</p>
 
-        <h5 class="mt-4 text-primary">2. Cookies and Ads</h5>
-        <p>We use standard cookies to improve user experience. Our website serves advertisements through partners like <b>Google AdSense</b>. These third-party ad servers may use cookies to serve ads based on your prior visits to our website.</p>
+        <h5 class="mt-4 text-primary">2. Google AdSense & Cookies</h5>
+        <p>SwiftTool Pro uses cookies to personalize content and ads. We use <b>Google AdSense</b> to serve ads. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits. You may opt out of personalized advertising by visiting Google Ad Settings.</p>
 
-        <h5 class="mt-4 text-primary">3. Terms of Service</h5>
+        <h5 class="mt-4 text-primary">3. Terms of Use</h5>
         <ul>
-            <li>The tools are provided "as-is" without any warranties.</li>
-            <li>Users are responsible for verifying the final output of exam-related tools.</li>
-            <li>SwiftTool Pro is free for personal use. Commercial automated scraping is prohibited.</li>
+            <li>Tools are free for personal use.</li>
+            <li>Users must verify outputs before official exam submissions.</li>
+            <li>Redistribution or automated scraping of our tools is prohibited.</li>
         </ul>
 
-        <h5 class="mt-4 text-primary">4. Consent</h5>
-        <p>By using our website, you hereby consent to our Privacy Policy and agree to its terms.</p>
+        <p class="mt-4 small text-muted">By using SwiftTool Pro, you agree to our Terms of Service and Data Protection guidelines.</p>
       </div>`;
   } else if (page === "contact") {
-    // Aapka Formspree wala contact code ekdum perfect hai, use waisa hi rehne dein
-    // Bas email placeholder ko 'contact@swifttoolpro.com' kar dena professional look ke liye.
     content.innerHTML = `
-        <h2 class="fw-bold text-danger mb-4">Contact Us</h2>
-        <p class="text-muted">Have a query or need a new tool? Reach out to us.</p>
+        <h2 class="fw-bold text-primary mb-4 text-center">Contact Us</h2>
+        <p class="text-muted text-center">Questions? Feedback? We'd love to hear from you.</p>
         <form id="contact-form" action="https://formspree.io/f/xbdayrne" method="POST">
             <div class="mb-3 text-start">
-                <label class="form-label fw-bold">Full Name</label>
-                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                <label class="form-label fw-bold small">Full Name</label>
+                <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
             </div>
             <div class="mb-3 text-start">
-                <label class="form-label fw-bold">Email</label>
-                <input type="email" name="email" class="form-control" placeholder="contact@yourdomain.com" required>
+                <label class="form-label fw-bold small">Official Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="email@example.com" required>
             </div>
             <div class="mb-3 text-start">
-                <label class="form-label fw-bold">Message</label>
-                <textarea name="message" class="form-control" rows="4" placeholder="How can we help?" required></textarea>
+                <label class="form-label fw-bold small">Message / Inquiry</label>
+                <textarea name="message" class="form-control" rows="4" placeholder="How can we assist you today?" required></textarea>
             </div>
-            <button type="submit" id="form-submit" class="btn btn-danger w-100 fw-bold py-3">Send Message</button>
+            <button type="submit" id="form-submit" class="btn btn-primary w-100 fw-bold py-3">Send Message</button>
         </form>`;
+    
     const form = document.getElementById("contact-form");
     form.onsubmit = async (e) => {
       e.preventDefault();
       const btn = document.getElementById("form-submit");
-
-      if (form.action.includes("https://formspree.io/f/xbdayrne")) {
-        return Swal.fire(
-          "Setup Required",
-          "Please add your valid Formspree ID in script.js",
-          "warning",
-        );
-      }
       btn.disabled = true;
-      btn.innerHTML =
-        '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
 
       try {
         const formData = new FormData(form);
@@ -785,18 +842,16 @@ function showExtra(page) {
         });
 
         if (response.ok) {
-          showNotify("success", "Thank you! Your message has been received.");
+          showNotify("success", "Message Sent! We will get back to you soon.");
           form.reset();
         } else {
-          showNotify("error", "Message could not be sent. Please try again.");
+          showNotify("error", "Error! Please check your connection.");
         }
       } catch (error) {
-        showNotify("error", "Network error. Check your connection.");
+        showNotify("error", "Network error. Try again later.");
       }
-
       btn.disabled = false;
-      btn.innerHTML =
-        '<i class="fas fa-paper-plane me-2"></i> Send Message Now';
+      btn.innerHTML = 'Send Message';
     };
   }
 }
