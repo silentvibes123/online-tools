@@ -55,6 +55,13 @@ function updateDynamicTitle(toolName) {
     newTitle = "Split PDF Pages - Extract Specific Pages | SwiftTool Pro";
     metaDesc = "Extract pages from your PDF file or split one PDF into multiple documents instantly.";
   }
+  else if (!toolName || toolName === "home" || toolName === null) {
+        document.title = "SwiftTool Pro - Free Online Digital Toolkit & PDF Tools";
+        let metaDesc = "SwiftTool Pro offers free, secure, and fast digital tools like Image Resizer, Cash Counter, and PDF Tools.";
+        let metaTag = document.querySelector('meta[name="description"]');
+        if (metaTag) metaTag.setAttribute("content", metaDesc);
+        return; // Function yahi stop kar do
+    }
 
   // --- Final Update ---
   document.title = newTitle;
@@ -741,6 +748,31 @@ function previewImage() {
     };
     reader.readAsDataURL(file);
   }
+}
+
+function goToDashboard() {
+    // 1. URL se tool name hatao (e.g., /cash se wapas / par)
+    window.history.pushState({ tool: null }, "", "/");
+
+    // 2. Title ko wapas original karo
+    updateDynamicTitle(null);
+
+    // 3. UI Elements ko toggle karo
+    const toolsGrid = document.getElementById("toolsGrid");
+    const seoSection = document.getElementById("seoSection");
+    const activeTool = document.getElementById("activeTool");
+    const toolUI = document.getElementById("toolUI");
+
+    if (activeTool) activeTool.classList.add("d-none");
+    if (toolUI) toolUI.innerHTML = ""; // Purana tool content flush karo
+    
+    if (toolsGrid) toolsGrid.classList.remove("d-none");
+    if (seoSection) seoSection.classList.remove("d-none");
+
+    // 4. Page ko upar scroll karo
+    window.scrollTo(0, 0);
+    
+    console.log("Dashboard restored successfully.");
 }
 
 function showExtra(page) {
