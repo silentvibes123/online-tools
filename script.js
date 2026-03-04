@@ -71,22 +71,17 @@ function updateDynamicTitle(toolName) {
     metaDesc =
       "Extract pages from your PDF file or split one PDF into multiple documents instantly. Fast, free, and secure PDF splitting tool.";
   }
+  else if (!toolName || toolName === "home") {
+      newTitle = "SwiftTool Pro - Free Online Digital Toolkit & PDF Tools";
+      metaDesc = "SwiftTool Pro offers free, secure, and fast digital tools like Image Resizer, Cash Counter, and PDF Converter.";
+  }
 
   // --- Update Document Title ---
   document.title = newTitle;
 
   // --- Update Meta Description for SEO ---
   let metaDescriptionTag = document.querySelector('meta[name="description"]');
-  if (metaDescriptionTag) {
-    metaDescriptionTag.setAttribute("content", metaDesc);
-  } else {
-    // Agar meta tag nahi hai toh naya bana dega
-    let newMeta = document.createElement("meta");
-    newMeta.name = "description";
-    newMeta.content = metaDesc;
-    document.head.appendChild(newMeta);
-  }
-
+  if (metaDescriptionTag) metaDescriptionTag.setAttribute("content", metaDesc);
   console.log("SEO Updated: " + newTitle);
 }
 
@@ -123,7 +118,7 @@ function openTool(toolName) {
   const activeTool = document.getElementById("activeTool");
   const toolUI = document.getElementById("toolUI");
 
- window.history.pushState({ tool: toolName }, "", "/" + toolName);
+  window.history.pushState({ tool: toolName }, "", "/" + toolName);
 
   updateDynamicTitle(toolName);
 
@@ -584,8 +579,6 @@ function renderToolContent(toolName, container) {
     <p class="small text-muted"><strong>Pro Guide:</strong> Upload your PDF, review the extracted text in the editor, make your changes, and click 'Download Text'. This tool is a lifesaver for researchers and writers who deal with digital documents daily.</p>
   </div>
       `;
-
-
   }
 
   // Final rendering
@@ -714,38 +707,41 @@ function goBack() {
   // 1. Screens reset karo
   document.getElementById("activeTool").classList.add("d-none");
   document.getElementById("extraScreens").classList.add("d-none");
-  
+
   // 2. Dashboard aur SEO section wapas dikhao
   document.getElementById("toolsGrid").classList.remove("d-none");
   if (document.getElementById("seoSection")) {
     document.getElementById("seoSection").classList.remove("d-none");
   }
-  
+
   // 3. URL aur Title reset
   history.pushState(null, "", window.location.pathname);
-  document.title = toolName.charAt(0).toUpperCase() + toolName.slice(1) + " | SwiftTool Pro";
-  
+  document.title =
+    toolName.charAt(0).toUpperCase() + toolName.slice(1) + " | SwiftTool Pro";
+
   window.scrollTo(0, 0);
 }
 function showDashboard() {
-    const toolsGrid = document.getElementById("toolsGrid");
-    const seoSection = document.getElementById("seoSection");
-    const activeTool = document.getElementById("activeTool");
-    const extraScreens = document.getElementById("extraScreens");
+  const toolsGrid = document.getElementById("toolsGrid");
+  const seoSection = document.getElementById("seoSection");
+  const activeTool = document.getElementById("activeTool");
+  const toolUI = document.getElementById("toolUI");
 
-    // 1. URL wapas main domain par le jao (URL se tool name hata do)
-    window.history.pushState({}, "", "/");
+  // 1. URL reset - Ab swifttoolpro.com/ ke baad kuch nahi dikhega
+  window.history.pushState({ tool: null }, "", "/");
 
-    // 2. Title ko original default title kar do
-    document.title = "SwiftTool Pro - Free Online Digital Toolkit & PDF Tools";
+  // 2. Title & Meta Reset - Tool ka naam yahan se hat jayega
+  updateDynamicTitle(null); 
 
-    // 3. UI logic: Tool hide karo aur Dashboard dikhao
-    if (activeTool) activeTool.classList.add("d-none");
-    if (extraScreens) extraScreens.classList.add("d-none");
-    if (toolsGrid) toolsGrid.classList.remove("d-none");
-    if (seoSection) seoSection.classList.remove("d-none");
+  // 3. UI logic
+  if (activeTool) activeTool.classList.add("d-none");
+  if (toolUI) toolUI.innerHTML = ""; // Tool ka HTML saaf karo
+  
+  if (toolsGrid) toolsGrid.classList.remove("d-none");
+  if (seoSection) seoSection.classList.remove("d-none");
 
-    window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
+  console.log("Dashboard Restored: Title & URL Cleaned");
 }
 
 function updateQDisplay(val) {
@@ -782,7 +778,7 @@ function showExtra(page) {
 
   const extraScreens = document.getElementById("extraScreens");
   extraScreens.classList.remove("d-none");
-  window.scrollTo(0, 0); 
+  window.scrollTo(0, 0);
   const content = document.getElementById("extraContent");
 
   if (page === "about") {
@@ -846,13 +842,14 @@ function showExtra(page) {
             </div>
             <button type="submit" id="form-submit" class="btn btn-primary w-100 fw-bold py-3">Send Message</button>
         </form>`;
-    
+
     const form = document.getElementById("contact-form");
     form.onsubmit = async (e) => {
       e.preventDefault();
       const btn = document.getElementById("form-submit");
       btn.disabled = true;
-      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+      btn.innerHTML =
+        '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
 
       try {
         const formData = new FormData(form);
@@ -872,29 +869,27 @@ function showExtra(page) {
         showNotify("error", "Network error. Try again later.");
       }
       btn.disabled = false;
-      btn.innerHTML = 'Send Message';
+      btn.innerHTML = "Send Message";
     };
   }
 }
 window.onpopstate = function (event) {
+  if (event.state && event.state.tool) {
+    // Agar kisi tool par wapas ja rahe ho
+    openTool(event.state.tool);
+  } else {
+    // Agar dashboard (home) par wapas aa rahe ho
     const activeTool = document.getElementById("activeTool");
-    const extraScreens = document.getElementById("extraScreens");
     const toolsGrid = document.getElementById("toolsGrid");
     const seoSection = document.getElementById("seoSection");
 
-    // Agar state khali hai (yani user home par aa gaya hai)
-    if (!event.state || !event.state.tool) {
-        activeTool.classList.add("d-none");
-        extraScreens.classList.add("d-none");
-        toolsGrid.classList.remove("d-none");
-        if (seoSection) seoSection.classList.remove("d-none");
-        
-        // Title reset
-        document.title = "SwiftTool Pro - Free Online Digital Toolkit & PDF Tools";
-    } else {
-        // Agar user back karte waqt kisi aur tool par gaya hai
-        openTool(event.state.tool);
-    }
+    activeTool.classList.add("d-none");
+    toolsGrid.classList.remove("d-none");
+    if (seoSection) seoSection.classList.remove("d-none");
+    
+    // Forcefully reset title on back button
+    updateDynamicTitle(null); 
+  }
 };
 
 async function calculateAge() {
