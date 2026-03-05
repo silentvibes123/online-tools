@@ -491,7 +491,8 @@ function renderToolContent(toolName, container) {
   </div>
             `;
   } else if (toolName === "wordToPdf" || toolName === "formatter") {
-    content = `
+    content =
+      commonHeader + `
       <div class="formatter-container p-1 text-start">
           <div class="d-flex justify-content-between align-items-center mb-3">
               <h3><i class="fas fa-file-word me-2 text-primary"></i>Word to PDF Converter</h3>
@@ -534,7 +535,8 @@ function renderToolContent(toolName, container) {
 
   // PDF to Text (Formatter) UI
   else if (toolName === "pdfToWord") {
-    content = `
+     content =
+      commonHeader + `
       <div class="text-center">
           <h3 class="fw-bold mb-3"><i class="fas fa-file-alt text-info me-2"></i>PDF to Text Formatter</h3>
           <p class="text-muted">Extract text from PDF, edit and save.</p>
