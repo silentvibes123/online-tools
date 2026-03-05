@@ -105,7 +105,10 @@ function openTool(toolName) {
   const toolUI = document.getElementById("toolUI");
 
   // URL badlo (e.g., /resizer)
-  window.history.pushState({ tool: toolName }, "", "/" + toolName);
+const currentPath = window.location.pathname.replace("/", "");
+    if (currentPath !== toolName) {
+        window.history.pushState({ tool: toolName }, "", "/" + toolName);
+    }
 
   // Title badlo
   updateDynamicTitle(toolName);
@@ -991,3 +994,23 @@ function resetResizer() {
   document.getElementById("targetSize").value = "50";
   showNotify("info", "Resizer Cleared");
 }
+
+
+// --- URL Routing Logic (Direct Link Fix) ---
+window.addEventListener("DOMContentLoaded", () => {
+    // URL se path nikaalo (e.g., "/cash" se "cash")
+    const path = window.location.pathname.replace("/", "");
+
+    // Agar path khali nahi hai aur wo koi tool hai
+    if (path && path !== "" && path !== "index.html") {
+        console.log("Direct Link Detected for: " + path);
+        
+        // Chota sa delay taaki UI elements load ho jayein
+        setTimeout(() => {
+            openTool(path);
+        }, 100);
+    } else {
+        // Default Dashboard
+        updateDynamicTitle(null);
+    }
+});
