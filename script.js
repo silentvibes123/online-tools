@@ -1,5 +1,33 @@
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+
+  function checkUrlAndLoadTool() {
+    // URL se path nikaalo (e.g., "/cash" se "cash")
+    const path = window.location.pathname.split("/").pop();
+    
+    // Tools ki list jo aapke paas hain
+    const validTools = ["cash", "resizer", "age", "pdf", "compress", "qrcode", "pdfToImg", "voice", "merge", "split"];
+
+    if (validTools.includes(path)) {
+        // Agar valid tool hai, toh use kholo
+        openTool(path);
+    } else {
+        // Agar kuch nahi hai ya galat hai, dashboard dikhao
+        goToDashboard();
+    }
+}
+
+// Jab page pehli baar load ho (Direct Link)
+window.addEventListener("load", checkUrlAndLoadTool);
+
+// Jab browser ka Back/Forward button dabayein
+window.addEventListener("popstate", (event) => {
+    if (event.state && event.state.tool) {
+        openTool(event.state.tool);
+    } else {
+        goToDashboard();
+    }
+});
 let pdfPagesText = [];
 let currentSpeech = null;
 let isPaused = false;
@@ -105,11 +133,9 @@ function openTool(toolName) {
   const toolUI = document.getElementById("toolUI");
 
   // URL badlo (e.g., /resizer)
-const currentPath = window.location.pathname.replace("/", "");
-    if (currentPath !== toolName) {
+if (window.location.pathname !== "/" + toolName) {
         window.history.pushState({ tool: toolName }, "", "/" + toolName);
     }
-
   // Title badlo
   updateDynamicTitle(toolName);
 

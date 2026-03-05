@@ -1,0 +1,5 @@
+RewriteEngine On
+# Agar file ya folder exist nahi karta, toh index.html load karo
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.html [QSA,L]
