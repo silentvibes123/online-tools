@@ -688,6 +688,91 @@ function renderToolContent(toolName, container) {
 
 }
 
+else if (toolName === "removePages") {
+    content = commonHeader + `
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3><i class="fas fa-trash-alt me-2 text-danger"></i>Remove PDF Pages</h3>
+        <button class="btn btn-sm btn-outline-secondary" onclick="openTool('removePages')"><i class="fas fa-redo"></i> Reset</button>
+    </div><hr>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm mb-3">
+                <label class="fw-bold small mb-2">1. Upload PDF</label>
+                <input type="file" id="removeInput" accept="application/pdf" class="form-control mb-3" onchange="previewPdfPages()">
+                
+                <label class="fw-bold small mb-2">2. Enter Page Numbers (e.g., 1, 3)</label>
+                <input type="text" id="pageNumbers" class="form-control mb-3" placeholder="Ex: 1, 4, 7" oninput="markPagesForRemoval()">
+                
+                <button class="btn btn-danger w-100 fw-bold" id="removeBtn" onclick="handleRemovePages()">
+                    <i class="fas fa-file-pdf me-2"></i>Remove & Download
+                </button>
+            </div>
+            <div class="alert alert-warning x-small">
+                <i class="fas fa-lightbulb me-1"></i> <b>Tip:</b> Type the page numbers, and you'll see a red cross on the preview!
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div id="pdfPreviewContainer" class="row g-2 overflow-auto border rounded bg-light p-3" style="max-height: 500px;">
+                <p class="text-muted text-center w-100 py-5">Upload a PDF to see page previews...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+        <h5 class="fw-bold text-danger"><i class="fas fa-eye me-2"></i> Visual PDF Page Remover</h5>
+        <p class="small text-muted">SwiftTool Pro's Visual Remover allows you to see exactly which pages you are deleting. No more guessing page numbers! Our tool processes everything locally in your browser for 100% security.</p>
+    </div>
+    <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h4 class="fw-bold text-dark mb-3">
+        <i class="fas fa-search me-2 text-danger"></i> 
+        Free Online PDF Page Remover – Secure & Fast
+    </h4>
+    
+    <p class="text-muted">
+        Are you looking for a way to <strong>delete pages from PDF</strong> without installing heavy software? SwiftTool Pro’s 
+        <strong>Visual PDF Page Remover</strong> is the most efficient solution. Whether it's an extra blank page, 
+        a confidential sheet, or an unnecessary section, you can remove it in seconds.
+    </p>
+
+    <div class="row g-4 mt-2">
+        <div class="col-md-6">
+            <h6 class="fw-bold"><i class="fas fa-eye text-primary me-2"></i>Visual Page Selection</h6>
+            <p class="small text-muted">
+                Unlike other tools where you guess page numbers, our tool generates <strong>real-time thumbnails</strong>. 
+                You can see exactly what you are deleting with our unique "Red Cross" visual feedback system.
+            </p>
+        </div>
+        <div class="col-md-6">
+            <h6 class="fw-bold"><i class="fas fa-user-shield text-success me-2"></i>100% Private & Secure</h6>
+            <p class="small text-muted">
+                Your privacy is our priority. This is an <strong>Offline PDF Remover</strong>, meaning your files 
+                are processed locally in your browser. They are never uploaded to any server, making it safe for bank statements and legal documents.
+            </p>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <h5 class="fw-bold mb-3">How to Remove Pages from PDF?</h5>
+    <ul class="text-muted small">
+        <li><strong>Step 1:</strong> Select and upload your PDF file from your device.</li>
+        <li><strong>Step 2:</strong> Look at the thumbnails and identify the pages you want to delete.</li>
+        <li><strong>Step 3:</strong> Enter the page numbers (e.g., 1, 4, 5) in the input box. A red cross will mark them for you.</li>
+        <li><strong>Step 4:</strong> Click <strong>"Apply & Download"</strong> to get your new, cleaned PDF instantly.</li>
+    </ul>
+
+    <div class="bg-white p-3 rounded border-start border-4 border-danger mt-4">
+        <p class="small mb-0 italic">
+            <strong>Pro Tip:</strong> Use this tool to reduce your PDF file size by removing high-resolution images or 
+            heavy pages that you don't need before sending them via email or WhatsApp.
+        </p>
+    </div>
+  </div>
+    `;
+}
+
 
   // Final rendering
   container.innerHTML = content;
