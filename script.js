@@ -688,6 +688,7 @@ function renderToolContent(toolName, container) {
 
 }
 
+
   // Final rendering
   container.innerHTML = content;
 }
