@@ -601,6 +601,92 @@ function renderToolContent(toolName, container) {
   </div>
       `;
   }
+  else if (toolName === "gst") {
+    content =
+      commonHeader +
+      `
+      <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3><i class="fas fa-file-invoice-dollar me-2 text-primary"></i>GST Calculator (India)</h3>
+          <button class="btn btn-sm btn-outline-danger" onclick="resetGST()"><i class="fas fa-redo me-1"></i> Reset</button>
+      </div><hr>
+      <div class="card border-0 bg-light p-4 mb-4 shadow-sm text-start">
+          <div class="row g-3">
+              <div class="col-12">
+                  <label class="form-label fw-bold">Enter Net Amount (₹)</label>
+                  <input type="number" id="gstAmount" class="form-control form-control-lg border-primary" placeholder="e.g. 10000">
+              </div>
+              <div class="col-12">
+                  <label class="form-label fw-bold">Select GST Rate</label>
+                  <div class="btn-group w-100" role="group">
+                      <input type="radio" class="btn-check" name="gstRate" id="r5" value="5">
+                      <label class="btn btn-outline-primary" for="r5">5%</label>
+                      <input type="radio" class="btn-check" name="gstRate" id="r12" value="12">
+                      <label class="btn btn-outline-primary" for="r12">12%</label>
+                      <input type="radio" class="btn-check" name="gstRate" id="r18" value="18" checked>
+                      <label class="btn btn-outline-primary" for="r18">18%</label>
+                      <input type="radio" class="btn-check" name="gstRate" id="r28" value="28">
+                      <label class="btn btn-outline-primary" for="r28">28%</label>
+                  </div>
+              </div>
+              <div class="col-6">
+                  <button onclick="calculateGST(true)" class="btn btn-primary w-100 py-3 fw-bold shadow-sm">Add GST</button>
+              </div>
+              <div class="col-6">
+                  <button onclick="calculateGST(false)" class="btn btn-outline-primary w-100 py-3 fw-bold shadow-sm">Remove GST</button>
+              </div>
+          </div>
+      </div>
+
+      <div id="gstResult" class="d-none animate__animated animate__fadeIn">
+          <div class="card border-primary p-3 shadow-sm bg-white text-start">
+              <div class="d-flex justify-content-between mb-2"><span>Net Amount:</span><span class="fw-bold">₹<span id="resNet">0</span></span></div>
+              <div class="d-flex justify-content-between mb-2"><span>CGST:</span><span class="text-muted">₹<span id="resCGST">0</span></span></div>
+              <div class="d-flex justify-content-between mb-2"><span>SGST:</span><span class="text-muted">₹<span id="resSGST">0</span></span></div>
+              <hr>
+              <div class="d-flex justify-content-between"><span class="h5 fw-bold">Total Amount:</span><span class="h5 fw-bold text-primary">₹<span id="resTotal">0</span></span></div>
+          </div>
+      </div>
+
+      <div class="mt-4 text-center border-top pt-2">
+          <p class="x-small text-muted mb-0"><i class="fas fa-shield-alt text-success me-1"></i> Privacy: 100% Local Calculation</p>
+      </div>
+
+      <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+          <h5 class="fw-bold text-primary"><i class="fas fa-calculator me-2"></i> GST Calculator India Online</h5>
+          <p class="small text-muted">Use this tool to calculate GST (Goods and Services Tax) for any amount. You can either add GST to a base price or find the original price by removing GST from a total inclusive price.</p>
+      </div>
+      <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
+    <h5 class="fw-bold text-primary"><i class="fas fa-file-invoice-dollar me-2"></i> Online GST Calculator India - Add & Remove GST Instantly</h5>
+    <p class="small text-muted">SwiftTool Pro brings you the most accurate <strong>Online GST Calculator</strong> designed specifically for the Indian taxation system. Whether you are a business owner, a freelancer, or a student, our tool helps you calculate <strong>CGST, SGST, and IGST</strong> in seconds without any manual errors.</p>
+    
+    <h6 class="fw-bold mt-4 text-dark">How to Calculate GST Online?</h6>
+    <p class="small text-muted">Calculating GST is now easier than ever. Simply enter your net amount, select the applicable GST slab (5%, 12%, 18%, or 28%), and choose whether you want to <strong>Add GST</strong> or <strong>Remove GST</strong>.
+    <br><br>
+    <strong>1. GST Inclusive (Remove GST):</strong> If you have a total price and want to know the original price before tax, use the 'Remove GST' feature. This is also known as a <strong>Reverse GST Calculator</strong>.
+    <br>
+    <strong>2. GST Exclusive (Add GST):</strong> If you have the base price and want to add tax to find the final billing amount, use the 'Add GST' feature.</p>
+
+    <h6 class="fw-bold mt-4 text-dark">Why Use Our GST Calculator?</h6>
+    <ul class="small text-muted">
+        <li><strong>Accurate Tax Breakup:</strong> Get a clear split of CGST (Central GST) and SGST (State GST) for local transactions.</li>
+        <li><strong>Reverse GST Calculation:</strong> Easily find the pre-tax value of any product from its MRP.</li>
+        <li><strong>India Specific Slabs:</strong> Pre-defined buttons for 5%, 12%, 18%, and 28% as per the latest GST Council rules.</li>
+        <li><strong>100% Privacy:</strong> Your financial data is never uploaded. All calculations happen locally in your browser.</li>
+    </ul>
+
+    <h6 class="fw-bold mt-4 text-dark">GST Calculation Formula (Example)</h6>
+    <p class="small text-muted">To calculate GST, we use the standard mathematical formula:
+    <br>• For Adding GST: <code>GST Amount = (Original Cost * GST%) / 100</code>
+    <br>• For Removing GST: <code>Original Cost = Total Price / (1 + GST% / 100)</code>
+    <br><br>
+    For example, if you have a product worth ₹1,180 (including 18% GST), our tool will reverse-calculate it to show a Net Price of ₹1,000 and a total GST of ₹180.</p>
+
+    <h6 class="fw-bold mt-4 text-dark">Perfect for Business & Accounting</h6>
+    <p class="small text-muted">This <strong>Free GST Tool</strong> is ideal for generating quick quotes, checking invoice accuracy, and filing GST returns. It works perfectly on mobile and desktop, making it a handy companion for shopkeepers and CA professionals across India.</p>
+    </div>
+      `;
+
+}
 
   // Final rendering
   container.innerHTML = content;
