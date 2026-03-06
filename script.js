@@ -1127,3 +1127,56 @@ window.addEventListener("DOMContentLoaded", () => {
         updateDynamicTitle(null);
     }
 });
+
+
+function filterTools() {
+    // 1. User ne kya type kiya wo uthao
+    const input = document.getElementById('toolSearch');
+    const filter = input.value.toLowerCase();
+    
+    // 2. Saare cards ko pakdo
+    const toolsGrid = document.getElementById('toolsGrid');
+    const cards = toolsGrid.getElementsByClassName('col-6'); // Bootstrap columns select karega
+
+    // 3. Loop chalao aur match check karo
+    for (let i = 0; i < cards.length; i++) {
+        // Card ke andar ka title (h6) aur description (p) check karte hain
+        const title = cards[i].querySelector('h6').innerText.toLowerCase();
+        const description = cards[i].querySelector('p').innerText.toLowerCase();
+
+        if (title.indexOf(filter) > -1 || description.indexOf(filter) > -1) {
+            cards[i].style.display = ""; // Show card
+            cards[i].classList.add('animate__animated', 'animate__fadeIn'); // Optional animation
+        } else {
+            cards[i].style.display = "none"; // Hide card
+        }
+    }
+}
+// "No Results Found" ka alert handle karne ke liye
+function handleNoResults(hasResults) {
+    let noResultMsg = document.getElementById('noResultMsg');
+    const gridRow = document.querySelector('#toolsGrid .row');
+
+    if (!hasResults) {
+        if (!noResultMsg) {
+            noResultMsg = document.createElement('div');
+            noResultMsg.id = 'noResultMsg';
+            noResultMsg.className = 'text-center py-5 animate__animated animate__fadeIn';
+            noResultMsg.innerHTML = `
+                <i class="fas fa-search-minus fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">Oops! No such tool found.</h5>
+                <p class="small text-muted">Try searching for 'PDF', '20KB', or 'GST'.</p>
+                <button class="btn btn-sm btn-outline-primary rounded-pill mt-2" onclick="resetSearch()">Show All Tools</button>
+            `;
+            gridRow.parentElement.appendChild(noResultMsg);
+        }
+    } else {
+        if (noResultMsg) noResultMsg.remove();
+    }
+}
+
+// Search reset karne ke liye function
+function resetSearch() {
+    document.getElementById('toolSearch').value = "";
+    filterTools();
+}
