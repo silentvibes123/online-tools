@@ -963,21 +963,15 @@ function goToDashboard() {
     const activeTool = document.getElementById("activeTool");
     const toolUI = document.getElementById("toolUI");
 
-    // 1. URL reset karo (e.g., /cash se wapas / par)
-    window.history.pushState({ tool: null }, "", "/");
-
-    // 2. Title reset karo (SwiftTool Pro default)
-    updateDynamicTitle(null); 
-
-    // 3. UI logic: Tool chupao aur Dashboard dikhao
-    if (activeTool) activeTool.classList.add("d-none");
-    if (toolUI) toolUI.innerHTML = ""; // Tool ka content delete karo
-    
-    if (toolsGrid) toolsGrid.classList.remove("d-none");
+    // UI reset
+    toolsGrid.classList.remove("d-none");
     if (seoSection) seoSection.classList.remove("d-none");
+    activeTool.classList.add("d-none");
+    toolUI.innerHTML = "";
 
-    // 4. Page ke top par jao
-    window.scrollTo(0, 0);
+    // URL reset to home
+    window.history.pushState({}, "", "/");
+    document.title = "SwiftTool Pro - Free Online Digital Tools";
 }
 
 function showExtra(page) {
