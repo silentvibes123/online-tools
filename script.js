@@ -907,10 +907,11 @@ function goBack() {
     document.getElementById("seoSection").classList.remove("d-none");
   }
 
-  // 3. URL aur Title reset
-  history.pushState(null, "", window.location.pathname);
-  document.title =
-    toolName.charAt(0).toUpperCase() + toolName.slice(1) + " | SwiftTool Pro";
+  // 3. URL reset to Home
+  window.history.pushState(null, "", "/"); // Direct home par le jao path hata kar
+
+  // 4. Title reset (Fixed the error here)
+  document.title = "SwiftTool Pro | Free Online Digital Tools";
 
   window.scrollTo(0, 0);
 }
