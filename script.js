@@ -78,7 +78,7 @@ function updateDynamicTitle(toolName) {
     metaDesc = "Convert your written text into a clear AI-powered human voice. Perfect for voiceovers.";
   } else if (toolName === "merge") {
     newTitle = "Merge PDF Files Online - Combine PDF Fast | SwiftTool Pro";
-    metaDesc = "Combine multiple PDF documents into one single file securely and offline.";
+    metaDesc = "Combine multiple PDF documents into one single file securely.";
   } else if (toolName === "split") {
     newTitle = "Split PDF Pages - Extract Specific Pages | SwiftTool Pro";
     metaDesc = "Extract pages from your PDF file or split one PDF into multiple documents instantly.";
@@ -222,7 +222,7 @@ function renderToolContent(toolName, container) {
            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-danger"><i class="fas fa-file-pdf me-2"></i> Fast & Secure Image to PDF Converter Online</h5>
     <p class="small text-muted">SwiftTool Pro's <strong>Image to PDF Converter</strong> is a versatile tool designed for students, office workers, and anyone needing to organize photos into a single document. Whether you have JPG, PNG, or WEBP images, our tool combines them into a professional-grade PDF instantly. This is particularly useful for creating digital assignments, scanning handwritten notes, or submitting KYC documents on government portals.</p>
-    <p class="small text-muted"><strong>Why Privacy is Our Priority:</strong> Most online converters upload your personal photos to their cloud servers, which can be a huge privacy risk. Our <strong>Offline Image to PDF</strong> tool works entirely within your browser. This means your images never leave your device, making it the safest choice for sensitive documents like Aadhaar cards, PAN cards, or private certificates.</p>
+    <p class="small text-muted"><strong>Why Privacy is Our Priority:</strong> Most online converters upload your personal photos to their cloud servers, which can be a huge privacy risk. Our <strong>Image to PDF</strong> tool works entirely within your browser. This means your images never leave your device, making it the safest choice for sensitive documents like Aadhaar cards, PAN cards, or private certificates.</p>
     <p class="small text-muted"><strong>Key Features:</strong> 1. <strong>Bulk Conversion:</strong> Upload multiple images at once and arrange them in order. 2. <strong>No Quality Loss:</strong> We ensure that your photos remain sharp and readable in the final PDF. 3. <strong>Zero Limits:</strong> Convert as many images as you want without any hidden fees or watermarks. 4. <strong>Universal Compatibility:</strong> The generated PDF is standard-compliant and opens perfectly on all devices, including Android, iOS, Windows, and Mac.</p>
     <p class="small text-muted"><strong>Pro Tip:</strong> Before generating, ensure your images are in the correct sequence. This tool is a great free alternative to paid software like Adobe Acrobat for daily document management.</p>
 </div>
@@ -255,7 +255,7 @@ function renderToolContent(toolName, container) {
     <h5 class="fw-bold text-warning"><i class="fas fa-id-badge me-2"></i> Professional Exam Photo & Signature Resizer (20KB - 50KB)</h5>
     <p class="small text-muted">Filling out government job applications like <strong>SSC GD, UPSC, IBPS, or Railway (RRB)</strong> can be frustrating when your photo or signature gets rejected due to incorrect file size. SwiftTool Pro's <strong>Online Image Resizer</strong> is specially programmed to meet the exact dimensions and KB requirements of Indian competitive exams.</p>
     <p class="small text-muted"><strong>Standard Specifications:</strong> Most exams require a photograph of <strong>3.5cm x 4.5cm (350x450 pixels)</strong> with a file size between 20KB to 50KB, and signatures between 10KB to 20KB. Our smart algorithm automatically adjusts the aspect ratio and applies the right amount of compression to hit these targets without making your face blurry or unreadable.</p>
-    <p class="small text-muted"><strong>Why Choose SwiftTool Pro?</strong> 1. <strong>Privacy:</strong> Your personal photos are sensitive. We process them 100% offline in your browser, meaning your data never reaches any server. 2. <strong>Instant Download:</strong> No waiting, no watermarks, just high-quality resized images ready for upload. 3. <strong>Format Support:</strong> Works perfectly with JPG, JPEG, and PNG formats.</p>
+    <p class="small text-muted"><strong>Why Choose SwiftTool Pro?</strong> 1. <strong>Privacy:</strong> Your personal photos are sensitive. Your data never reaches any server. 2. <strong>Instant Download:</strong> No waiting, no watermarks, just high-quality resized images ready for upload. 3. <strong>Format Support:</strong> Works perfectly with JPG, JPEG, and PNG formats.</p>
     <p class="small text-muted"><strong>Step-by-Step Guide:</strong> Select your file, choose your target size (20KB for signature or 50KB for photo), and click 'Download'. This tool is a must-have for students preparing for government exams who want to avoid the 'File size too large' error on official portals.</p>
     </div>`;
   } else if (toolName === "merge") {
@@ -281,7 +281,7 @@ function renderToolContent(toolName, container) {
     <h5 class="fw-bold text-primary"><i class="fas fa-object-group me-2"></i> Combine Multiple PDF Files Securely - PDF Merger</h5>
     <p class="small text-muted">Managing multiple PDF documents can be messy. SwiftTool Pro's <strong>Merge PDF tool</strong> allows you to combine several PDF files into one neatly organized document in seconds. This is an essential feature for lawyers, accountants, and students who need to merge different chapters or reports into a single submission-ready file.</p>
     <p class="small text-muted"><strong>Unlimited & Free:</strong> Most online mergers limit the number of files you can join or charge for "Pro" features. Our <strong>PDF Combiner</strong> is completely free with no restrictions. You can upload two or twenty PDFs and merge them instantly. The formatting, links, and text within your original PDFs will remain perfectly intact in the merged version.</p>
-    <p class="small text-muted"><strong>Data Protection:</strong> Since we use browser-side JavaScript technology, your documents are never uploaded to any external server. This "Offline-First" approach makes us the most trusted <strong>Private PDF Merger</strong> for handling bank statements, legal contracts, and personal records. You can merge your files even without an active internet connection once the tool is loaded.</p>
+    <p class="small text-muted"><strong>Data Protection:</strong> Since we use browser-side JavaScript technology, your documents are never uploaded to any external server. This approach makes us the most trusted <strong>Private PDF Merger</strong> for handling bank statements, legal contracts, and personal records. You can merge your files even without an active internet connection once the tool is loaded.</p>
     <p class="small text-muted"><strong>How to use:</strong> Simply select the PDF files you wish to join, and click 'Merge & Download'. Your new combined document will be ready immediately, saving you the hassle of sending multiple attachments in emails.</p>
 </div>`;
   } else if (toolName === "split") {
@@ -309,7 +309,7 @@ function renderToolContent(toolName, container) {
            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
     <h5 class="fw-bold text-warning"><i class="fas fa-cut me-2"></i> Professional PDF Splitter - Extract Specific Pages Online</h5>
     <p class="small text-muted">Sometimes, a 50-page PDF contains only one or two pages that you actually need. SwiftTool Pro's <strong>Split PDF tool</strong> allows you to extract specific pages or a range of pages from any PDF document effortlessly. This is a must-have tool for teachers sharing specific lessons or employees extracting certain invoices from a large monthly report.</p>
-    <p class="small text-muted"><strong>Precise Page Extraction:</strong> You can define a custom range, such as "Page 5 to Page 10", and our tool will create a new PDF containing only those pages. The original file remains untouched. This <strong>Offline PDF Splitter</strong> ensures that the quality of images and the layout of text are preserved perfectly in the extracted document.</p>
+    <p class="small text-muted"><strong>Precise Page Extraction:</strong> You can define a custom range, such as "Page 5 to Page 10", and our tool will create a new PDF containing only those pages. The original file remains untouched. This <strong>PDF Splitter</strong> ensures that the quality of images and the layout of text are preserved perfectly in the extracted document.</p>
     <p class="small text-muted"><strong>Why SwiftTool Pro?</strong> 1. <strong>High Speed:</strong> Processing happens on your device's hardware, making it much faster than cloud-based alternatives. 2. <strong>Complete Privacy:</strong> Your sensitive reports and documents stay on your computer. 3. <strong>Free to Use:</strong> No watermarks or page limits—split even the largest PDF files for free.</p>
     <p class="small text-muted"><strong>How it works:</strong> Upload your PDF, enter the 'From' and 'To' page numbers, and hit 'Split & Download'. It’s that simple. Extract what you need and keep your documents lightweight and relevant.</p>
 </div>`;
@@ -554,7 +554,7 @@ function renderToolContent(toolName, container) {
   </div>
 
          <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-primary"><i class="fas fa-file-word me-2"></i> Best Offline Word to PDF Converter - 100% Private</h5>
+    <h5 class="fw-bold text-primary"><i class="fas fa-file-word me-2"></i> Best Word to PDF Converter - 100% Private</h5>
     <p class="small text-muted">Converting <strong>DOCX to PDF</strong> is a daily necessity for students and professionals. However, most online converters upload your sensitive documents to their servers, posing a security risk. SwiftTool Pro solves this with our <strong>Browser-Based Word to PDF Converter</strong>. Your document stays on your computer throughout the entire process.</p>
     <p class="small text-muted"><strong>Professional Quality:</strong> Our tool preserves the original formatting of your Word document, including fonts, tables, bullet points, and images. Whether it's a resume, an assignment, or a business proposal, the output PDF will look exactly like the original Word file. We use advanced libraries like Mammoth.js to ensure high fidelity during the HTML-to-PDF transition.</p>
     <p class="small text-muted"><strong>Key Features:</strong> 1. <strong>Unlimited Conversions:</strong> No daily limits or subscriptions required. 2. <strong>No Registration:</strong> Start converting immediately without giving your email address. 3. <strong>Device Compatible:</strong> Works on Windows, Mac, Android, and iOS browsers. 4. <strong>Secure:</strong> Since it works offline, even your ISP cannot see the content of your converted documents.</p>
@@ -747,7 +747,7 @@ else if (toolName === "removePages") {
         <div class="col-md-6">
             <h6 class="fw-bold"><i class="fas fa-user-shield text-success me-2"></i>100% Private & Secure</h6>
             <p class="small text-muted">
-                Your privacy is our priority. This is an <strong>Offline PDF Remover</strong>, meaning your files 
+                Your privacy is our priority. This is an <strong>PDF Remover</strong>, meaning your files 
                 are processed locally in your browser. They are never uploaded to any server, making it safe for bank statements and legal documents.
             </p>
         </div>
