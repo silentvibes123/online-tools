@@ -25,27 +25,25 @@ Premium Navigation Style
     color: #4f46e5;
 }
 
-/* --- Desktop Hover Animation (Updated) --- */
-/* --- Desktop Hover Animation - The "Pro" Fix --- */
-/* --- Desktop Hover Animation (Final Pro Version) --- */
+/* --- Final Pro Slow-Motion Hover Animation --- */
 @media (min-width: 992px) {
-  /* Step 1: Default State (Hidden & Deep Offset) */
+  /* 1. Default Hidden State (Jane wala animation bhi yahi handle hoga) */
   .nav-item.dropdown .dropdown-menu {
     display: block !important; 
     visibility: hidden;
     opacity: 0;
     margin-top: 0;
-    border: 1px solid rgba(0,0,0,0.08);
-    /* Transform: niche se aayega + thoda zoom hoga */
-    transform: translateY(40px) scale(0.9); 
-    /* Timing: 0.8s for true slow motion */
-    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), 
-                opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-                visibility 0.8s;
+    /* Niche se start hoga aur thoda zoom out rahega */
+    transform: translateY(30px) scale(0.9); 
+    
+    /* Timing: 0.7s (Slow & Premium) */
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.7s;
     pointer-events: none;
   }
 
-  /* Step 2: Hover State (Smooth Entry) */
+  /* 2. Hover Entry State (Aane wala animation) */
   .nav-item.dropdown:hover .dropdown-menu {
     visibility: visible;
     opacity: 1;
@@ -53,12 +51,15 @@ Premium Navigation Style
     pointer-events: auto;
   }
 
-  /* Step 3: Bootstrap Default Reset */
-  /* Ye line zaroori hai taaki bootstrap ki JS interfer na kare */
-  .dropdown-menu.show {
-    animation: none !important;
-    transform: none !important; 
+  /* 3. Dropdown Item Hover Effect (Smooth transition inside menu) */
+  .dropdown-item {
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
+}
+
+/* 4. Important: Bootstrap ki default classes ko reset karein jo animation block karti hain */
+.dropdown-menu.show {
+    animation: none !important;
 }
 html, body {
     height: 100%;
