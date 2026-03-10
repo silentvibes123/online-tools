@@ -365,13 +365,45 @@ function renderToolContent(toolName, container) {
       </p>
   </div>
             <div id="qrResult" class="text-center mt-4"></div>
-           <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-    <h5 class="fw-bold text-info"><i class="fas fa-images me-2"></i> High-Resolution PDF to Image Converter</h5>
-    <p class="small text-muted">Do you need to extract a specific page from a PDF as a high-quality photo? Our <strong>PDF to JPG Converter</strong> allows you to turn every page of a document into a separate image file instantly. This is essential for designers, social media managers, and students who need to share PDF content as snapshots on WhatsApp or Instagram.</p>
-    <p class="small text-muted"><strong>Superior Quality:</strong> We use the industry-standard PDF.js library to render pages at high DPI, ensuring that the text remains sharp and the images inside the PDF do not lose their clarity. You can view all pages in a beautiful grid preview before deciding to download them. Our tool also provides a <strong>'Download All as ZIP'</strong> feature, saving you time when dealing with large documents.</p>
-    <p class="small text-muted"><strong>Why Privacy Matters:</strong> Most online PDF tools keep a copy of your file on their server for hours. At SwiftTool Pro, your PDF is processed locally. Once you close the tab, everything is gone. This makes our tool the safest choice for bank statements, ID cards, and private certificates.</p>
-    <p class="small text-muted"><strong>Technical Advantage:</strong> No software like Adobe Acrobat is required. Our browser-based solution works on any modern device, providing a seamless experience whether you are on a desktop or a mobile phone.</p>
-  </div>
+         <div class="mt-5 p-4 bg-light rounded shadow-sm text-dark border-start border-dark border-4">
+                <h2 class="h5 fw-bold mb-3 text-dark">
+                    <i class="fas fa-qrcode me-2"></i>Secure & Instant QR Code Generator Online
+                </h2>
+                <p class="small text-muted mb-4">
+                    SwiftTool Pro provides a fast, reliable, and completely private **Online QR Code Generator**. Whether you want to share a website link, a professional portfolio, or simplified UPI payment details, our tool creates high-definition QR codes in a single click. No registration, no tracking, just pure utility.
+                </p>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <h3 class="h6 fw-bold text-dark"><i class="fas fa-lock me-2 text-success"></i>Private & Offline Capability</h3>
+                        <p class="x-small text-muted">
+                            Most QR generators track your clicks and store your data. SwiftTool Pro uses **client-side JavaScript**, meaning your text or URL never leaves your browser. It’s the safest way to generate QR codes for sensitive information.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h3 class="h6 fw-bold text-dark"><i class="fas fa-expand me-2 text-primary"></i>Universal Compatibility</h3>
+                        <p class="x-small text-muted">
+                            The QR codes generated here are standard-compliant and can be scanned by any smartphone camera, Google Lens, or specialized QR scanner apps on Android and iOS. Perfect for business cards, flyers, and digital menus.
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <h3 class="h6 fw-bold text-dark"><i class="fas fa-check-circle me-2 text-info"></i>No Expiration, No Watermarks</h3>
+                        <p class="x-small text-muted">
+                            Unlike other "premium" tools that expire your QR codes after a few days, SwiftTool Pro generates **Static QR Codes** that work forever. We don't add any annoying logos or watermarks, giving you a clean and professional look for free.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-white rounded border">
+                    <h4 class="h6 fw-bold mb-2">Popular Use Cases for QR Codes:</h4>
+                    <ul class="x-small text-muted ps-3">
+                        <li class="mb-1"><strong>Website URLs:</strong> Instant access to your blog or business site.</li>
+                        <li class="mb-1"><strong>UPI Payments:</strong> Share your payment ID safely for quick transactions.</li>
+                        <li class="mb-1"><strong>Contact Info:</strong> Generate a QR for your portfolio or social media profiles.</li>
+                        <li class="mb-1"><strong>WiFi Access:</strong> Share your network details with guests effortlessly.</li>
+                    </ul>
+                </div>
+            </div>
             `;
   } else if (toolName === "pdfToImg") {
     content =
