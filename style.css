@@ -56,7 +56,34 @@ Premium Navigation Style
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
+/* Custom Styling for Content Sections */
+.bg-white.rounded-4 {
+    transition: all 0.3s ease;
+}
 
+.accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+    color: #4f46e5;
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0,0,0,.125);
+}
+
+.list-unstyled li i {
+    font-size: 0.9rem;
+}
+
+/* Tool Card Hover Effect Enhancement */
+.tool-card {
+    border: 1px solid transparent !important;
+}
+.tool-card:hover {
+    border: 1px solid #667eea !important;
+    background: #fbfbff !important;
+}
 /* 4. Important: Bootstrap ki default classes ko reset karein jo animation block karti hain */
 .dropdown-menu.show {
     animation: none !important;
