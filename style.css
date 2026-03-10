@@ -27,29 +27,37 @@ Premium Navigation Style
 
 /* --- Desktop Hover Animation (Updated) --- */
 /* --- Desktop Hover Animation - The "Pro" Fix --- */
+/* --- Desktop Hover Animation (Final Pro Version) --- */
 @media (min-width: 992px) {
-  /* 1. Default Hidden State */
+  /* Step 1: Default State (Hidden & Deep Offset) */
   .nav-item.dropdown .dropdown-menu {
-    display: block !important; /* Hamesha block rahega lekin invisible */
+    display: block !important; 
     visibility: hidden;
     opacity: 0;
-    transform: translateY(25px) scale(0.95); /* Thoda niche aur chota start hoga */
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* Apple jaisa smooth easing */
-    pointer-events: none; /* Hide hone par click block rahega */
     margin-top: 0;
+    border: 1px solid rgba(0,0,0,0.08);
+    /* Transform: niche se aayega + thoda zoom hoga */
+    transform: translateY(40px) scale(0.9); 
+    /* Timing: 0.8s for true slow motion */
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), 
+                opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                visibility 0.8s;
+    pointer-events: none;
   }
 
-  /* 2. Slow Motion Appearance on Hover */
+  /* Step 2: Hover State (Smooth Entry) */
   .nav-item.dropdown:hover .dropdown-menu {
     visibility: visible;
     opacity: 1;
-    transform: translateY(0) scale(1); /* Apni natural position par aayega */
+    transform: translateY(0) scale(1);
     pointer-events: auto;
   }
 
-  /* 3. Dropdown transition smooth rakhne ke liye Bootstrap ki default animation band karein */
+  /* Step 3: Bootstrap Default Reset */
+  /* Ye line zaroori hai taaki bootstrap ki JS interfer na kare */
   .dropdown-menu.show {
-    animation: none !important; 
+    animation: none !important;
+    transform: none !important; 
   }
 }
 html, body {
