@@ -127,9 +127,11 @@ function showNotify(type, message) {
 }
 
 function openTool(toolName) {
-  const toolsGrid = document.getElementById("toolsGrid");
-  const seoSection = document.getElementById("seoSection");
+  document.getElementById('toolsGrid').classList.add('d-none');
+    document.getElementById('seoSection').classList.add('d-none');
+    document.getElementById('extraScreens').classList.add('d-none');
   const activeTool = document.getElementById("activeTool");
+  activeTool.classList.remove('d-none');
   const toolUI = document.getElementById("toolUI");
 
   // URL badlo (e.g., /resizer)
@@ -145,7 +147,7 @@ if (window.location.pathname !== "/" + toolName) {
   activeTool.classList.remove("d-none");
   
   toolUI.innerHTML = ""; // Purana data saaf
-  window.scrollTo(0, 0); // Upar scroll karo
+  window.scrollTo({ top: 0, behavior: 'smooth' });// Upar scroll karo
   renderToolContent(toolName, toolUI);
 }
 function renderToolContent(toolName, container) {
@@ -949,9 +951,10 @@ function goBack() {
   window.scrollTo(0, 0);
 }
 function showDashboard() {
-  const toolsGrid = document.getElementById("toolsGrid");
-  const seoSection = document.getElementById("seoSection");
-  const activeTool = document.getElementById("activeTool");
+ document.getElementById('toolsGrid').classList.remove('d-none');
+    document.getElementById('seoSection').classList.remove('d-none');
+    document.getElementById('activeTool').classList.add('d-none');
+    document.getElementById('extraScreens').classList.add('d-none');
 
   // URL reset (Ab /resizer hat jayega)
   window.history.pushState({ tool: null }, "", "/");
@@ -1010,15 +1013,13 @@ function goToDashboard() {
 
 function showExtra(page) {
   history.pushState({ page: page }, "", `#${page}`);
-  document.getElementById("toolsGrid").classList.add("d-none");
-  document.getElementById("activeTool").classList.add("d-none");
-  if (document.getElementById("seoSection")) {
-    document.getElementById("seoSection").classList.add("d-none");
-  }
+ document.getElementById('toolsGrid').classList.add('d-none');
+    document.getElementById('seoSection').classList.add('d-none');
+    document.getElementById('activeTool').classList.add('d-none');
 
   const extraScreens = document.getElementById("extraScreens");
   extraScreens.classList.remove("d-none");
-  window.scrollTo(0, 0);
+ window.scrollTo({ top: 0, behavior: 'smooth' });
   const content = document.getElementById("extraContent");
 
   if (page === "about") {

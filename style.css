@@ -9,6 +9,25 @@
     --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* Premium Navigation Style */
+.navbar-nav .nav-link {
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+.dropdown-menu {
+    border-radius: 12px;
+    padding: 10px;
+}
+.dropdown-item {
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #4f46e5;
+}
+
 html, body {
     height: 100%;
     margin: 0;
