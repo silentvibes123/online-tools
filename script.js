@@ -964,23 +964,40 @@ function resetQR() {
 }
 
 function goBack() {
-  // 1. Screens reset karo
-  document.getElementById("activeTool").classList.add("d-none");
-  document.getElementById("extraScreens").classList.add("d-none");
+    // URL reset (Hash aur paths saaf karne ke liye)
+    if (window.location.hash || window.location.pathname !== "/") {
+        window.history.pushState({}, "", "/");
+    }
+    document.title = "SwiftTool Pro - Free Online Digital Tools";
 
-  // 2. Dashboard aur SEO section wapas dikhao
-  document.getElementById("toolsGrid").classList.remove("d-none");
-  if (document.getElementById("seoSection")) {
-    document.getElementById("seoSection").classList.remove("d-none");
-  }
+    // Dashboard Elements ko dikhao
+    const toShow = [
+        document.getElementById('toolsGrid'),
+        document.getElementById('seoSection'),
+        document.querySelector('.container-fluid.px-0.mb-5') // Hero Banner
+    ];
 
-  // 3. URL reset to Home
-  window.history.pushState(null, "", "/"); // Direct home par le jao path hata kar
+    toShow.forEach(el => {
+        if (el) {
+            el.classList.remove('d-none');
+            el.style.display = ''; 
+        }
+    });
 
-  // 4. Title reset (Fixed the error here)
-  document.title = "SwiftTool Pro | Free Online Digital Tools";
+    // Active Tool aur Extra Screens ko hide karo
+    const toHide = [
+        document.getElementById('activeTool'),
+        document.getElementById('extraScreens')
+    ];
 
-  window.scrollTo(0, 0);
+    toHide.forEach(el => {
+        if (el) {
+            el.classList.add('d-none');
+            el.style.display = 'none';
+        }
+    });
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function showDashboard() {
  document.getElementById('toolsGrid').classList.remove('d-none');
@@ -1015,17 +1032,15 @@ function readFileAsDataURL(file) {
 }
 
 function previewImage() {
-  const file = document.getElementById("compressInput").files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      document.getElementById("previewArea").innerHTML =
-        `<img src="${e.target.result}" class="img-fluid rounded" style="max-height:120px"><p class="small text-muted mt-2">${(file.size / 1024).toFixed(2)} KB</p>`;
-    };
-    reader.readAsDataURL(file);
-  }
+    const file = document.getElementById("compressInput").files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            document.getElementById("previewArea").innerHTML = `<img src="${e.target.result}" class="img-fluid rounded" style="max-height:120px"><p class="small text-muted mt-2">${(file.size / 1024).toFixed(2)} KB</p>`;
+        };
+        reader.readAsDataURL(file);
+    }
 }
-
 function goToDashboard() {
     const toolsGrid = document.getElementById("toolsGrid");
     const seoSection = document.getElementById("seoSection");
@@ -1042,128 +1057,276 @@ function goToDashboard() {
     window.history.pushState({}, "", "/");
     document.title = "SwiftTool Pro - Free Online Digital Tools";
 }
-
+/**
+ * SwiftTool Pro - Advanced Extra Screens Handler
+ * Handles: About, Privacy, Terms, Contact
+ */
+/**
+ * SwiftTool Pro - Advanced Extra Screens Handler (No Dynamic Back Button)
+ * Sirf content load karega, button HTML se handle hoga.
+ */
 function showExtra(page) {
-  history.pushState({ page: page }, "", `#${page}`);
- document.getElementById('toolsGrid').classList.add('d-none');
-    document.getElementById('seoSection').classList.add('d-none');
-    document.getElementById('activeTool').classList.add('d-none');
-
-  const extraScreens = document.getElementById("extraScreens");
-  extraScreens.classList.remove("d-none");
- window.scrollTo({ top: 0, behavior: 'smooth' });
-  const content = document.getElementById("extraContent");
-
-  if (page === "about") {
-    content.innerHTML = `
-      <div class="text-start p-3">
-        <h2 class="fw-bold text-primary mb-4 text-center">About SwiftTool Pro</h2>
-        <p class="lead text-center"><b>Your Trusted Browser-Based Utility Hub</b></p>
-        <p>SwiftTool Pro is a high-performance digital toolkit designed for students, professionals, and job seekers. Founded in 2026, we specialize in <b>exam-ready photo resizing</b> and <b>secure document conversion</b>. Our core philosophy is to provide premium features for free without compromising user data.</p>
-        
-        <h5 class="mt-4 text-primary"><i class="fas fa-microchip me-2"></i>Advanced Edge Technology</h5>
-        <p>Unlike traditional converters, SwiftTool Pro utilizes <b>Client-Side Processing</b>. This means your files are processed directly on your device using high-speed JavaScript libraries. Your sensitive documents never touch a cloud server, ensuring absolute privacy and security.</p>
-
-        <h5 class="mt-4 text-primary"><i class="fas fa-check-double me-2"></i>Our Specialized Tools:</h5>
-        <ul class="list-group list-group-flush mb-4">
-            <li class="list-group-item"><b>✓ Exam Resizer:</b> 20KB/50KB target compression for SSC & UPSC.</li>
-            <li class="list-group-item"><b>✓ PDF Suite:</b> Merge, Split, and Convert with Zero Loss.</li>
-            <li class="list-group-item"><b>✓ Business Tools:</b> Smart Cash Counter and QR Generator.</li>
-        </ul>
-
-        <div class="alert alert-primary mt-3 text-center">
-            <b>Safety First:</b> We are committed to a safe, ad-supported environment for free users worldwide.
-        </div>
-      </div>`;
-  } else if (page === "terms") {
-    content.innerHTML = `
-      <div class="text-start p-3">
-        <h2 class="fw-bold text-dark mb-4 text-center">Privacy Policy & Terms</h2>
-        <p class="small text-muted text-center">Effective Date: February 2026</p>
-        
-        <h5 class="mt-4 text-primary">1. Data Privacy Policy</h5>
-        <p>We respect your privacy. All file processing (Image Compression, PDF conversions) occurs locally. <b>We do not upload your files to our servers.</b> No document data is permanently stored on SwiftTool Pro.</p>
-
-        <h5 class="mt-4 text-primary">2. Google AdSense & Cookies</h5>
-        <p>SwiftTool Pro uses cookies to personalize content and ads. We use <b>Google AdSense</b> to serve ads. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits. You may opt out of personalized advertising by visiting Google Ad Settings.</p>
-
-        <h5 class="mt-4 text-primary">3. Terms of Use</h5>
-        <ul>
-            <li>Tools are free for personal use.</li>
-            <li>Users must verify outputs before official exam submissions.</li>
-            <li>Redistribution or automated scraping of our tools is prohibited.</li>
-        </ul>
-
-        <p class="mt-4 small text-muted">By using SwiftTool Pro, you agree to our Terms of Service and Data Protection guidelines.</p>
-      </div>`;
-  } else if (page === "contact") {
-    content.innerHTML = `
-        <h2 class="fw-bold text-primary mb-4 text-center">Contact Us</h2>
-        <p class="text-muted text-center">Questions? Feedback? We'd love to hear from you.</p>
-        <form id="contact-form" action="https://formspree.io/f/xbdayrne" method="POST">
-            <div class="mb-3 text-start">
-                <label class="form-label fw-bold small">Full Name</label>
-                <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
-            </div>
-            <div class="mb-3 text-start">
-                <label class="form-label fw-bold small">Official Email Address</label>
-                <input type="email" name="email" class="form-control" placeholder="email@example.com" required>
-            </div>
-            <div class="mb-3 text-start">
-                <label class="form-label fw-bold small">Message / Inquiry</label>
-                <textarea name="message" class="form-control" rows="4" placeholder="How can we assist you today?" required></textarea>
-            </div>
-            <button type="submit" id="form-submit" class="btn btn-primary w-100 fw-bold py-3">Send Message</button>
-        </form>`;
-
-    const form = document.getElementById("contact-form");
-    form.onsubmit = async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById("form-submit");
-      btn.disabled = true;
-      btn.innerHTML =
-        '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
-
-      try {
-        const formData = new FormData(form);
-        const response = await fetch(form.action, {
-          method: "POST",
-          body: formData,
-          headers: { Accept: "application/json" },
-        });
-
-        if (response.ok) {
-          showNotify("success", "Message Sent! We will get back to you soon.");
-          form.reset();
-        } else {
-          showNotify("error", "Error! Please check your connection.");
-        }
-      } catch (error) {
-        showNotify("error", "Network error. Try again later.");
-      }
-      btn.disabled = false;
-      btn.innerHTML = "Send Message";
+    // Page titles update karna
+    const pageTitles = {
+        'about': 'About Us - SwiftTool Pro',
+        'privacy': 'Privacy Policy - SwiftTool Pro',
+        'terms': 'Terms of Service - SwiftTool Pro',
+        'contact': 'Contact Us - SwiftTool Pro'
     };
-  }
-}
-window.onpopstate = function (event) {
-    if (event.state && event.state.tool) {
-        // Agar tool page par ja rahe ho
-        openTool(event.state.tool);
-    } else {
-        // Agar dashboard/home par wapas aa rahe ho
-        const toolsGrid = document.getElementById("toolsGrid");
-        const seoSection = document.getElementById("seoSection");
-        const activeTool = document.getElementById("activeTool");
+    
+    document.title = pageTitles[page] || 'SwiftTool Pro';
+    
+    // URL Update
+    history.pushState({ page: page }, "", `#${page}`);
 
-        if (activeTool) activeTool.classList.add("d-none");
-        if (toolsGrid) toolsGrid.classList.remove("d-none");
-        if (seoSection) seoSection.classList.remove("d-none");
+    // Dashboard Elements Hide karna
+    const toHide = [
+        document.getElementById('toolsGrid'),
+        document.getElementById('seoSection'),
+        document.getElementById('activeTool'),
+        document.querySelector('.container-fluid.px-0.mb-5')
+    ];
 
-        updateDynamicTitle(null);
+    toHide.forEach(el => {
+        if (el) {
+            el.classList.add('d-none');
+            el.style.display = 'none';
+        }
+    });
+
+    // Setup Extra Screen Container
+    const extraScreens = document.getElementById("extraScreens");
+    const content = document.getElementById("extraContent");
+
+    if (!extraScreens || !content) return;
+
+    // Isko 'block' force karo aur top par scroll karo
+    extraScreens.classList.remove("d-none");
+    extraScreens.style.setProperty('display', 'block', 'important');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // JS Content Logic (NO BACK BUTTON GENERATED HERE)
+    let htmlContent = "";
+
+    switch(page) {
+        case "about":
+    htmlContent = `
+        <div class="animate__animated animate__fadeIn text-start">
+            <h2 class="fw-bold text-primary mb-3 border-bottom pb-2">About SwiftTool Pro</h2>
+            
+            <p class="lead text-muted">Welcome to <b>SwiftTool Pro</b>—your premier destination for high-performance, secure, and accessible digital utility tools.</p>
+            
+            <h5 class="fw-bold mt-4 text-dark">Our Mission</h5>
+            <p>At SwiftTool Pro, our mission is simple: to provide a comprehensive toolkit that empowers students, developers, and professionals to handle their digital tasks with lightning speed without compromising on privacy. Founded in 2026, we have quickly grown into a trusted platform for thousands of users globally.</p>
+
+            <div class="row g-4 my-3">
+                <div class="col-md-6">
+                    <div class="p-3 border rounded-3 bg-light h-100 shadow-sm">
+                        <h6 class="fw-bold text-primary"><i class="fas fa-user-shield me-2"></i>Privacy First Philosophy</h6>
+                        <p class="small mb-0 text-muted">Unlike other online converters, we use <b>Client-Side Edge Computing</b>. This means your PDF files, images, and sensitive documents are processed directly in your browser. We never upload your data to our servers, ensuring 100% confidentiality.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 border rounded-3 bg-light h-100 shadow-sm">
+                        <h6 class="fw-bold text-primary"><i class="fas fa-code me-2"></i>Advanced Technology</h6>
+                        <p class="small mb-0 text-muted">Built with modern frameworks like Flutter and optimized for SEO, our tools are designed to work across all devices—mobile, tablet, or desktop—with zero installation required.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="fw-bold mt-4 text-dark">What We Offer</h5>
+            <p>We specialize in a wide array of digital solutions, including:</p>
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> <b>PDF Management:</b> Compress, Merge, Split, and Page Removal tools.</li>
+                <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> <b>Image Optimization:</b> High-fidelity resizers and format converters.</li>
+                <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> <b>Developer Utilities:</b> Code formatters and SEO analysis tools.</li>
+            </ul>
+
+            <h5 class="fw-bold mt-4 text-dark">Why Choose SwiftTool Pro?</h5>
+            <p>In an era of data breaches, we stand out by offering a <b>Zero-Server-Upload</b> policy. Whether you are a student preparing an application or a digital creator optimizing assets for the web, SwiftTool Pro provides professional-grade tools for free.</p>
+            
+            <div class="p-3 bg-primary text-white rounded-3 mt-4">
+                <p class="mb-0 small italic text-center">"Empowering the digital world, one tool at a time." — The SwiftTool Pro Team</p>
+            </div>
+        </div>`;
+    break;
+        case "privacy":
+    htmlContent = `
+        <div class="animate__animated animate__fadeIn text-start">
+            <h2 class="fw-bold text-dark mb-3 border-bottom pb-2">Privacy Policy</h2>
+            <p class="small text-muted mb-4">LAST UPDATED: MARCH 10, 2026</p>
+            
+            <p>At <b>SwiftTool Pro</b>, accessible from your current URL, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by SwiftTool Pro and how we use it.</p>
+
+            <h5 class="fw-bold mt-4 text-primary">1. Zero File Storage Policy</h5>
+            <p>We pride ourselves on our <b>Client-Side Processing</b> technology. Unlike other platforms, SwiftTool Pro does not upload your PDF files, images, or documents to any remote server. All processing happens locally within your web browser's memory (RAM). Once you close the browser tab, all traces of your files are permanently gone.</p>
+
+            <h5 class="fw-bold mt-4 text-primary">2. Log Files</h5>
+            <p>SwiftTool Pro follows a standard procedure of using log files. These files log visitors when they visit websites. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable.</p>
+
+            <h5 class="fw-bold mt-4 text-primary">3. Google DoubleClick DART Cookie</h5>
+            <p>Google is one of the third-party vendors on our site. It also uses cookies, known as DART cookies, to serve ads to our site visitors based upon their visit to our site and other sites on the internet. However, visitors may choose to decline the use of DART cookies by visiting the Google ad and content network Privacy Policy at the following URL – <a href="https://policies.google.com/technologies/ads" target="_blank" class="text-decoration-none">https://policies.google.com/technologies/ads</a></p>
+
+            <h5 class="fw-bold mt-4 text-primary">4. Advertising Partners Privacy Policies</h5>
+            <p>Third-party ad servers or ad networks use technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on SwiftTool Pro, which are sent directly to users' browsers. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.</p>
+
+            <h5 class="fw-bold mt-4 text-primary">5. Children's Information</h5>
+            <p>Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity. SwiftTool Pro does not knowingly collect any Personal Identifiable Information from children under the age of 13.</p>
+
+            <h5 class="fw-bold mt-4 text-primary">6. Consent</h5>
+            <p>By using our website, you hereby consent to our Privacy Policy and agree to its Terms and Conditions.</p>
+
+            <div class="p-3 bg-light border-start border-primary border-4 mt-4">
+                <p class="mb-0 small text-muted"><b>Note:</b> If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us through our Contact Page.</p>
+            </div>
+        </div>`;
+    break;
+        case "terms":
+    htmlContent = `
+        <div class="animate__animated animate__fadeIn text-start">
+            <h2 class="fw-bold text-dark mb-3 border-bottom pb-2">Terms of Service</h2>
+            <p class="small text-muted mb-4">LAST UPDATED: MARCH 10, 2026</p>
+
+            <p>Welcome to <b>SwiftTool Pro</b>. By accessing this website, we assume you accept these terms and conditions. Do not continue to use SwiftTool Pro if you do not agree to take all of the terms and conditions stated on this page.</p>
+
+            <h5 class="fw-bold mt-4 text-primary">1. Intellectual Property Rights</h5>
+            <p>Unless otherwise stated, SwiftTool Pro and/or its licensors own the intellectual property rights for all material and unique tool logic on this website. All intellectual property rights are reserved. You may access this from SwiftTool Pro for your own personal use subjected to restrictions set in these terms and conditions.</p>
+
+            <h5 class="fw-bold mt-4 text-primary">2. User Restrictions</h5>
+            <p>You are specifically restricted from all of the following:</p>
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item border-0 ps-0"><i class="fas fa-times-circle text-danger me-2"></i> Using this website to create forged or illegal documents.</li>
+                <li class="list-group-item border-0 ps-0"><i class="fas fa-times-circle text-danger me-2"></i> Engaging in data mining, data harvesting, or "scraping" of our client-side scripts.</li>
+                <li class="list-group-item border-0 ps-0"><i class="fas fa-times-circle text-danger me-2"></i> Using our tools to process copyrighted material without proper authorization.</li>
+                <li class="list-group-item border-0 ps-0"><i class="fas fa-times-circle text-danger me-2"></i> Any action that causes damage to the website's performance or accessibility.</li>
+            </ul>
+
+            <h5 class="fw-bold mt-4 text-primary">3. No Warranties</h5>
+            <p>This Website is provided "as is," with all faults, and SwiftTool Pro expresses no representations or warranties, of any kind related to this Website or the materials contained on this Website. While we strive for 100% accuracy in our PDF and image tools, we do not guarantee the results will be accepted by third-party institutions.</p>
+
+            <h5 class="fw-bold mt-4 text-primary">4. Limitation of Liability</h5>
+            <p>In no event shall SwiftTool Pro, nor any of its officers, directors, and employees, be held liable for anything arising out of or in any way connected with your use of this Website. SwiftTool Pro shall not be held liable for any indirect, consequential, or special liability arising out of or in any way related to your use of our tools.</p>
+
+            <h5 class="fw-bold mt-4 text-primary">5. Governing Law & Jurisdiction</h5>
+            <p>These Terms will be governed by and interpreted in accordance with the laws of the jurisdiction in which the website operates, and you submit to the non-exclusive jurisdiction of the state and federal courts located in India for the resolution of any disputes.</p>
+
+            <div class="p-3 bg-light border-start border-warning border-4 mt-4">
+                <p class="mb-0 small text-dark"><b>Acknowledgment:</b> By using our services, you acknowledge that you have read these Terms of Service and agree to be bound by them.</p>
+            </div>
+        </div>`;
+    break;
+       case "contact":
+    htmlContent = `
+        <div class="animate__animated animate__fadeIn">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold text-primary">Contact Us</h2>
+                <p class="text-muted mx-auto" style="max-width: 600px;">
+                    Have questions about our tools or facing a technical issue? Our team at <b>SwiftTool Pro</b> is here to help. Reach out to us, and we'll get back to you as soon as possible.
+                </p>
+            </div>
+
+            <div class="row g-4 align-items-start">
+                <div class="col-md-5 text-start">
+                    <div class="p-4 border rounded-4 bg-light shadow-sm h-100">
+                        <h5 class="fw-bold mb-4">Get in Touch</h5>
+                        
+                        <div class="d-flex mb-4">
+                            <div class="icon-box me-3 text-primary"><i class="fas fa-envelope fa-lg"></i></div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Email Us</h6>
+                                <p class="small text-muted mb-0">support@swifttoolpro.com</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-4">
+                            <div class="icon-box me-3 text-primary"><i class="fas fa-clock fa-lg"></i></div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Response Time</h6>
+                                <p class="small text-muted mb-0">Typically within 24-48 hours</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mb-4">
+                            <div class="icon-box me-3 text-primary"><i class="fas fa-map-marker-alt fa-lg"></i></div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Location</h6>
+                                <p class="small text-muted mb-0">Surat, Gujarat, India</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-white rounded-3 border mt-2">
+                            <p class="small mb-0 text-muted"><b>Note:</b> For faster support, please describe your issue in detail or mention the specific tool you were using.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <form id="contact-form" action="https://formspree.io/f/xbdayrne" method="POST" class="bg-white p-4 rounded-4 shadow-sm border text-start">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold small">Full Name</label>
+                                <input type="text" name="name" class="form-control shadow-none" placeholder="John Doe" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold small">Email Address</label>
+                                <input type="email" name="email" class="form-control shadow-none" placeholder="john@example.com" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Subject</label>
+                            <select name="subject" class="form-select shadow-none">
+                                <option selected>General Inquiry</option>
+                                <option>Technical Issue</option>
+                                <option>Feature Request</option>
+                                <option>Ad Partnership</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Your Message</label>
+                            <textarea name="message" class="form-control shadow-none" rows="5" placeholder="Tell us how we can help..." required></textarea>
+                        </div>
+                        <button type="submit" id="form-submit" class="btn btn-primary w-100 fw-bold py-3 shadow-sm">
+                            Send Message <i class="fas fa-paper-plane ms-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>`;
+    break;
     }
-};
 
+    content.innerHTML = htmlContent; // Ab yahan header+content nahi, sirf content hai.
+
+    if (page === "contact") setupContactForm();
+}
+
+// Form Submission Helper
+function setupContactForm() {
+    const form = document.getElementById("contact-form");
+    if(!form) return;
+    form.onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById("form-submit");
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+        try {
+            const response = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { 'Accept': 'application/json' }});
+            if (response.ok) { alert("Success! Your message has been sent."); form.reset(); } 
+            else { alert("Oops! Something went wrong."); }
+        } catch (err) { alert("Connection Error."); }
+        btn.disabled = false;
+        btn.innerHTML = 'Send Message <i class="fas fa-paper-plane ms-2"></i>';
+    };
+}
+function closeExtra() {
+    const extraScreens = document.getElementById("extraScreens");
+    extraScreens.style.display = "none";
+    document.body.style.overflow = "auto"; // Scroll wapas on karo
+    window.history.pushState({}, "", "/"); // URL reset karo
+}
+window.onpopstate = function() {
+    if (!window.location.hash) goBack();
+};
 async function calculateAge() {
   const dobValue = document.getElementById("dob").value;
   const targetValue = document.getElementById("todayDate").value;

@@ -60,6 +60,27 @@ Premium Navigation Style
 .bg-white.rounded-4 {
     transition: all 0.3s ease;
 }
+/* Extra Screens ko Full Width aur Sabse upar dikhane ke liye */
+#extraScreens {
+    width: 100% !important;
+    min-height: 100vh; /* Puri screen ki height le lega */
+    background-color: #f8f9fa; /* Light background */
+    position: relative;
+    z-index: 9999; /* Header/Footer ke upar aane ke liye */
+    display: block;
+    margin: 0 auto;
+}
+
+#extraContent {
+    max-width: 1000px; /* Content zyada lamba na dikhe isliye limit */
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Agar footer overlap kar raha hai toh usse extra screen par hide kar sakte ho */
+#extraScreens.active ~ footer {
+    display: none !important;
+}
 
 .accordion-button:not(.collapsed) {
     background-color: #f8f9fa;
