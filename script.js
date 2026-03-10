@@ -390,12 +390,45 @@ function renderToolContent(toolName, container) {
   </div>
             <div id="pdfPreview" class="row g-3 mt-4"></div>
             
-            <div class="mt-5 p-4 bg-light rounded border text-start shadow-sm">
-                <h5 class="fw-bold text-info"><i class="fas fa-file-image me-2"></i> High-Resolution PDF to JPG Converter</h5>
-                <p class="small text-muted">Our tool allows you to convert complex PDF pages into high-quality JPEG images instantly. 
-                <strong>Privacy First:</strong> The conversion happens entirely in your browser. No files are uploaded to any server, keeping your sensitive documents 100% private.</p>
-                <p class="small text-muted mb-0"><strong>Why use this?</strong> Best for extracting charts, certificates, or snapshots from large PDF files without losing clarity.</p>
-            </div>`;
+            <div class="mt-5 p-4 bg-light rounded shadow-sm text-dark border-start border-primary border-4">
+    <h2 class="h5 fw-bold mb-3 text-primary">
+        <i class="fas fa-images me-2"></i>Professional PDF to Image Converter Online
+    </h2>
+    <p class="small text-muted mb-4">
+        SwiftTool Pro offers the most reliable way to convert your PDF documents into high-quality images (JPG/PNG) instantly. Whether you are a student preparing for **SSC, UPSC, or Banking exams** or a professional handling office documents, our tool ensures your files are processed with 100% accuracy and privacy.
+    </p>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <h3 class="h6 fw-bold text-dark"><i class="fas fa-user-shield me-2 text-success"></i>100% Privacy & Local Processing</h3>
+            <p class="x-small text-muted">
+                Unlike other converters, we process your files directly in your browser. Your sensitive documents like **Aadhaar cards, PAN cards, or marksheets** are never uploaded to any server, keeping your data completely safe and private.
+            </p>
+        </div>
+        <div class="col-md-6">
+            <h3 class="h6 fw-bold text-dark"><i class="fas fa-bolt me-2 text-warning"></i>Fast & Batch Extraction</h3>
+            <p class="x-small text-muted">
+                Extract all pages from a multi-page PDF as individual images in just one click. Our engine is optimized for speed, allowing you to download your converted images as a high-quality ZIP file or individual JPGs.
+            </p>
+        </div>
+        <div class="col-md-12">
+            <h3 class="h6 fw-bold text-dark"><i class="fas fa-check-circle me-2 text-primary"></i>No Limits, No Watermarks</h3>
+            <p class="x-small text-muted">
+                Enjoy unlimited conversions without any hidden costs or annoying watermarks on your output. We focus on providing a clean, "pro" experience for every user, making it the best free alternative to paid software.
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-4 p-3 bg-white rounded border">
+        <h4 class="h6 fw-bold mb-2">How to convert PDF to Image for Exam Portals:</h4>
+        <ol class="x-small text-muted ps-3">
+            <li class="mb-1">Select your PDF file from your device.</li>
+            <li class="mb-1">Wait for our tool to generate high-resolution previews of each page.</li>
+            <li class="mb-1">Click "Download All" to save all pages as a ZIP or download specific pages as JPG.</li>
+        </ol>
+    </div>
+</div>
+            `;
     // ... baaki tool logic ...
   } else if (toolName === "voice") {
     content =
