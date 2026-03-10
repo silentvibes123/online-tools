@@ -26,38 +26,31 @@ Premium Navigation Style
 }
 
 /* --- Desktop Hover Animation (Updated) --- */
+/* --- Desktop Hover Animation - The "Pro" Fix --- */
 @media (min-width: 992px) {
-  /* 1. Default State: Menu ko pehle se 'block' rakhenge par hidden */
+  /* 1. Default Hidden State */
   .nav-item.dropdown .dropdown-menu {
-    display: block !important; /* Display none ko override karega */
+    display: block !important; /* Hamesha block rahega lekin invisible */
     visibility: hidden;
     opacity: 0;
-    transform: translateY(30px); /* Thoda niche se start hoga */
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-                visibility 0.6s;
-    pointer-events: none;
-    margin-top: 0; 
+    transform: translateY(25px) scale(0.95); /* Thoda niche aur chota start hoga */
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* Apple jaisa smooth easing */
+    pointer-events: none; /* Hide hone par click block rahega */
+    margin-top: 0;
   }
 
-  /* 2. Hover State: Slow Motion Transition */
+  /* 2. Slow Motion Appearance on Hover */
   .nav-item.dropdown:hover .dropdown-menu {
     visibility: visible;
     opacity: 1;
-    transform: translateY(0); /* Apni jagah par wapas aayega */
+    transform: translateY(0) scale(1); /* Apni natural position par aayega */
     pointer-events: auto;
   }
 
-  /* 3. Dropdown toggle link (Optional: click prevent karne ke liye desktop par) */
-  .nav-item.dropdown:hover > .dropdown-toggle {
-    color: #fff !important; /* Text color highlight */
+  /* 3. Dropdown transition smooth rakhne ke liye Bootstrap ki default animation band karein */
+  .dropdown-menu.show {
+    animation: none !important; 
   }
-}
-
-/* Dropdown ko smooth dikhane ke liye thoda glass look (Optional) */
-.dropdown-menu {
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
-    border: 1px solid rgba(0,0,0,0.05) !important;
 }
 html, body {
     height: 100%;
