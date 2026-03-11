@@ -127,28 +127,46 @@ function showNotify(type, message) {
 }
 
 function openTool(toolName) {
-  document.getElementById('toolsGrid').classList.add('d-none');
-    document.getElementById('seoSection').classList.add('d-none');
-    document.getElementById('extraScreens').classList.add('d-none');
-  const activeTool = document.getElementById("activeTool");
-  activeTool.classList.remove('d-none');
-  const toolUI = document.getElementById("toolUI");
+    // 1. Saare Elements ko variables mein store karo (Crash se bachne ke liye)
+    const toolsGrid = document.getElementById('toolsGrid');
+    const seoSection = document.getElementById('seoSection');
+    const extraScreens = document.getElementById('extraScreens');
+    const activeTool = document.getElementById("activeTool");
+    const toolUI = document.getElementById("toolUI");
+    const heroSection = document.querySelector('.container-fluid.px-0.mb-5');
 
-  // URL badlo (e.g., /resizer)
-if (window.location.pathname !== "/" + toolName) {
+    // 2. Dashboard aur Extra Screens ko hide karo
+    if (toolsGrid) toolsGrid.classList.add('d-none');
+    if (seoSection) seoSection.classList.add('d-none');
+    if (extraScreens) {
+        extraScreens.classList.add('d-none');
+        extraScreens.style.display = 'none';
+    }
+    if (heroSection) heroSection.classList.add('d-none');
+
+    // 3. Active Tool container ko dikhao
+    if (activeTool) {
+        activeTool.classList.remove('d-none');
+        activeTool.style.setProperty('display', 'block', 'important');
+    }
+
+    // 4. URL aur Title update karo
+    if (window.location.pathname !== "/" + toolName) {
         window.history.pushState({ tool: toolName }, "", "/" + toolName);
     }
-  // Title badlo
-  updateDynamicTitle(toolName);
+    
+    // Ensure karo ye function aapki script mein hai
+    if (typeof updateDynamicTitle === "function") {
+        updateDynamicTitle(toolName);
+    }
 
-  // UI Hide/Show
-  toolsGrid.classList.add("d-none");
-  if (seoSection) seoSection.classList.add("d-none");
-  activeTool.classList.remove("d-none");
-  
-  toolUI.innerHTML = ""; // Purana data saaf
-  window.scrollTo({ top: 0, behavior: 'smooth' });// Upar scroll karo
-  renderToolContent(toolName, toolUI);
+    // 5. Purana data saaf karke naya tool load karo
+    if (toolUI) {
+        toolUI.innerHTML = ""; 
+        renderToolContent(toolName, toolUI);
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function renderToolContent(toolName, container) {
   let content = "";
