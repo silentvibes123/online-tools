@@ -1311,6 +1311,7 @@ function showExtra(page) {
             </div>
         </div>`;
     break;
+    
     }
 
     content.innerHTML = htmlContent; // Ab yahan header+content nahi, sirf content hai.
