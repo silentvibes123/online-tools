@@ -60,7 +60,7 @@ window.playVoice = function() {
     }
 
     if (!text || !text.trim()) {
-        return showNotify("error", "Pehle text likho ya PDF upload karo!");
+        return showNotify("error", "please enter a text first!");
     }
 
     const utterance = new SpeechSynthesisUtterance(text);

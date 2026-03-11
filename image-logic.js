@@ -12,7 +12,7 @@ function readFileAsDataURL(file) {
 async function smartResize() {
     const file = document.getElementById("resizeInput").files[0];
     const targetKB = parseInt(document.getElementById("targetSize").value);
-    if (!file) return showNotify("error", "Photo select karein!");
+    if (!file) return showNotify("error", "Please sekect photo!");
 
     const btn = document.querySelector("button[onclick='smartResize()']");
     const originalText = btn.innerHTML;
@@ -82,7 +82,7 @@ async function smartResize() {
 
         showNotify("success", `Perfect! Final Size: ${sizeKB.toFixed(1)}KB`);
     } catch (e) {
-        showNotify("error", "Resize fail ho gaya!");
+        showNotify("error", "Error in Resize ");
     } finally {
         btn.disabled = false;
         btn.innerHTML = originalText;

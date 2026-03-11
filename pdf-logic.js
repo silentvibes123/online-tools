@@ -6,7 +6,7 @@ let extractedImages = [];
 // 2. Merge PDF Logic
 async function mergePDFs() {
     const files = document.getElementById("mergeInput").files;
-    if (files.length < 2) return showNotify("error", "Kam se kam 2 PDF select karein!");
+    if (files.length < 2) return showNotify("error", "minimum 2 pdf considered!");
 
     const btn = document.getElementById("mergeBtn");
     const originalText = btn.innerHTML;
