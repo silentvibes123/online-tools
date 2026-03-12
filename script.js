@@ -135,6 +135,11 @@ function openTool(toolName) {
     const toolUI = document.getElementById("toolUI");
     const heroSection = document.querySelector('.container-fluid.px-0.mb-5');
 
+    const canonical = document.getElementById('canonicalTag');
+    if (canonical) {
+        canonical.setAttribute('href', 'https://swiftoolpro.com/' + toolName);
+    }
+
     // 2. Dashboard aur Extra Screens ko hide karo
     if (toolsGrid) toolsGrid.classList.add('d-none');
     if (seoSection) seoSection.classList.add('d-none');

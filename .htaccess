@@ -1,14 +1,9 @@
 RewriteEngine On
 
-# 1. Sabhi traffic ko HTTPS par bhejo
+# 1. Sab kuch HTTPS par redirect karo
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# 2. WWW ko Non-WWW par redirect karo (Taaki 5xx error khatam ho)
-RewriteCond %{HTTP_HOST} ^www\.swifttoolpro\.com [NC]
-RewriteRule ^(.*)$ https://swifttoolpro.com/$1 [L,R=301]
-
-# 3. Aapka purana code (Routing)
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.html [QSA,L]
+# 2. WWW ko Non-WWW par redirect karo (Standardization)
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
