@@ -1,9 +1,9 @@
 RewriteEngine On
 
-# 1. Sab kuch HTTPS par redirect karo
+# 1. Sab kuch HTTPS par redirect karo (Ye sahi hai, rehne do)
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# 2. WWW ko Non-WWW par redirect karo (Standardization)
-RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+# 2. Non-WWW ko WWW par redirect karo (Ye naya code hai)
+RewriteCond %{HTTP_HOST} ^swifttoolpro\.com [NC]
+RewriteRule ^(.*)$ https://www.swifttoolpro.com/$1 [L,R=301]
