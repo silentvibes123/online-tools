@@ -6,7 +6,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
     const path = window.location.pathname.split("/").pop();
     
     // Tools ki list jo aapke paas hain
-    const validTools = ["cash", "resizer", "age", "pdf", "compress", "qrcode", "pdfToImg", "voice", "merge", "split"];
+    const validTools = ["cash", "resizer", "age", "pdf", "compress", "qrcode", "pdfToImg", "voice", "merge", "split","wordToPdf","pdfToWord","gst","removePages"];
 
     if (validTools.includes(path)) {
         // Agar valid tool hai, toh use kholo
@@ -137,7 +137,7 @@ function openTool(toolName) {
 
     const canonical = document.getElementById('canonicalTag');
     if (canonical) {
-        canonical.setAttribute('href', 'https://swiftoolpro.com/' + toolName);
+        canonical.setAttribute('href', 'https://www.swiftoolpro.com/' + toolName);
     }
 
     // 2. Dashboard aur Extra Screens ko hide karo
