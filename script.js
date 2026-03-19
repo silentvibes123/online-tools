@@ -1202,7 +1202,9 @@ function showExtra(page) {
             <div class="p-3 bg-light border-start border-primary border-4 mt-4">
                 <p class="mb-0 small text-muted"><b>Note:</b> If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us through our Contact Page.</p>
             </div>
-        </div>`;
+        </div>
+        
+        `;
     break;
         case "terms":
     htmlContent = `
