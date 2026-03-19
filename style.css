@@ -56,6 +56,12 @@ Premium Navigation Style
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
+
+#seo-content {
+    position: relative;
+    z-index: -1; /* Taaki ye Flutter UI ke peeche rahe aur sirf Google Bots ko dikhe */
+    margin-top: 100vh; /* Page ke kaafi niche dikhega */
+}
 /* Custom Styling for Content Sections */
 .bg-white.rounded-4 {
     transition: all 0.3s ease;
