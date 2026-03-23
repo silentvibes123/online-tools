@@ -1,3 +1,5 @@
+Redirect 301 /pdf-to-word https://www.swifttoolpro.com/
+Redirect 301 /word-to-pdf https://www.swifttoolpro.com/
 RewriteEngine On
 
 # 1. Sab kuch HTTPS par redirect karo (Ye sahi hai, rehne do)
