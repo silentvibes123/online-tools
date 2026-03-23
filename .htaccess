@@ -1,11 +1,13 @@
-Redirect 301 /pdf-to-word https://www.swifttoolpro.com/
-Redirect 301 /word-to-pdf https://www.swifttoolpro.com/
 RewriteEngine On
 
-# 1. Sab kuch HTTPS par redirect karo (Ye sahi hai, rehne do)
+# 1. Jo tools delete kiye hain unhe Home Page par bhejo (301 Redirect)
+RewriteRule ^pdf-to-word$ https://www.swifttoolpro.com/ [L,R=301]
+RewriteRule ^word-to-pdf$ https://www.swifttoolpro.com/ [L,R=301]
+
+# 2. Sab kuch HTTPS par redirect karo
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# 2. Non-WWW ko WWW par redirect karo (Ye naya code hai)
+# 3. Non-WWW ko WWW par redirect karo
 RewriteCond %{HTTP_HOST} ^swifttoolpro\.com [NC]
 RewriteRule ^(.*)$ https://www.swifttoolpro.com/$1 [L,R=301]
