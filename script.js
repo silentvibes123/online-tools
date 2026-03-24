@@ -1,9 +1,11 @@
 // ===== INIT =====
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
-
 const VALID_TOOLS = ["cash","resizer","age","pdf","compress","qrcode","pdfToImg","voice","merge","split","wordToPdf","pdfToWord","gst","removePages","wordCounter","password","base64","unitConverter","loremIpsum"];
 
 window.addEventListener("load", () => {
+  // Init pdfjs after it's loaded
+  if (typeof pdfjsLib !== "undefined") {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+  }
   const path = location.pathname.replace("/","");
   if (VALID_TOOLS.includes(path)) openTool(path);
   else updateDynamicTitle(null);
@@ -53,18 +55,19 @@ function updateDynamicTitle(tool) {
 
 // ===== NAVIGATION =====
 function openTool(name) {
-  ["toolsGrid","activeTool","extraScreens"].forEach(id => {
+  // Hide dashboard sections
+  ["toolsGrid","heroSection","statsSection","extraScreens"].forEach(id => {
     const el = document.getElementById(id);
-    if (el) { el.classList.add("d-none"); el.style.display = ""; }
+    if (el) el.classList.add("d-none");
   });
-  const hero = document.querySelector(".hero-section")?.closest(".container");
-  const stats = document.querySelector(".stats-bar")?.closest(".container");
-  if (hero) hero.classList.add("d-none");
-  if (stats) stats.classList.add("d-none");
 
+  // Show active tool
   const activeTool = document.getElementById("activeTool");
   const toolUI = document.getElementById("toolUI");
-  if (activeTool) { activeTool.classList.remove("d-none"); activeTool.style.display = "block"; }
+  if (activeTool) {
+    activeTool.classList.remove("d-none");
+    activeTool.removeAttribute("style");
+  }
 
   if (location.pathname !== "/" + name) history.pushState({tool:name}, "", "/" + name);
   updateDynamicTitle(name);
@@ -76,19 +79,22 @@ function openTool(name) {
 }
 
 function goToDashboard() {
-  ["activeTool","extraScreens"].forEach(id => {
+  // Hide tool & extra screens
+  const activeTool = document.getElementById("activeTool");
+  const extraScreens = document.getElementById("extraScreens");
+  const toolUI = document.getElementById("toolUI");
+  if (activeTool) { activeTool.classList.add("d-none"); activeTool.removeAttribute("style"); }
+  if (extraScreens) { extraScreens.classList.add("d-none"); extraScreens.removeAttribute("style"); }
+  if (toolUI) toolUI.innerHTML = "";
+
+  // Show dashboard sections
+  ["toolsGrid","heroSection","statsSection"].forEach(id => {
     const el = document.getElementById(id);
-    if (el) { el.classList.add("d-none"); el.style.display = "none"; }
+    if (el) el.classList.remove("d-none");
   });
-  const toolsGrid = document.getElementById("toolsGrid");
-  if (toolsGrid) toolsGrid.classList.remove("d-none");
-  const hero = document.querySelector(".hero-section")?.closest(".container");
-  const stats = document.querySelector(".stats-bar")?.closest(".container");
-  if (hero) hero.classList.remove("d-none");
-  if (stats) stats.classList.remove("d-none");
+
   history.pushState({}, "", "/");
   updateDynamicTitle(null);
-  document.getElementById("toolUI").innerHTML = "";
 }
 
 function showDashboard() { goToDashboard(); window.scrollTo(0,0); }

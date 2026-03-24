@@ -235,20 +235,16 @@ function showExtra(page) {
   document.title = (titles[page]||page) + " | SwiftTool Pro";
   history.pushState({page}, "", `#${page}`);
 
-  ["toolsGrid","activeTool"].forEach(id => {
+  ["toolsGrid","activeTool","heroSection","statsSection"].forEach(id => {
     const el = document.getElementById(id);
-    if (el) { el.classList.add("d-none"); el.style.display = "none"; }
+    if (el) el.classList.add("d-none");
   });
-  const hero = document.querySelector(".hero-section")?.closest(".container");
-  const stats = document.querySelector(".stats-bar")?.closest(".container");
-  if (hero) hero.classList.add("d-none");
-  if (stats) stats.classList.add("d-none");
 
   const extraScreens = document.getElementById("extraScreens");
   const content = document.getElementById("extraContent");
   if (!extraScreens || !content) return;
   extraScreens.classList.remove("d-none");
-  extraScreens.style.setProperty("display","block","important");
+  extraScreens.removeAttribute("style");
   window.scrollTo({top:0,behavior:"smooth"});
 
   const pages = {
@@ -322,4 +318,4 @@ function showExtra(page) {
   }
 }
 
-window.onpopstate = () => { if (!location.hash) goToDashboard(); };
+window.onpopstate = () => { if (!location.hash && location.pathname === "/") goToDashboard(); };

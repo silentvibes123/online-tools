@@ -81,7 +81,7 @@
   </nav>
 
   <!-- HERO -->
-  <div class="container mt-4 mb-2 animate__animated animate__fadeIn">
+  <div id="heroSection" class="container mt-4 mb-2 animate__animated animate__fadeIn">
     <div class="hero-section">
       <div class="row align-items-center position-relative" style="z-index:1">
         <div class="col-lg-7">
@@ -106,7 +106,7 @@
   </div>
 
   <!-- STATS BAR -->
-  <div class="container mb-4">
+  <div id="statsSection" class="container mb-4">
     <div class="stats-bar">
       <div class="stat-item"><div class="stat-num">500K+</div><div class="stat-label">Files Processed</div></div>
       <div class="stat-item"><div class="stat-num">18+</div><div class="stat-label">Free Tools</div></div>
@@ -392,10 +392,10 @@
 <script src="voice-logic.js"></script>
 <script src="wordToPdf-logic.js"></script>
 <script src="gst-logic.js"></script>
-<script src="script.js"></script>
-<script src="pdf-logic.js"></script>
 <script src="image-logic.js"></script>
+<script src="pdf-logic.js"></script>
 <script src="tools-logic.js"></script>
+<script src="script.js"></script>
 <script>
   if('serviceWorker' in navigator){
     window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
