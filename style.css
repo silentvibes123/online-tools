@@ -1,257 +1,256 @@
-/* 1. Global Variables & Reset */
+/* ===== VARIABLES ===== */
 :root {
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --success-gradient: linear-gradient(135deg, #2af598 0%, #009efd 100%);
-    --danger-gradient: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
-    --info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --warning-gradient: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-    --dark-gradient: linear-gradient(135deg, #434343 0%, #000000 100%);
-    --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --primary: #4f46e5;
+  --primary-light: #818cf8;
+  --bg: #f0f2f5;
+  --card-bg: #ffffff;
+  --text: #1e293b;
+  --muted: #64748b;
+  --radius: 16px;
+  --shadow: 0 4px 20px rgba(0,0,0,0.07);
+  --shadow-hover: 0 12px 40px rgba(79,70,229,0.15);
+  --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --grad-primary: linear-gradient(135deg, #667eea, #764ba2);
+  --grad-success: linear-gradient(135deg, #2af598, #009efd);
+  --grad-danger: linear-gradient(135deg, #ff0844, #ffb199);
+  --grad-info: linear-gradient(135deg, #4facfe, #00f2fe);
+  --grad-warning: linear-gradient(135deg, #f6d365, #fda085);
+  --grad-dark: linear-gradient(135deg, #434343, #000);
+  --grad-teal: linear-gradient(135deg, #0fd850, #f9f047);
+  --grad-pink: linear-gradient(135deg, #f093fb, #f5576c);
+  --grad-orange: linear-gradient(135deg, #fa8231, #f7b731);
 }
 
-/* Premium Navigation Style */
-.navbar-nav .nav-link {
-    font-weight: 600;
-    transition: color 0.3s ease;
+/* ===== BASE ===== */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; overflow-x: hidden; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
 }
+.content-wrapper { flex: 1 0 auto; }
 
-.dropdown-item {
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-}
-.dropdown-item:hover {
-    background-color: #f8f9fa;
-    color: #4f46e5;
-}
+/* ===== NAVBAR ===== */
+.navbar { backdrop-filter: blur(10px); }
+.navbar-nav .nav-link { font-weight: 600; transition: color 0.2s; }
+.dropdown-item { padding: 10px 15px; border-radius: 8px; font-size: 0.9rem; transition: background 0.2s, color 0.2s; }
+.dropdown-item:hover { background: #f1f5f9; color: var(--primary); }
 
-/* --- Final Pro Slow-Motion Hover Animation --- */
 @media (min-width: 992px) {
-  /* 1. Default Hidden State (Jane wala animation bhi yahi handle hoga) */
   .nav-item.dropdown .dropdown-menu {
-    display: block !important; 
-    visibility: hidden;
-    opacity: 0;
-    margin-top: 0;
-    /* Niche se start hoga aur thoda zoom out rahega */
-    transform: translateY(30px) scale(0.9); 
-    
-    /* Timing: 0.7s (Slow & Premium) */
-    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), 
-                opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                visibility 0.7s;
+    display: block !important;
+    visibility: hidden; opacity: 0; margin-top: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s, visibility 0.4s;
     pointer-events: none;
   }
-
-  /* 2. Hover Entry State (Aane wala animation) */
   .nav-item.dropdown:hover .dropdown-menu {
-    visibility: visible;
-    opacity: 1;
+    visibility: visible; opacity: 1;
     transform: translateY(0) scale(1);
     pointer-events: auto;
   }
+}
+.dropdown-menu.show { animation: none !important; }
 
-  /* 3. Dropdown Item Hover Effect (Smooth transition inside menu) */
-  .dropdown-item {
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
+/* ===== HERO ===== */
+.hero-section {
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  border-radius: var(--radius);
+  padding: 3rem 2rem;
+  position: relative;
+  overflow: hidden;
 }
-
-#seo-content {
-    position: relative;
-    z-index: -1; /* Taaki ye Flutter UI ke peeche rahe aur sirf Google Bots ko dikhe */
-    margin-top: 100vh; /* Page ke kaafi niche dikhega */
+.hero-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(79,70,229,0.3) 0%, transparent 60%);
 }
-/* Custom Styling for Content Sections */
-.bg-white.rounded-4 {
-    transition: all 0.3s ease;
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(79,70,229,0.2); color: #a5b4fc;
+  border: 1px solid rgba(79,70,229,0.4);
+  padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;
 }
-/* Extra Screens ko Full Width aur Sabse upar dikhane ke liye */
-#extraScreens {
-    width: 100% !important;
-    min-height: 100vh; /* Puri screen ki height le lega */
-    background-color: #f8f9fa; /* Light background */
-    position: relative;
-    z-index: 9999; /* Header/Footer ke upar aane ke liye */
-    display: block;
-    margin: 0 auto;
+.hero-title {
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 800; letter-spacing: -1px; color: #fff;
+  line-height: 1.2;
 }
-
-#extraContent {
-    max-width: 1000px; /* Content zyada lamba na dikhe isliye limit */
-    margin: 0 auto;
-    width: 100%;
+.hero-subtitle { color: rgba(255,255,255,0.65); font-size: 1rem; }
+.hero-search {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  color: #fff !important; border-radius: 12px !important;
+  backdrop-filter: blur(10px);
 }
-
-/* Agar footer overlap kar raha hai toh usse extra screen par hide kar sakte ho */
-#extraScreens.active ~ footer {
-    display: none !important;
-}
-
-.accordion-button:not(.collapsed) {
-    background-color: #f8f9fa;
-    color: #4f46e5;
-    box-shadow: none;
-}
-
-.accordion-button:focus {
-    box-shadow: none;
-    border-color: rgba(0,0,0,.125);
+.hero-search::placeholder { color: rgba(255,255,255,0.5); }
+.hero-search:focus { background: rgba(255,255,255,0.15) !important; box-shadow: 0 0 0 3px rgba(79,70,229,0.3) !important; }
+.hero-stat {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 14px;
+  backdrop-filter: blur(5px);
 }
 
-.list-unstyled li i {
-    font-size: 0.9rem;
+/* ===== SECTION HEADER ===== */
+.section-header { text-align: center; margin-bottom: 2rem; }
+.section-header h2 { font-weight: 800; font-size: 1.6rem; color: var(--text); }
+.section-header p { color: var(--muted); font-size: 0.9rem; }
+.section-divider {
+  width: 50px; height: 4px;
+  background: var(--grad-primary);
+  border-radius: 2px; margin: 8px auto 0;
 }
 
-/* Tool Card Hover Effect Enhancement */
+/* ===== CATEGORY PILLS ===== */
+.category-pills { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem; }
+.cat-pill {
+  padding: 6px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 600;
+  border: 1.5px solid #e2e8f0; background: #fff; color: var(--muted);
+  cursor: pointer; transition: all 0.2s;
+}
+.cat-pill:hover, .cat-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* ===== TOOL CARDS ===== */
 .tool-card {
-    border: 1px solid transparent !important;
+  background: var(--card-bg);
+  border-radius: var(--radius) !important;
+  border: 1.5px solid #e8ecf0 !important;
+  padding: 20px 15px !important;
+  cursor: pointer;
+  transition: var(--transition) !important;
+  box-shadow: var(--shadow) !important;
+  display: flex !important; flex-direction: column !important;
+  align-items: center !important; text-align: center !important;
+  height: 100%;
+  position: relative; overflow: hidden;
 }
-.tool-card:hover {
-    border: 1px solid #667eea !important;
-    background: #fbfbff !important;
+.tool-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: var(--grad-primary); opacity: 0;
+  transition: opacity 0.3s; border-radius: var(--radius);
+  z-index: 0;
 }
-/* 4. Important: Bootstrap ki default classes ko reset karein jo animation block karti hain */
-.dropdown-menu.show {
-    animation: none !important;
+.tool-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover) !important; border-color: var(--primary) !important; }
+.tool-card > * { position: relative; z-index: 1; }
+.tool-card .badge-new {
+  position: absolute; top: 10px; right: 10px;
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+  color: #fff; font-size: 0.65rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 50px; z-index: 2;
 }
-html, body {
-    height: 100%;
-    margin: 0;
-    background-color: #f0f2f5;
-    font-family: "Inter", sans-serif;
-    overflow-x: hidden;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-}
-
-.content-wrapper { flex: 1 0 auto; }
-
-/* 2. Dashboard & Tool Cards */
-.dashboard-header {
-    background: white;
-    padding: 30px 0;
-    margin-bottom: 20px;
-    border-radius: 0 0 30px 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-}
-
-.dashboard-title {
-    font-weight: 800;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -1px;
+.tool-card .badge-hot {
+  position: absolute; top: 10px; right: 10px;
+  background: linear-gradient(135deg, #fa8231, #f7b731);
+  color: #fff; font-size: 0.65rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 50px; z-index: 2;
 }
 
-.tool-card {
-    border: none !important;
-    border-radius: 20px !important;
-    background: #ffffff !important;
-    padding: 25px;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    transition: var(--transition) !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
-    cursor: pointer;
-    height: 100%;
-}
-
-.tool-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
-    border: 1px solid #667eea !important;
-}
-
-/* 3. Icon Boxes */
+/* ===== ICON BOXES ===== */
 .icon-box {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 15px;
-    margin-bottom: 15px;
-    font-size: 1.6rem;
-    color: white;
+  width: 56px; height: 56px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 14px; margin-bottom: 12px; font-size: 1.4rem; color: #fff;
+}
+.bg-cash { background: var(--grad-success); }
+.bg-pdf { background: var(--grad-danger); }
+.bg-compress { background: var(--grad-info); }
+.bg-imgpdf { background: var(--grad-primary); }
+.bg-teal { background: var(--grad-teal); }
+.bg-pink { background: var(--grad-pink); }
+.bg-orange { background: var(--grad-orange); }
+
+/* ===== TOOL UI INNER ===== */
+.tool-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.tool-header h3 { font-size: 1.3rem; font-weight: 700; margin: 0; }
+.privacy-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #f0fdf4; color: #16a34a;
+  border: 1px solid #bbf7d0; border-radius: 50px;
+  padding: 4px 12px; font-size: 0.75rem; font-weight: 600;
 }
 
-.bg-cash { background: var(--success-gradient); }
-.bg-pdf { background: var(--danger-gradient); }
-.bg-compress { background: var(--info-gradient); }
-.bg-qr { background: #f3e5f5; color: #7b1fa2; }
-.bg-voice { background: var(--warning-gradient); }
-.bg-imgpdf { background: var(--primary-gradient); }
+/* ===== STATS BAR ===== */
+.stats-bar {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  border-radius: var(--radius); padding: 1.5rem 2rem;
+  display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem;
+  margin: 2rem 0;
+}
+.stat-item { text-align: center; color: #fff; }
+.stat-item .stat-num { font-size: 1.8rem; font-weight: 800; }
+.stat-item .stat-label { font-size: 0.75rem; opacity: 0.8; }
 
-/* 4. Loader & Animations */
+/* ===== FEATURE CARDS ===== */
+.feature-card {
+  background: #fff; border-radius: var(--radius);
+  padding: 1.5rem; border: 1px solid #e8ecf0;
+  box-shadow: var(--shadow); transition: var(--transition);
+}
+.feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.feature-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; margin-bottom: 1rem;
+}
+
+/* ===== LOADER ===== */
 #loaderOverlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(255, 255, 255, 0.9);
-    display: none; /* JS will toggle d-none */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
+  position: fixed; inset: 0;
+  background: rgba(255,255,255,0.92);
+  display: none; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 9999; backdrop-filter: blur(4px);
 }
 
-.animate__fadeInUp { animation: fadeInUp 0.6s ease; }
+/* ===== FOOTER ===== */
+footer { background: #fff; border-top: 1px solid #e8ecf0; }
+.footer-brand { font-weight: 800; font-size: 1.2rem; color: var(--primary); }
 
-/* 5. Mobile Optimization (The "Pro" Look) */
-@media (max-width: 768px) {
-    .dashboard-header { padding: 15px 0; margin-bottom: 10px; }
-    .dashboard-title { font-size: 1.6rem !important; }
-    
-    .tool-card {
-        padding: 15px 10px !important;
-        min-height: 110px !important;
-        border-radius: 15px !important;
-    }
+/* ===== ACCORDION ===== */
+.accordion-button:not(.collapsed) { background: #f8faff; color: var(--primary); box-shadow: none; }
+.accordion-button:focus { box-shadow: none; }
 
-    .tool-card p { display: none !important; } /* Hidden for clean mobile UI */
-    
-    .icon-box {
-        width: 45px; height: 45px;
-        font-size: 1.2rem;
-        margin-bottom: 8px;
-    }
-
-    .tool-card h5 { font-size: 0.85rem !important; font-weight: 700; }
-}
-
-/* 6. Printing Logic */
-@media print {
-    iframe, .ad-slot, #tool-banner-ad, button, .btn, nav, footer, .no-print {
-        display: none !important;
-    }
-    #toolUI { display: block !important; border: none; }
-    body { background: white !important; }
-}
-
-/* Perfect A4 Wrapper */
+/* ===== WORD PREVIEW ===== */
 .word-content-area {
-    width: 210mm !important; /* Standard A4 Width */
-    min-height: 297mm;
-    padding: 20mm !important;
-    margin: 0 auto !important;
-    background: white !important;
-    color: black !important;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-    font-family: 'Times New Roman', serif;
-    text-align: left;
+  width: 210mm; min-height: 297mm; padding: 20mm;
+  margin: 0 auto; background: #fff; color: #000;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  font-family: 'Times New Roman', serif; text-align: left;
+}
+@media screen and (max-width: 800px) {
+  .word-content-area { width: 100%; padding: 10mm; }
 }
 
-/* Responsive adjustment for preview only */
-@media screen and (max-width: 800px) {
-    .word-content-area {
-        width: 100% !important;
-        padding: 10mm !important;
-    }
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hero-section { padding: 2rem 1rem; }
+  .tool-card { padding: 14px 10px !important; }
+  .tool-card p { display: none !important; }
+  .icon-box { width: 46px; height: 46px; font-size: 1.2rem; margin-bottom: 8px; }
+  .tool-card h6 { font-size: 0.8rem !important; font-weight: 700; }
+  .stats-bar { padding: 1rem; }
+  .stat-item .stat-num { font-size: 1.4rem; }
 }
+
+/* ===== PRINT ===== */
+@media print {
+  iframe, .ad-slot, button, .btn, nav, footer, .no-print { display: none !important; }
+  #toolUI { display: block !important; border: none; }
+  body { background: #fff !important; }
+}
+
+/* ===== MISC ===== */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.x-small { font-size: 0.75rem; }
+.removal-overlay {
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.4);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10; animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
