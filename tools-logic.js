@@ -235,7 +235,7 @@ function showExtra(page) {
   document.title = (titles[page]||page) + " | SwiftTool Pro";
   history.pushState({page}, "", `#${page}`);
 
-  ["toolsGrid","activeTool","heroSection","statsSection"].forEach(id => {
+  ["toolsGrid","activeTool","heroSection","statsSection","seoContent"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.add("d-none");
   });
@@ -266,7 +266,7 @@ function showExtra(page) {
       <h5 class="fw-bold mt-4 text-primary">Cookies</h5>
       <p>We use minimal cookies for analytics and advertising purposes only. No personal data is stored by SwiftTool Pro itself.</p>
       <h5 class="fw-bold mt-4 text-primary">Contact</h5>
-      <p>Questions? Email us at <a href="mailto:support@swifttoolpro.com">support@swifttoolpro.com</a></p>`,
+      <p>Questions? Use the <a href="javascript:void(0)" onclick="showExtra('contact')">Contact Us</a> form and we'll get back to you within 24–48 hours.</p>`,
 
     terms: `<h2 class="fw-bold mb-3 border-bottom pb-2">Terms of Service</h2>
       <p class="small text-muted">Last Updated: March 2026</p>
@@ -283,7 +283,7 @@ function showExtra(page) {
       <div class="row g-4">
         <div class="col-md-5">
           <div class="feature-card h-100">
-            <div class="d-flex mb-3"><div class="feature-icon me-3" style="background:#ede9fe"><i class="fas fa-envelope text-primary"></i></div><div><h6 class="fw-bold mb-0">Email</h6><p class="small text-muted mb-0">support@swifttoolpro.com</p></div></div>
+            <div class="d-flex mb-3"><div class="feature-icon me-3" style="background:#ede9fe"><i class="fas fa-headset text-primary"></i></div><div><h6 class="fw-bold mb-0">Support</h6><p class="small text-muted mb-0">Use the form to reach us. We respond within 24–48 hours.</p></div></div>
             <div class="d-flex mb-3"><div class="feature-icon me-3" style="background:#dcfce7"><i class="fas fa-clock text-success"></i></div><div><h6 class="fw-bold mb-0">Response Time</h6><p class="small text-muted mb-0">Within 24-48 hours</p></div></div>
             <div class="d-flex"><div class="feature-icon me-3" style="background:#fef3c7"><i class="fas fa-map-marker-alt text-warning"></i></div><div><h6 class="fw-bold mb-0">Location</h6><p class="small text-muted mb-0">Surat, Gujarat, India</p></div></div>
           </div>
