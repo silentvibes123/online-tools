@@ -2,4 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /404
 
+# Sitemap location
 Sitemap: https://www.swifttoolpro.com/sitemap.xml
+
+# Canonical domain for crawlers
+# All pages are at https://www.swifttoolpro.com/
