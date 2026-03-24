@@ -1,4 +1,4 @@
-const CACHE_NAME = 'swifttool-v3';
+const CACHE_NAME = 'swifttool-v5';
 const urlsToCache = [
   '/',
   '/index.html',

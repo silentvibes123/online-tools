@@ -1,14 +1,56 @@
 // ===== INIT =====
 const VALID_TOOLS = ["cash","resizer","age","pdf","compress","qrcode","pdfToImg","voice","merge","split","wordToPdf","pdfToWord","gst","removePages","wordCounter","password","base64","unitConverter","loremIpsum"];
 
+// ===== RECENTLY USED =====
+const TOOL_LABELS = {
+  cash:"Cash Counter", resizer:"Exam Resizer", age:"Age Calc", pdf:"Images→PDF",
+  compress:"Compressor", qrcode:"QR Code", pdfToImg:"PDF→Image", voice:"AI Voice",
+  merge:"Merge PDF", split:"Split PDF", wordToPdf:"Word→PDF", pdfToWord:"PDF→Text",
+  gst:"GST Calc", removePages:"Remove Pages", wordCounter:"Word Counter",
+  password:"Password Gen", base64:"Base64", unitConverter:"Unit Conv", loremIpsum:"Lorem Ipsum"
+};
+const TOOL_ICONS = {
+  cash:"fas fa-calculator", resizer:"fas fa-id-card", age:"fas fa-birthday-cake",
+  pdf:"fas fa-file-pdf", compress:"fas fa-compress-arrows-alt", qrcode:"fas fa-qrcode",
+  pdfToImg:"fas fa-images", voice:"fas fa-volume-up", merge:"fas fa-object-group",
+  split:"fas fa-cut", wordToPdf:"fas fa-file-word", pdfToWord:"fas fa-file-alt",
+  gst:"fas fa-file-invoice-dollar", removePages:"fas fa-file-signature",
+  wordCounter:"fas fa-font", password:"fas fa-key", base64:"fas fa-code",
+  unitConverter:"fas fa-ruler-combined", loremIpsum:"fas fa-align-left"
+};
+
+function saveRecent(name) {
+  let recent = JSON.parse(localStorage.getItem("stp_recent") || "[]");
+  recent = [name, ...recent.filter(t => t !== name)].slice(0, 5);
+  localStorage.setItem("stp_recent", JSON.stringify(recent));
+}
+
+function renderRecentBar() {
+  const recent = JSON.parse(localStorage.getItem("stp_recent") || "[]");
+  const bar = document.getElementById("recentBar");
+  const chips = document.getElementById("recentChips");
+  if (!bar || !chips || recent.length === 0) return;
+  chips.innerHTML = recent.map(t =>
+    `<span class="recent-chip" onclick="openTool('${t}')"><i class="${TOOL_ICONS[t]||'fas fa-tools'} me-1"></i>${TOOL_LABELS[t]||t}</span>`
+  ).join("");
+  bar.classList.remove("d-none");
+}
+
 window.addEventListener("load", () => {
-  // Init pdfjs after it's loaded
   if (typeof pdfjsLib !== "undefined") {
     pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
   }
   const path = location.pathname.replace("/","");
   if (VALID_TOOLS.includes(path)) openTool(path);
-  else updateDynamicTitle(null);
+  else { updateDynamicTitle(null); renderRecentBar(); }
+
+  // Scroll to top button
+  const btn = document.getElementById("scrollTopBtn");
+  if (btn) {
+    window.addEventListener("scroll", () => {
+      btn.classList.toggle("visible", window.scrollY > 400);
+    });
+  }
 });
 
 window.addEventListener("popstate", (e) => {
@@ -71,6 +113,7 @@ function openTool(name) {
 
   if (location.pathname !== "/" + name) history.pushState({tool:name}, "", "/" + name);
   updateDynamicTitle(name);
+  saveRecent(name);
   const canonical = document.getElementById("canonicalTag");
   if (canonical) canonical.setAttribute("href", "https://www.swifttoolpro.com/" + name);
 
@@ -95,6 +138,7 @@ function goToDashboard() {
 
   history.pushState({}, "", "/");
   updateDynamicTitle(null);
+  renderRecentBar();
 }
 
 function showDashboard() { goToDashboard(); window.scrollTo(0,0); }
