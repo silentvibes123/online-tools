@@ -11,3 +11,35 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 # 3. Non-WWW ko WWW par redirect karo
 RewriteCond %{HTTP_HOST} ^swifttoolpro\.com [NC]
 RewriteRule ^(.*)$ https://www.swifttoolpro.com/$1 [L,R=301]
+
+# 4. Security Headers (AdSense & Search Console ke liye important)
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# 5. Browser Caching (Page Speed improve karne ke liye)
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType application/json "access plus 1 day"
+    ExpiresByType text/html "access plus 1 hour"
+</IfModule>
+
+# 6. GZIP Compression (Page Speed ke liye)
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# 7. 404 Error Page
+ErrorDocument 404 /index.html

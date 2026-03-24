@@ -137,7 +137,7 @@ function openTool(toolName) {
 
     const canonical = document.getElementById('canonicalTag');
     if (canonical) {
-        canonical.setAttribute('href', 'https://www.swiftoolpro.com/' + toolName);
+        canonical.setAttribute('href', 'https://www.swifttoolpro.com/' + toolName);
     }
 
     // 2. Dashboard aur Extra Screens ko hide karo

@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /404
 
-Sitemap: https://swifttoolpro.com/sitemap.xml
+Sitemap: https://www.swifttoolpro.com/sitemap.xml

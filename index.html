@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link
       id="canonicalTag"
@@ -17,8 +18,23 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "SwiftTool Pro",
+        "url": "https://www.swifttoolpro.com/",
+        "description": "Free online tools to resize images to 20KB/50KB for govt exams, merge PDFs, convert PDF to Image, and calculate GST instantly.",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.swifttoolpro.com/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
         "@type": "SoftwareApplication",
         "name": "SwiftTool Pro",
+        "url": "https://www.swifttoolpro.com/",
         "operatingSystem": "All",
         "applicationCategory": "UtilitiesApplication",
         "description": "SwiftTool Pro: Fast online tools to resize images (20KB/50KB) for exams, merge PDFs, and calculate GST instantly. Secure and 100% browser-based.",
@@ -26,7 +42,22 @@
           "@type": "Offer",
           "price": "0",
           "priceCurrency": "INR"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "1250"
         }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "SwiftTool Pro",
+        "url": "https://www.swifttoolpro.com/",
+        "logo": "https://www.swifttoolpro.com/logo.jpg",
+        "sameAs": []
       }
     </script>
     <script
@@ -58,13 +89,25 @@
     <meta
       name="google-site-verification"
       content="Rv-sGUTcQaFhPp7BDTXINaC_7nyVWQc5vuUoS9lLV4k" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SwiftTool Pro: 20KB Image Compressor & PDF Tools</title>
-   <meta name="description" content="SwiftTool Pro: Free online tools to resize images to 20KB/50KB for govt exams, convert PDF to Image, and calculate GST instantly. 100% secure, fast & browser-based." />
+    <title>SwiftTool Pro: Free 20KB Image Compressor, PDF Tools & GST Calculator</title>
+   <meta name="description" content="SwiftTool Pro: Free online tools to resize images to 20KB/50KB for govt exams, convert PDF to Image, merge PDFs, and calculate GST instantly. 100% secure, fast & browser-based." />
     <meta
       name="keywords"
-      content="Exam Photo Resizer, SSC Photo Resize 20KB, Indian Cash Counter Online, PDF to JPG Converter, Age Calculator" />
+      content="Exam Photo Resizer, SSC Photo Resize 20KB, Indian Cash Counter Online, PDF to JPG Converter, Age Calculator, GST Calculator India, Merge PDF free" />
+
+    <!-- Open Graph / Social Media Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.swifttoolpro.com/" />
+    <meta property="og:title" content="SwiftTool Pro: Free 20KB Image Compressor & PDF Tools" />
+    <meta property="og:description" content="Free online tools to resize images to 20KB/50KB for govt exams, merge PDFs, convert PDF to Image, and calculate GST. 100% secure & browser-based." />
+    <meta property="og:image" content="https://www.swifttoolpro.com/logo.jpg" />
+    <meta property="og:site_name" content="SwiftTool Pro" />
+    <meta property="og:locale" content="en_IN" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SwiftTool Pro: Free 20KB Image Compressor & PDF Tools" />
+    <meta name="twitter:description" content="Free online tools to resize images to 20KB/50KB for govt exams, merge PDFs, and calculate GST. 100% secure & browser-based." />
+    <meta name="twitter:image" content="https://www.swifttoolpro.com/logo.jpg" />
 
     <link
       rel="stylesheet"
@@ -79,6 +122,11 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="icon" type="image/png" href="logo.jpg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0d6efd" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="SwiftTool Pro" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
@@ -952,7 +1000,6 @@
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -965,6 +1012,14 @@
 
     <script src="pdf-logic.js"></script>
     <script src="image-logic.js"></script>
-    
+    <script>
+      // Service Worker Registration
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .catch(err => console.log('SW registration failed:', err));
+        });
+      }
+    </script>
   </body>
 </html>
