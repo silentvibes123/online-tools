@@ -249,35 +249,99 @@ function showExtra(page) {
 
   const pages = {
     about: `<h2 class="fw-bold text-primary mb-3 border-bottom pb-2">About SwiftTool Pro</h2>
-      <p class="lead text-muted">Your premier destination for fast, secure, and free digital utility tools.</p>
-      <h5 class="fw-bold mt-4">Our Mission</h5>
-      <p>At SwiftTool Pro, we provide a comprehensive toolkit for students, developers, and professionals — with zero compromise on privacy. All processing happens in your browser. Your files never leave your device.</p>
+      <p class="lead text-muted">SwiftTool Pro is a free, browser-based digital toolkit built for students, professionals, and everyday users across India.</p>
+      <h5 class="fw-bold mt-4">Our Story</h5>
+      <p>SwiftTool Pro was created with one simple goal — to give every Indian internet user access to powerful digital tools without paying a rupee, without creating an account, and without worrying about their private files being uploaded to unknown servers.</p>
+      <p>Whether you're a student preparing for SSC or UPSC exams who needs to resize a photo to exactly 20KB, a small business owner who needs to calculate GST quickly, or a developer who needs a Base64 encoder — SwiftTool Pro has you covered.</p>
+      <h5 class="fw-bold mt-4">What Makes Us Different</h5>
+      <p>Unlike most online tools that upload your files to their servers, <strong>SwiftTool Pro processes everything locally in your browser</strong>. Your PDFs, images, and documents never leave your device. This means complete privacy, faster processing, and zero risk of data leaks.</p>
       <div class="row g-3 mt-2">
-        <div class="col-md-6"><div class="feature-card"><div class="feature-icon" style="background:#ede9fe"><i class="fas fa-shield-halved text-primary"></i></div><h6 class="fw-bold">Privacy First</h6><p class="small text-muted mb-0">Client-side processing. Zero server uploads.</p></div></div>
-        <div class="col-md-6"><div class="feature-card"><div class="feature-icon" style="background:#dcfce7"><i class="fas fa-bolt text-success"></i></div><h6 class="fw-bold">18+ Free Tools</h6><p class="small text-muted mb-0">PDF, Image, Finance, and Utility tools — all free.</p></div></div>
-      </div>`,
+        <div class="col-md-6"><div class="feature-card"><div class="feature-icon" style="background:#ede9fe"><i class="fas fa-shield-halved text-primary"></i></div><h6 class="fw-bold">Privacy First</h6><p class="small text-muted mb-0">100% client-side processing. Your files never leave your browser.</p></div></div>
+        <div class="col-md-6"><div class="feature-card"><div class="feature-icon" style="background:#dcfce7"><i class="fas fa-bolt text-success"></i></div><h6 class="fw-bold">23+ Free Tools</h6><p class="small text-muted mb-0">PDF, Image, Finance, and Utility tools — all completely free.</p></div></div>
+        <div class="col-md-6"><div class="feature-card"><div class="feature-icon" style="background:#fef3c7"><i class="fas fa-graduation-cap text-warning"></i></div><h6 class="fw-bold">Built for India</h6><p class="small text-muted mb-0">Specialized tools for SSC, UPSC, IBPS, Railway exam portals.</p></div></div>
+        <div class="col-md-6"><div class="feature-card"><div class="feature-icon" style="background:#fce7f3"><i class="fas fa-mobile-alt text-danger"></i></div><h6 class="fw-bold">Works Everywhere</h6><p class="small text-muted mb-0">Mobile, tablet, desktop — any modern browser on any device.</p></div></div>
+      </div>
+      <h5 class="fw-bold mt-4">Our Tools</h5>
+      <p>SwiftTool Pro currently offers 23+ free tools across four categories:</p>
+      <ul>
+        <li><strong>Image Tools:</strong> Exam Photo Resizer (20KB/50KB), Image Compressor, Images to PDF, Image to Text (OCR)</li>
+        <li><strong>PDF Tools:</strong> Merge PDF, Split PDF, PDF to Image, Remove PDF Pages</li>
+        <li><strong>Finance Tools:</strong> EMI Calculator, GST Calculator, Cash Counter</li>
+        <li><strong>Utility Tools:</strong> QR Code Generator, Age Calculator, Word Counter, Password Generator, Unit Converter, Percentage Calculator, Text Case Converter, Stopwatch & Timer, Base64 Encoder/Decoder, Lorem Ipsum Generator, AI Voice Reader</li>
+      </ul>
+      <p class="mt-3 text-muted small">SwiftTool Pro is maintained independently and supported by advertising revenue through Google AdSense. This allows us to keep all tools free for everyone.</p>`,
 
     privacy: `<h2 class="fw-bold mb-3 border-bottom pb-2">Privacy Policy</h2>
       <p class="small text-muted">Last Updated: March 2026</p>
-      <h5 class="fw-bold mt-4 text-primary">Zero File Storage</h5>
-      <p>SwiftTool Pro uses client-side processing. Your files are never uploaded to any server. All processing happens in your browser's memory and is cleared when you close the tab.</p>
-      <h5 class="fw-bold mt-4 text-primary">Analytics & Ads</h5>
-      <p>We use Google Analytics to understand usage patterns and Google AdSense to display ads. These services may use cookies. You can opt out via Google's privacy settings.</p>
-      <h5 class="fw-bold mt-4 text-primary">Cookies</h5>
-      <p>We use minimal cookies for analytics and advertising purposes only. No personal data is stored by SwiftTool Pro itself.</p>
-      <h5 class="fw-bold mt-4 text-primary">Contact</h5>
-      <p>Questions? Use the <a href="javascript:void(0)" onclick="showExtra('contact')">Contact Us</a> form and we'll get back to you within 24–48 hours.</p>`,
+      <p>SwiftTool Pro ("we", "our", or "us") is committed to protecting your privacy. This policy explains how we handle information when you use our website at <strong>swifttoolpro.com</strong>.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">1. No File Storage — Zero Server Uploads</h5>
+      <p>SwiftTool Pro uses 100% client-side processing. When you use any of our tools (PDF converter, image resizer, OCR, etc.), your files are processed entirely within your browser's memory. <strong>No file is ever uploaded to our servers.</strong> When you close the tab, all data is cleared automatically.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">2. Google AdSense (Advertising)</h5>
+      <p>We use <strong>Google AdSense</strong> to display advertisements on our website. Google AdSense uses cookies and web beacons to serve ads based on your prior visits to our website and other websites on the internet. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to our site and/or other sites on the Internet.</p>
+      <p>You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>. You can also opt out of a third-party vendor's use of cookies for personalized advertising by visiting <a href="https://www.aboutads.info" target="_blank" rel="noopener">www.aboutads.info</a>.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">3. Google Analytics</h5>
+      <p>We use <strong>Google Analytics</strong> to understand how visitors use our website. Google Analytics collects information such as how often users visit the site, what pages they visit, and what other sites they used prior to coming to our site. We use this information to improve our website. Google Analytics collects only the IP address assigned to you on the date you visit this site, not your name or other identifying information.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">4. Cookies</h5>
+      <p>Our website uses cookies for the following purposes:</p>
+      <ul>
+        <li><strong>Analytics cookies</strong> — Google Analytics uses cookies to track usage patterns</li>
+        <li><strong>Advertising cookies</strong> — Google AdSense uses cookies to show relevant ads</li>
+        <li><strong>Functional cookies</strong> — We store your recently used tools in localStorage for convenience</li>
+      </ul>
+      <p>You can control cookies through your browser settings. Disabling cookies may affect some functionality.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">5. Third-Party Services</h5>
+      <p>Our tools use the following third-party JavaScript libraries that run entirely in your browser: PDF.js, PDF-lib, Tesseract.js, Mammoth.js, JSZip. None of these libraries transmit your data to external servers.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">6. Children's Privacy</h5>
+      <p>SwiftTool Pro does not knowingly collect any personal information from children under 13 years of age.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">7. Changes to This Policy</h5>
+      <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated date.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">8. Contact Us</h5>
+      <p>If you have questions about this Privacy Policy, please use our <a href="javascript:void(0)" onclick="showExtra('contact')">Contact Us</a> form.</p>`,
 
     terms: `<h2 class="fw-bold mb-3 border-bottom pb-2">Terms of Service</h2>
       <p class="small text-muted">Last Updated: March 2026</p>
-      <h5 class="fw-bold mt-4 text-primary">1. Acceptance</h5>
-      <p>By using SwiftTool Pro, you agree to these terms. If you disagree, please do not use the site.</p>
-      <h5 class="fw-bold mt-4 text-primary">2. Use of Tools</h5>
-      <p>Tools are provided for lawful personal and professional use only. Do not use them to process illegal content or infringe on copyrights.</p>
-      <h5 class="fw-bold mt-4 text-primary">3. No Warranties</h5>
-      <p>Tools are provided "as is". We do not guarantee results will be accepted by third-party portals.</p>
-      <h5 class="fw-bold mt-4 text-primary">4. Limitation of Liability</h5>
-      <p>SwiftTool Pro is not liable for any damages arising from use of the tools.</p>`,
+      <p>Please read these Terms of Service carefully before using SwiftTool Pro at <strong>swifttoolpro.com</strong>.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">1. Acceptance of Terms</h5>
+      <p>By accessing or using SwiftTool Pro, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our website.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">2. Description of Service</h5>
+      <p>SwiftTool Pro provides free, browser-based digital utility tools including PDF tools, image tools, finance calculators, and utility tools. All tools are provided free of charge and process data locally in your browser.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">3. Acceptable Use</h5>
+      <p>You agree to use SwiftTool Pro only for lawful purposes. You must not use our tools to:</p>
+      <ul>
+        <li>Process, distribute, or store illegal content</li>
+        <li>Infringe on any copyright, trademark, or intellectual property rights</li>
+        <li>Attempt to reverse engineer, hack, or disrupt our website</li>
+        <li>Use automated scripts or bots to access our tools</li>
+      </ul>
+
+      <h5 class="fw-bold mt-4 text-primary">4. Intellectual Property</h5>
+      <p>The SwiftTool Pro name, logo, design, and original content are owned by SwiftTool Pro. Third-party libraries used (PDF.js, Tesseract.js, etc.) are subject to their respective open-source licenses.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">5. Disclaimer of Warranties</h5>
+      <p>SwiftTool Pro is provided "as is" without any warranties of any kind. We do not guarantee that our tools will produce results accepted by third-party portals (such as government exam websites). Always verify output before submission.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">6. Limitation of Liability</h5>
+      <p>SwiftTool Pro shall not be liable for any direct, indirect, incidental, or consequential damages arising from your use of our tools or inability to use our tools.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">7. Advertising</h5>
+      <p>SwiftTool Pro displays advertisements through Google AdSense to support the free service. By using our website, you consent to the display of these advertisements.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">8. Changes to Terms</h5>
+      <p>We reserve the right to modify these terms at any time. Continued use of the website after changes constitutes acceptance of the new terms.</p>
+
+      <h5 class="fw-bold mt-4 text-primary">9. Contact</h5>
+      <p>For questions about these terms, please use our <a href="javascript:void(0)" onclick="showExtra('contact')">Contact Us</a> form.</p>`,
 
     contact: `<h2 class="fw-bold text-primary mb-3 border-bottom pb-2">Contact Us</h2>
       <div class="row g-4">
