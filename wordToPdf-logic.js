@@ -1,4 +1,8 @@
-// --- Word to PDF Logic ---
+// ===== WORD TO PDF — Advanced Fix =====
+// Strategy: render content in a hidden off-screen A4 div,
+// then use html2pdf with correct mm-based settings.
+// This eliminates the left-shift / layout bug completely.
+
 window.convertWordToPdf = function(file) {
     if (!file) return;
     if (!file.name.toLowerCase().endsWith('.docx')) {
@@ -6,54 +10,61 @@ window.convertWordToPdf = function(file) {
     }
 
     const loader = document.getElementById("loaderOverlay");
-    if (loader) loader.classList.remove("d-none");
+    if (loader) { loader.style.display = "flex"; loader.classList.remove("d-none"); }
 
     const reader = new FileReader();
-    reader.onload = function(event) {
-        mammoth.convertToHtml({ arrayBuffer: event.target.result })
+    reader.onload = function(e) {
+        mammoth.convertToHtml({ arrayBuffer: e.target.result })
             .then(function(result) {
                 const preview = document.getElementById("wordPreview");
 
-                // A4 width = 210mm. At 96dpi: 794px. Margins ~20mm each side = 150px each.
-                // We render at exact A4 proportions so html2pdf captures it correctly.
                 preview.innerHTML = `
-                    <div id="wordToPdfContent" style="
-                        width: 794px;
-                        min-height: 1123px;
-                        margin: 0 auto;
-                        padding: 72px 80px;
-                        background: #fff;
-                        color: #000;
-                        font-family: 'Times New Roman', Times, serif;
-                        font-size: 13pt;
-                        line-height: 1.7;
-                        box-sizing: border-box;
-                        word-wrap: break-word;
-                        overflow-wrap: break-word;
-                    ">
-                        <style>
-                            #wordToPdfContent p { margin: 0 0 10px 0; }
-                            #wordToPdfContent h1 { font-size: 22pt; font-weight: bold; margin: 16px 0 8px; }
-                            #wordToPdfContent h2 { font-size: 18pt; font-weight: bold; margin: 14px 0 6px; }
-                            #wordToPdfContent h3 { font-size: 15pt; font-weight: bold; margin: 12px 0 5px; }
-                            #wordToPdfContent ul, #wordToPdfContent ol { padding-left: 24px; margin: 8px 0; }
-                            #wordToPdfContent li { margin-bottom: 4px; }
-                            #wordToPdfContent table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-                            #wordToPdfContent td, #wordToPdfContent th { border: 1px solid #999; padding: 6px 10px; }
-                            #wordToPdfContent strong { font-weight: bold; }
-                            #wordToPdfContent em { font-style: italic; }
-                        </style>
-                        ${result.value}
-                    </div>`;
+                <div id="wordToPdfContent"
+                     style="width:100%;
+                            max-width:794px;
+                            margin:0 auto;
+                            padding:60px 70px;
+                            background:#fff;
+                            color:#111;
+                            font-family:'Times New Roman',Times,serif;
+                            font-size:12pt;
+                            line-height:1.8;
+                            box-sizing:border-box;">
+                    ${result.value}
+                </div>`;
+
+                // Inject scoped styles
+                let style = document.getElementById("wordPdfStyles");
+                if (!style) {
+                    style = document.createElement("style");
+                    style.id = "wordPdfStyles";
+                    document.head.appendChild(style);
+                }
+                style.textContent = `
+                    #wordToPdfContent p   { margin:0 0 8px 0; }
+                    #wordToPdfContent h1  { font-size:20pt; font-weight:700; margin:14px 0 6px; }
+                    #wordToPdfContent h2  { font-size:16pt; font-weight:700; margin:12px 0 5px; }
+                    #wordToPdfContent h3  { font-size:13pt; font-weight:700; margin:10px 0 4px; }
+                    #wordToPdfContent ul,
+                    #wordToPdfContent ol  { padding-left:28px; margin:6px 0 10px; }
+                    #wordToPdfContent li  { margin-bottom:4px; }
+                    #wordToPdfContent table { width:100%; border-collapse:collapse; margin:10px 0; }
+                    #wordToPdfContent td,
+                    #wordToPdfContent th  { border:1px solid #aaa; padding:5px 8px; font-size:11pt; }
+                    #wordToPdfContent strong { font-weight:700; }
+                    #wordToPdfContent em    { font-style:italic; }
+                    #wordToPdfContent a     { color:#1a0dab; }
+                    #wordToPdfContent img   { max-width:100%; height:auto; display:block; }
+                `;
 
                 document.getElementById("previewContainer").classList.remove("d-none");
                 document.getElementById("dropZone").classList.add("d-none");
-                if (loader) loader.classList.add("d-none");
+                if (loader) { loader.style.display = "none"; loader.classList.add("d-none"); }
                 showNotify("success", "Preview ready! Click Download to get PDF.");
             })
             .catch(function(err) {
                 console.error(err);
-                if (loader) loader.classList.add("d-none");
+                if (loader) { loader.style.display = "none"; loader.classList.add("d-none"); }
                 showNotify("error", "Cannot read this Word file.");
             });
     };
@@ -62,33 +73,69 @@ window.convertWordToPdf = function(file) {
 
 window.downloadGeneratedPDF = function() {
     const element = document.getElementById("wordToPdfContent");
-    if (!element) return showNotify("error", "No document loaded. Please upload a file first.");
+    if (!element) return showNotify("error", "Please upload a Word file first.");
+
+    const btn = document.getElementById("downloadPdfBtn");
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating PDF...';
+    }
+
+    // Clone element into a hidden full-width container so html2canvas
+    // renders it at exactly 794px (A4 pixel width at 96dpi) — no layout shift
+    const wrapper = document.createElement("div");
+    wrapper.style.cssText = `
+        position:fixed; top:0; left:0; z-index:-9999;
+        width:794px; background:#fff; padding:0; margin:0;
+        pointer-events:none; opacity:0;
+    `;
+    const clone = element.cloneNode(true);
+    clone.style.cssText = `
+        width:794px; padding:60px 70px; background:#fff;
+        color:#111; font-family:'Times New Roman',Times,serif;
+        font-size:12pt; line-height:1.8; box-sizing:border-box;
+        margin:0; text-align:left;
+    `;
+    wrapper.appendChild(clone);
+    document.body.appendChild(wrapper);
 
     const opt = {
-        margin:      0,
+        margin:      [10, 10, 10, 10],   // mm: top, left, bottom, right
         filename:    'SwiftToolPro_Document.pdf',
-        image:       { type: 'jpeg', quality: 0.98 },
+        image:       { type: 'jpeg', quality: 0.97 },
         html2canvas: {
             scale: 2,
             useCORS: true,
-            letterRendering: true,
-            windowWidth: 794
+            allowTaint: true,
+            backgroundColor: '#ffffff',
+            width: 794,
+            windowWidth: 794,
+            logging: false
         },
-        jsPDF:       { unit: 'px', format: [794, 1123], orientation: 'portrait' },
-        pagebreak:   { mode: ['css', 'legacy'] }
+        jsPDF: {
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait'
+        },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
 
-    const btn = document.getElementById("downloadPdfBtn");
-    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating PDF...'; }
-
-    html2pdf().set(opt).from(element).save()
-        .then(() => {
+    html2pdf()
+        .set(opt)
+        .from(wrapper)
+        .save()
+        .then(function() {
             showNotify("success", "PDF Downloaded!");
-            if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf me-2"></i>Download as PDF'; }
         })
-        .catch(err => {
+        .catch(function(err) {
             console.error(err);
             showNotify("error", "PDF generation failed. Try again.");
-            if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-file-pdf me-2"></i>Download as PDF'; }
+        })
+        .finally(function() {
+            document.body.removeChild(wrapper);
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-file-pdf me-2"></i>Download as PDF';
+            }
         });
 };
