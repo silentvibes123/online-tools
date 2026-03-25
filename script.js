@@ -305,7 +305,7 @@ function renderToolContent(name, container) {
       </div>
       <div id="previewContainer" class="d-none">
         <div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>File Ready!</div>
-        <div id="wordPreview" class="p-3 border bg-white mb-3 shadow-sm" style="max-height:400px;overflow-y:auto;font-family:serif;line-height:1.6"></div>
+        <div id="wordPreview" class="mb-3 shadow-sm" style="max-height:500px;overflow-y:auto;overflow-x:auto;background:#e8ecf0;padding:16px;border-radius:8px;"></div>
         <button id="downloadPdfBtn" class="btn btn-primary w-100 btn-lg fw-bold" onclick="downloadGeneratedPDF()"><i class="fas fa-file-pdf me-2"></i>Download as PDF</button>
       </div>${PRIVACY}
       ${seoBlock("fas fa-file-word","#2563eb","Word to PDF Converter — DOCX to PDF Online",["Convert your Microsoft Word (.docx) files to PDF format directly in your browser — no Microsoft Office required.","This tool preserves your document's formatting, headings, and paragraphs. Perfect for submitting resumes, reports, and assignments as PDF.","100% client-side conversion using Mammoth.js and html2pdf.js. Your document never leaves your device."])}`,
