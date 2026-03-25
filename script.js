@@ -1,5 +1,5 @@
 // ===== INIT =====
-const VALID_TOOLS = ["cash","resizer","age","pdf","compress","qrcode","pdfToImg","voice","merge","split","pdfToWord","gst","removePages","wordCounter","password","base64","unitConverter","loremIpsum"];
+const VALID_TOOLS = ["cash","resizer","age","pdf","compress","qrcode","pdfToImg","voice","merge","split","pdfToWord","gst","removePages","wordCounter","password","base64","unitConverter","loremIpsum","emi","imageToText","percentage","caseConverter","stopwatch"];
 
 // ===== RECENTLY USED =====
 const TOOL_LABELS = {
@@ -7,7 +7,8 @@ const TOOL_LABELS = {
   compress:"Compressor", qrcode:"QR Code", pdfToImg:"PDF→Image", voice:"AI Voice",
   merge:"Merge PDF", split:"Split PDF", pdfToWord:"PDF→Text",
   gst:"GST Calc", removePages:"Remove Pages", wordCounter:"Word Counter",
-  password:"Password Gen", base64:"Base64", unitConverter:"Unit Conv", loremIpsum:"Lorem Ipsum"
+  password:"Password Gen", base64:"Base64", unitConverter:"Unit Conv", loremIpsum:"Lorem Ipsum",
+  emi:"EMI Calc", imageToText:"Image→Text", percentage:"% Calc", caseConverter:"Case Conv", stopwatch:"Stopwatch"
 };
 const TOOL_ICONS = {
   cash:"fas fa-calculator", resizer:"fas fa-id-card", age:"fas fa-birthday-cake",
@@ -16,7 +17,9 @@ const TOOL_ICONS = {
   split:"fas fa-cut", pdfToWord:"fas fa-file-alt",
   gst:"fas fa-file-invoice-dollar", removePages:"fas fa-file-signature",
   wordCounter:"fas fa-font", password:"fas fa-key", base64:"fas fa-code",
-  unitConverter:"fas fa-ruler-combined", loremIpsum:"fas fa-align-left"
+  unitConverter:"fas fa-ruler-combined", loremIpsum:"fas fa-align-left",
+  emi:"fas fa-home", imageToText:"fas fa-camera", percentage:"fas fa-percent",
+  caseConverter:"fas fa-text-height", stopwatch:"fas fa-stopwatch"
 };
 
 function saveRecent(name) {
@@ -86,6 +89,11 @@ const TOOL_META = {
   base64:      ["Base64 Encoder & Decoder Online | SwiftTool Pro", "Encode or decode Base64 text instantly in your browser."],
   unitConverter: ["Unit Converter — Length, Weight, Temperature | SwiftTool Pro", "Convert units of length, weight, temperature, area and speed."],
   loremIpsum:  ["Lorem Ipsum Generator — Placeholder Text | SwiftTool Pro", "Generate Lorem Ipsum dummy text by words, sentences or paragraphs."],
+  emi:         ["EMI Calculator — Home, Car & Personal Loan | SwiftTool Pro", "Calculate monthly EMI for home loan, car loan, personal loan with full amortization schedule."],
+  imageToText: ["Image to Text Converter (OCR) Online Free | SwiftTool Pro", "Extract text from any image or photo instantly. Free OCR tool, no upload needed."],
+  percentage:  ["Percentage Calculator Online Free | SwiftTool Pro", "Calculate percentage, percentage increase/decrease, marks percentage. Free & instant."],
+  caseConverter:["Text Case Converter Online Free | SwiftTool Pro", "Convert text to UPPERCASE, lowercase, Title Case, camelCase, snake_case instantly."],
+  stopwatch:   ["Online Stopwatch & Countdown Timer Free | SwiftTool Pro", "Free online stopwatch with lap times and countdown timer. Works on all devices."],
 };
 
 function updateDynamicTitle(tool) {
@@ -426,10 +434,175 @@ function renderToolContent(name, container) {
         </div>
       </div>${PRIVACY}
       ${seoBlock("fas fa-align-left","#d97706","Lorem Ipsum Generator — Placeholder Text for Designers",["Generate Lorem Ipsum placeholder text by words, sentences, or paragraphs. Used by designers, developers, and content creators to fill layouts before real content is ready.","Lorem Ipsum has been the industry standard dummy text since the 1500s. Use it to prototype websites, apps, print designs, and presentations.","Instant generation, one-click copy. No sign-up needed."])}`,
+
+    // ===== EMI CALCULATOR =====
+    emi: `${BACK}
+      <div class="tool-header"><h3><i class="fas fa-home me-2 text-success"></i>EMI Calculator</h3><button class="btn btn-sm btn-outline-danger" onclick="resetEMI()"><i class="fas fa-redo me-1"></i>Reset</button></div><hr>
+      <div class="row g-3 mb-3">
+        <div class="col-md-4">
+          <label class="form-label fw-bold small">Loan Amount (₹)</label>
+          <input type="number" id="emiAmount" class="form-control" placeholder="e.g. 500000" oninput="calcEMI()">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-bold small">Interest Rate (% per year)</label>
+          <input type="number" id="emiRate" class="form-control" placeholder="e.g. 8.5" step="0.1" oninput="calcEMI()">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label fw-bold small">Tenure (Months)</label>
+          <input type="number" id="emiTenure" class="form-control" placeholder="e.g. 60" oninput="calcEMI()">
+        </div>
+      </div>
+      <div id="emiResult" class="d-none">
+        <div class="row g-3 text-center mb-3">
+          <div class="col-4"><div class="p-3 rounded-3 border bg-white shadow-sm"><div class="h4 fw-bold text-success" id="emiMonthly">₹0</div><div class="small text-muted fw-semibold">Monthly EMI</div></div></div>
+          <div class="col-4"><div class="p-3 rounded-3 border bg-white shadow-sm"><div class="h4 fw-bold text-primary" id="emiTotalAmt">₹0</div><div class="small text-muted fw-semibold">Total Amount</div></div></div>
+          <div class="col-4"><div class="p-3 rounded-3 border bg-white shadow-sm"><div class="h4 fw-bold text-danger" id="emiInterest">₹0</div><div class="small text-muted fw-semibold">Total Interest</div></div></div>
+        </div>
+        <div class="mb-2 d-flex justify-content-between small fw-bold"><span>Principal</span><span id="emiPrincipalBar">0%</span></div>
+        <div class="progress mb-3" style="height:10px;border-radius:8px">
+          <div id="emiProgressBar" class="progress-bar bg-success" style="width:0%"></div>
+          <div id="emiInterestBar" class="progress-bar bg-danger" style="width:0%"></div>
+        </div>
+        <div class="table-responsive" style="max-height:280px;overflow-y:auto">
+          <table class="table table-sm table-bordered text-center small" id="emiTable">
+            <thead class="table-dark sticky-top"><tr><th>#</th><th>EMI</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead>
+            <tbody id="emiTableBody"></tbody>
+          </table>
+        </div>
+      </div>${PRIVACY}
+      ${seoBlock("fas fa-home","#16a34a","EMI Calculator — Home, Car & Personal Loan",["Calculate your exact monthly EMI for any loan — home loan, car loan, personal loan, or education loan. Enter the loan amount, interest rate, and tenure to get instant results.","Also shows total interest payable, total amount payable, and a complete month-by-month amortization schedule so you know exactly how your loan is being repaid.","Used by millions of Indians before taking any loan. 100% free, no sign-up, instant calculation."])}`,
+
+    // ===== IMAGE TO TEXT (OCR) =====
+    imageToText: `${BACK}
+      <div class="tool-header"><h3><i class="fas fa-camera me-2 text-primary"></i>Image to Text (OCR)</h3><button class="btn btn-sm btn-outline-danger" onclick="resetOCR()"><i class="fas fa-trash me-1"></i>Clear</button></div><hr>
+      <div id="ocrDropZone" class="border rounded-3 p-4 text-center mb-3 bg-light" style="cursor:pointer;border:2px dashed #4f46e5!important" onclick="document.getElementById('ocrInput').click()">
+        <i class="fas fa-image fa-2x text-primary mb-2 d-block"></i>
+        <p class="fw-bold mb-1">Click to Upload Image</p>
+        <p class="small text-muted mb-0">JPG, PNG, WEBP — any photo with text</p>
+        <input type="file" id="ocrInput" hidden accept="image/*" onchange="runOCR(this.files[0])">
+      </div>
+      <div id="ocrPreviewBox" class="d-none mb-3 text-center">
+        <img id="ocrPreviewImg" class="img-fluid rounded shadow-sm" style="max-height:200px" alt="preview"/>
+      </div>
+      <div id="ocrProgress" class="d-none mb-3">
+        <div class="d-flex justify-content-between small fw-bold mb-1"><span>Recognizing text...</span><span id="ocrPct">0%</span></div>
+        <div class="progress" style="height:8px"><div id="ocrBar" class="progress-bar bg-primary progress-bar-striped progress-bar-animated" style="width:0%"></div></div>
+      </div>
+      <div id="ocrResultBox" class="d-none">
+        <label class="form-label fw-bold">Extracted Text:</label>
+        <div class="input-group">
+          <textarea id="ocrOutput" class="form-control font-monospace" rows="8" placeholder="Text will appear here..."></textarea>
+          <button class="btn btn-outline-secondary" onclick="navigator.clipboard.writeText(document.getElementById('ocrOutput').value);showNotify('success','Copied!')"><i class="fas fa-copy"></i></button>
+        </div>
+        <button class="btn btn-primary w-100 mt-2 fw-bold" onclick="downloadOCRText()"><i class="fas fa-download me-2"></i>Download as .txt</button>
+      </div>${PRIVACY}
+      ${seoBlock("fas fa-camera","#4f46e5","Image to Text Converter — Free OCR Online",["Extract text from any image, screenshot, photo, or scanned document instantly. Supports printed text in English and many other languages.","Useful for students copying text from textbook photos, professionals extracting data from scanned documents, or anyone who needs to convert an image to editable text.","Powered by Tesseract.js — runs 100% in your browser. No image is uploaded to any server."])}`,
+
+    // ===== PERCENTAGE CALCULATOR =====
+    percentage: `${BACK}
+      <div class="tool-header"><h3><i class="fas fa-percent me-2 text-warning"></i>Percentage Calculator</h3><button class="btn btn-sm btn-outline-danger" onclick="resetPct()"><i class="fas fa-redo me-1"></i>Reset</button></div><hr>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card border-0 bg-light p-3 mb-3 rounded-3">
+            <h6 class="fw-bold mb-3 text-primary"><i class="fas fa-calculator me-2"></i>What is X% of Y?</h6>
+            <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+              <input type="number" id="pct1X" class="form-control" style="width:90px" placeholder="X" oninput="calcPct1()">
+              <span class="fw-bold">% of</span>
+              <input type="number" id="pct1Y" class="form-control" style="width:90px" placeholder="Y" oninput="calcPct1()">
+              <span class="fw-bold">=</span>
+              <span class="fw-bold text-success fs-5" id="pct1Res">—</span>
+            </div>
+          </div>
+          <div class="card border-0 bg-light p-3 mb-3 rounded-3">
+            <h6 class="fw-bold mb-3 text-danger"><i class="fas fa-arrow-up me-2"></i>% Increase / Decrease</h6>
+            <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+              <input type="number" id="pct2From" class="form-control" style="width:90px" placeholder="From" oninput="calcPct2()">
+              <span class="fw-bold">→</span>
+              <input type="number" id="pct2To" class="form-control" style="width:90px" placeholder="To" oninput="calcPct2()">
+              <span class="fw-bold">=</span>
+              <span class="fw-bold fs-5" id="pct2Res">—</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card border-0 bg-light p-3 mb-3 rounded-3">
+            <h6 class="fw-bold mb-3 text-success"><i class="fas fa-graduation-cap me-2"></i>Marks Percentage</h6>
+            <div class="row g-2 mb-2">
+              <div class="col-6"><input type="number" id="pctMarks" class="form-control" placeholder="Marks Obtained" oninput="calcPct3()"></div>
+              <div class="col-6"><input type="number" id="pctTotal" class="form-control" placeholder="Total Marks" oninput="calcPct3()"></div>
+            </div>
+            <div class="text-center"><span class="fw-bold fs-4 text-success" id="pct3Res">—</span></div>
+          </div>
+          <div class="card border-0 bg-light p-3 rounded-3">
+            <h6 class="fw-bold mb-3 text-info"><i class="fas fa-tag me-2"></i>Discount Calculator</h6>
+            <div class="row g-2 mb-2">
+              <div class="col-6"><input type="number" id="pctPrice" class="form-control" placeholder="Original Price" oninput="calcPct4()"></div>
+              <div class="col-6"><input type="number" id="pctDisc" class="form-control" placeholder="Discount %" oninput="calcPct4()"></div>
+            </div>
+            <div class="text-center"><span class="fw-bold fs-5 text-info" id="pct4Res">—</span></div>
+          </div>
+        </div>
+      </div>${PRIVACY}
+      ${seoBlock("fas fa-percent","#d97706","Percentage Calculator — Marks, Discount & More",["Calculate any type of percentage instantly: find X% of a number, calculate percentage increase or decrease, find marks percentage for exams, or calculate discount price.","Extremely useful for students checking exam results, shoppers calculating discounts, and professionals doing quick percentage math.","4 calculators in one tool. Free, instant, no sign-up."])}`,
+
+    // ===== TEXT CASE CONVERTER =====
+    caseConverter: `${BACK}
+      <div class="tool-header"><h3><i class="fas fa-text-height me-2" style="color:#8e2de2"></i>Text Case Converter</h3><button class="btn btn-sm btn-outline-danger" onclick="document.getElementById('caseInput').value='';document.getElementById('caseOutput').value=''"><i class="fas fa-trash me-1"></i>Clear</button></div><hr>
+      <textarea id="caseInput" class="form-control mb-3" rows="5" placeholder="Type or paste your text here..."></textarea>
+      <div class="row g-2 mb-3">
+        <div class="col-6 col-md-4"><button class="btn btn-outline-primary w-100 fw-bold" onclick="convertCase('upper')">UPPERCASE</button></div>
+        <div class="col-6 col-md-4"><button class="btn btn-outline-secondary w-100 fw-bold" onclick="convertCase('lower')">lowercase</button></div>
+        <div class="col-6 col-md-4"><button class="btn btn-outline-success w-100 fw-bold" onclick="convertCase('title')">Title Case</button></div>
+        <div class="col-6 col-md-4"><button class="btn btn-outline-warning w-100 fw-bold" onclick="convertCase('sentence')">Sentence case</button></div>
+        <div class="col-6 col-md-4"><button class="btn btn-outline-danger w-100 fw-bold" onclick="convertCase('camel')">camelCase</button></div>
+        <div class="col-6 col-md-4"><button class="btn btn-outline-dark w-100 fw-bold" onclick="convertCase('snake')">snake_case</button></div>
+      </div>
+      <div id="caseResultBox" class="d-none">
+        <label class="form-label fw-bold">Result:</label>
+        <div class="input-group">
+          <textarea id="caseOutput" class="form-control" rows="5" readonly></textarea>
+          <button class="btn btn-outline-secondary" onclick="navigator.clipboard.writeText(document.getElementById('caseOutput').value);showNotify('success','Copied!')"><i class="fas fa-copy"></i></button>
+        </div>
+      </div>${PRIVACY}
+      ${seoBlock("fas fa-text-height","#7c3aed","Text Case Converter — UPPERCASE, lowercase, camelCase",["Convert any text to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, or snake_case with one click.","Used daily by developers, writers, bloggers, and students. Instantly fix text that was typed in the wrong case.","Paste your text, click the format you need, and copy the result. No sign-up, no limits."])}`,
+
+    // ===== STOPWATCH & TIMER =====
+    stopwatch: `${BACK}
+      <div class="tool-header"><h3><i class="fas fa-stopwatch me-2 text-danger"></i>Stopwatch & Timer</h3></div><hr>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="text-center p-4 bg-light rounded-3 border">
+            <h6 class="fw-bold text-muted mb-3 text-uppercase small letter-spacing-1">Stopwatch</h6>
+            <div class="display-3 fw-bold font-monospace text-dark mb-3" id="swDisplay">00:00.00</div>
+            <div class="d-flex gap-2 justify-content-center mb-3">
+              <button id="swStartBtn" class="btn btn-success px-4 fw-bold" onclick="swStart()"><i class="fas fa-play me-1"></i>Start</button>
+              <button class="btn btn-warning px-3 fw-bold" onclick="swLap()"><i class="fas fa-flag me-1"></i>Lap</button>
+              <button class="btn btn-danger px-3 fw-bold" onclick="swReset()"><i class="fas fa-redo me-1"></i>Reset</button>
+            </div>
+            <div id="swLaps" class="text-start" style="max-height:160px;overflow-y:auto"></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="text-center p-4 bg-light rounded-3 border">
+            <h6 class="fw-bold text-muted mb-3 text-uppercase small">Countdown Timer</h6>
+            <div class="display-3 fw-bold font-monospace text-danger mb-3" id="timerDisplay">00:00</div>
+            <div class="row g-2 mb-3">
+              <div class="col-6"><input type="number" id="timerMin" class="form-control text-center fw-bold" placeholder="Min" min="0" max="99"></div>
+              <div class="col-6"><input type="number" id="timerSec" class="form-control text-center fw-bold" placeholder="Sec" min="0" max="59"></div>
+            </div>
+            <div class="d-flex gap-2 justify-content-center">
+              <button id="timerStartBtn" class="btn btn-danger px-4 fw-bold" onclick="timerStart()"><i class="fas fa-play me-1"></i>Start</button>
+              <button class="btn btn-secondary px-3 fw-bold" onclick="timerReset()"><i class="fas fa-redo me-1"></i>Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>${PRIVACY}
+      ${seoBlock("fas fa-stopwatch","#dc2626","Online Stopwatch & Countdown Timer",["A precise online stopwatch with lap time recording, and a countdown timer — both in one tool. Works on mobile and desktop.","Use the stopwatch for workouts, cooking, studying (Pomodoro), sports, or any timed activity. Use the countdown timer to set a specific duration.","No app download needed. Works offline after first load. Free forever."])}`,
   };
 
   container.innerHTML = tpl[name] || `${BACK}<div class="text-center py-5"><i class="fas fa-tools fa-3x text-muted mb-3"></i><h5>Tool not found</h5></div>`;
 
   // Post-render init
   if (name === "unitConverter") updateUnitOptions();
+  if (name === "stopwatch") initStopwatch();
 }

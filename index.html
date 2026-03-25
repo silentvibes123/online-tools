@@ -59,7 +59,12 @@
         password:     ["Strong Password Generator — Free & Secure | SwiftTool Pro",                "Generate secure random passwords with custom length and symbols instantly."],
         base64:       ["Base64 Encoder & Decoder Online Free | SwiftTool Pro",                     "Encode or decode Base64 text instantly in your browser. No data stored."],
         unitConverter:["Unit Converter — Length, Weight, Temperature | SwiftTool Pro",             "Convert units of length, weight, temperature, area and speed. Free online tool."],
-        loremIpsum:   ["Lorem Ipsum Generator — Placeholder Text | SwiftTool Pro",                 "Generate Lorem Ipsum dummy text by words, sentences or paragraphs. Free tool."]
+        loremIpsum:   ["Lorem Ipsum Generator — Placeholder Text | SwiftTool Pro",                 "Generate Lorem Ipsum dummy text by words, sentences or paragraphs. Free tool."],
+        emi:          ["EMI Calculator — Home, Car & Personal Loan | SwiftTool Pro",               "Calculate monthly EMI for home loan, car loan, personal loan with full amortization schedule."],
+        imageToText:  ["Image to Text Converter (OCR) Online Free | SwiftTool Pro",                "Extract text from any image or photo instantly. Free OCR tool, no upload needed."],
+        percentage:   ["Percentage Calculator Online Free | SwiftTool Pro",                        "Calculate percentage, marks percentage, discount. Free & instant."],
+        caseConverter:["Text Case Converter Online Free | SwiftTool Pro",                          "Convert text to UPPERCASE, lowercase, Title Case, camelCase, snake_case instantly."],
+        stopwatch:    ["Online Stopwatch & Countdown Timer Free | SwiftTool Pro",                  "Free online stopwatch with lap times and countdown timer. Works on all devices."]
       };
       var path = location.pathname.replace(/^\//, "").replace(/\/$/, "");
       var m = META[path];
@@ -139,7 +144,7 @@
     <div class="hero-section">
       <div class="row align-items-center position-relative" style="z-index:1">
         <div class="col-lg-7">
-          <div class="hero-badge mb-3"><i class="fas fa-bolt me-1"></i> 18+ Free Tools — No Sign-up Required</div>
+          <div class="hero-badge mb-3"><i class="fas fa-bolt me-1"></i> 23+ Free Tools — No Sign-up Required</div>
           <h1 class="hero-title mb-3">Your All-in-One<br/><span style="color:#a5b4fc">Digital Toolkit</span></h1>
           <p class="hero-subtitle mb-4">PDF tools, image resizer, GST calculator & more.<br/>100% browser-based — your files never leave your device.</p>
           <div class="position-relative" style="max-width:500px">
@@ -158,7 +163,7 @@
             <div class="col-6"><div class="hero-stat"><i class="fas fa-shield-halved text-success mb-2 d-block fa-lg"></i><div class="fw-bold text-white small">100% Private</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.5)">Local Processing</div></div></div>
             <div class="col-6"><div class="hero-stat"><i class="fas fa-infinity text-warning mb-2 d-block fa-lg"></i><div class="fw-bold text-white small">Free Forever</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.5)">No Hidden Limits</div></div></div>
             <div class="col-6"><div class="hero-stat"><i class="fas fa-bolt text-info mb-2 d-block fa-lg"></i><div class="fw-bold text-white small">Instant Results</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.5)">No Waiting</div></div></div>
-            <div class="col-6"><div class="hero-stat"><i class="fas fa-layer-group mb-2 d-block fa-lg" style="color:#f093fb"></i><div class="fw-bold text-white small">18+ Tools</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.5)">All Categories</div></div></div>
+            <div class="col-6"><div class="hero-stat"><i class="fas fa-layer-group mb-2 d-block fa-lg" style="color:#f093fb"></i><div class="fw-bold text-white small">23+ Tools</div><div style="font-size:0.7rem;color:rgba(255,255,255,0.5)">All Categories</div></div></div>
           </div>
         </div>
       </div>
@@ -169,7 +174,7 @@
   <div id="statsSection" class="container mb-4">
     <div class="stats-bar">
       <div class="stat-item"><div class="stat-num">500K+</div><div class="stat-label">Files Processed</div></div>
-      <div class="stat-item"><div class="stat-num">18+</div><div class="stat-label">Free Tools</div></div>
+      <div class="stat-item"><div class="stat-num">23+</div><div class="stat-label">Free Tools</div></div>
       <div class="stat-item"><div class="stat-num">Zero</div><div class="stat-label">Data Stored</div></div>
       <div class="stat-item"><div class="stat-num">4.8★</div><div class="stat-label">User Rating</div></div>
     </div>
@@ -333,6 +338,48 @@
           <div class="icon-box" style="background:linear-gradient(135deg,#f7971e,#ffd200)"><i class="fas fa-align-left"></i></div>
           <h6 class="fw-bold mb-1">Lorem Ipsum</h6>
           <p class="x-small text-muted">Dummy Text Gen</p>
+        </div>
+      </div>
+
+      <!-- NEW TRENDING TOOLS -->
+      <div class="col-6 col-md-4 col-lg-3 tool-item" data-cat="finance" data-search="emi calculator home loan car loan personal loan india">
+        <div class="card tool-card" onclick="openTool('emi')">
+          <span class="badge-hot">HOT</span>
+          <div class="icon-box" style="background:linear-gradient(135deg,#11998e,#38ef7d)"><i class="fas fa-home"></i></div>
+          <h6 class="fw-bold mb-1">EMI Calculator</h6>
+          <p class="x-small text-muted">Loan EMI + Schedule</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3 tool-item" data-cat="image" data-search="image to text ocr extract text from photo scan">
+        <div class="card tool-card" onclick="openTool('imageToText')">
+          <span class="badge-new">NEW</span>
+          <div class="icon-box" style="background:linear-gradient(135deg,#4f46e5,#7c3aed)"><i class="fas fa-camera"></i></div>
+          <h6 class="fw-bold mb-1">Image to Text</h6>
+          <p class="x-small text-muted">OCR — Extract Text</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3 tool-item" data-cat="utility" data-search="percentage calculator marks discount increase decrease">
+        <div class="card tool-card" onclick="openTool('percentage')">
+          <span class="badge-hot">HOT</span>
+          <div class="icon-box bg-warning text-dark"><i class="fas fa-percent"></i></div>
+          <h6 class="fw-bold mb-1">% Calculator</h6>
+          <p class="x-small text-muted">Marks, Discount & More</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3 tool-item" data-cat="utility" data-search="text case converter uppercase lowercase camelcase snake">
+        <div class="card tool-card" onclick="openTool('caseConverter')">
+          <span class="badge-new">NEW</span>
+          <div class="icon-box" style="background:linear-gradient(135deg,#8e2de2,#4a00e0)"><i class="fas fa-text-height"></i></div>
+          <h6 class="fw-bold mb-1">Case Converter</h6>
+          <p class="x-small text-muted">UPPER / lower / camel</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3 tool-item" data-cat="utility" data-search="stopwatch timer countdown online lap">
+        <div class="card tool-card" onclick="openTool('stopwatch')">
+          <span class="badge-new">NEW</span>
+          <div class="icon-box bg-danger"><i class="fas fa-stopwatch"></i></div>
+          <h6 class="fw-bold mb-1">Stopwatch</h6>
+          <p class="x-small text-muted">Timer + Countdown</p>
         </div>
       </div>
     </div><!-- end row -->

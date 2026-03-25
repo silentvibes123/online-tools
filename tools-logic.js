@@ -319,3 +319,239 @@ function showExtra(page) {
 }
 
 window.onpopstate = () => { if (!location.hash && location.pathname === "/") goToDashboard(); };
+
+// ===== EMI CALCULATOR =====
+function calcEMI() {
+  const P = parseFloat(document.getElementById("emiAmount").value);
+  const annualRate = parseFloat(document.getElementById("emiRate").value);
+  const n = parseInt(document.getElementById("emiTenure").value);
+  const res = document.getElementById("emiResult");
+  if (!P || !annualRate || !n || P <= 0 || annualRate <= 0 || n <= 0) { res.classList.add("d-none"); return; }
+
+  const r = annualRate / 12 / 100;
+  const emi = P * r * Math.pow(1+r, n) / (Math.pow(1+r, n) - 1);
+  const total = emi * n;
+  const interest = total - P;
+
+  const fmt = v => "₹" + Math.round(v).toLocaleString("en-IN");
+  document.getElementById("emiMonthly").textContent = fmt(emi);
+  document.getElementById("emiTotalAmt").textContent = fmt(total);
+  document.getElementById("emiInterest").textContent = fmt(interest);
+
+  const pPct = Math.round((P / total) * 100);
+  const iPct = 100 - pPct;
+  document.getElementById("emiProgressBar").style.width = pPct + "%";
+  document.getElementById("emiInterestBar").style.width = iPct + "%";
+  document.getElementById("emiPrincipalBar").textContent = `Principal ${pPct}% | Interest ${iPct}%`;
+
+  // Amortization table
+  let balance = P, rows = "";
+  for (let i = 1; i <= n; i++) {
+    const intPart = balance * r;
+    const prinPart = emi - intPart;
+    balance -= prinPart;
+    rows += `<tr><td>${i}</td><td>${fmt(emi)}</td><td>${fmt(prinPart)}</td><td>${fmt(intPart)}</td><td>${fmt(Math.max(0,balance))}</td></tr>`;
+  }
+  document.getElementById("emiTableBody").innerHTML = rows;
+  res.classList.remove("d-none");
+}
+
+function resetEMI() {
+  ["emiAmount","emiRate","emiTenure"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("emiResult").classList.add("d-none");
+}
+
+// ===== IMAGE TO TEXT (OCR) =====
+function runOCR(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = document.getElementById("ocrPreviewImg");
+    img.src = e.target.result;
+    document.getElementById("ocrPreviewBox").classList.remove("d-none");
+    document.getElementById("ocrProgress").classList.remove("d-none");
+    document.getElementById("ocrResultBox").classList.add("d-none");
+
+    Tesseract.recognize(e.target.result, "eng", {
+      logger: m => {
+        if (m.status === "recognizing text") {
+          const pct = Math.round(m.progress * 100);
+          document.getElementById("ocrBar").style.width = pct + "%";
+          document.getElementById("ocrPct").textContent = pct + "%";
+        }
+      }
+    }).then(({ data: { text } }) => {
+      document.getElementById("ocrProgress").classList.add("d-none");
+      document.getElementById("ocrOutput").value = text.trim() || "(No text detected)";
+      document.getElementById("ocrResultBox").classList.remove("d-none");
+      showNotify("success", "Text extracted!");
+    }).catch(() => {
+      document.getElementById("ocrProgress").classList.add("d-none");
+      showNotify("error", "OCR failed. Try a clearer image.");
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function resetOCR() {
+  document.getElementById("ocrInput").value = "";
+  document.getElementById("ocrPreviewBox").classList.add("d-none");
+  document.getElementById("ocrProgress").classList.add("d-none");
+  document.getElementById("ocrResultBox").classList.add("d-none");
+  document.getElementById("ocrOutput").value = "";
+}
+
+function downloadOCRText() {
+  const text = document.getElementById("ocrOutput").value;
+  if (!text) return showNotify("error", "No text to download!");
+  const blob = new Blob([text], { type: "text/plain" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = "extracted_text.txt"; a.click();
+}
+
+// ===== PERCENTAGE CALCULATOR =====
+function calcPct1() {
+  const x = parseFloat(document.getElementById("pct1X").value);
+  const y = parseFloat(document.getElementById("pct1Y").value);
+  document.getElementById("pct1Res").textContent = (!isNaN(x) && !isNaN(y)) ? ((x/100)*y).toFixed(2) : "—";
+}
+function calcPct2() {
+  const from = parseFloat(document.getElementById("pct2From").value);
+  const to   = parseFloat(document.getElementById("pct2To").value);
+  if (!isNaN(from) && !isNaN(to) && from !== 0) {
+    const diff = ((to - from) / Math.abs(from)) * 100;
+    const el = document.getElementById("pct2Res");
+    el.textContent = (diff >= 0 ? "▲ +" : "▼ ") + diff.toFixed(2) + "%";
+    el.style.color = diff >= 0 ? "#16a34a" : "#dc2626";
+  } else { document.getElementById("pct2Res").textContent = "—"; }
+}
+function calcPct3() {
+  const m = parseFloat(document.getElementById("pctMarks").value);
+  const t = parseFloat(document.getElementById("pctTotal").value);
+  document.getElementById("pct3Res").textContent = (!isNaN(m) && !isNaN(t) && t > 0) ? ((m/t)*100).toFixed(2) + "%" : "—";
+}
+function calcPct4() {
+  const p = parseFloat(document.getElementById("pctPrice").value);
+  const d = parseFloat(document.getElementById("pctDisc").value);
+  if (!isNaN(p) && !isNaN(d)) {
+    const final = p - (p * d / 100);
+    document.getElementById("pct4Res").textContent = `₹${final.toFixed(2)} (Save ₹${(p-final).toFixed(2)})`;
+  } else { document.getElementById("pct4Res").textContent = "—"; }
+}
+function resetPct() {
+  ["pct1X","pct1Y","pct2From","pct2To","pctMarks","pctTotal","pctPrice","pctDisc"].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = "";
+  });
+  ["pct1Res","pct2Res","pct3Res","pct4Res"].forEach(id => {
+    const el = document.getElementById(id); if(el) el.textContent = "—";
+  });
+}
+
+// ===== TEXT CASE CONVERTER =====
+function convertCase(type) {
+  const input = document.getElementById("caseInput").value;
+  if (!input.trim()) return showNotify("error", "Please enter some text first!");
+  let out = "";
+  switch(type) {
+    case "upper":    out = input.toUpperCase(); break;
+    case "lower":    out = input.toLowerCase(); break;
+    case "title":    out = input.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()); break;
+    case "sentence": out = input.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase()); break;
+    case "camel":    out = input.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase()); break;
+    case "snake":    out = input.toLowerCase().trim().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, ""); break;
+  }
+  document.getElementById("caseOutput").value = out;
+  document.getElementById("caseResultBox").classList.remove("d-none");
+  showNotify("success", "Converted!");
+}
+
+// ===== STOPWATCH & TIMER =====
+let swInterval = null, swRunning = false, swMs = 0, swLapCount = 0;
+let timerInterval = null, timerRunning = false, timerLeft = 0;
+
+function initStopwatch() { swReset(); timerReset(); }
+
+function swFormat(ms) {
+  const min = String(Math.floor(ms / 60000)).padStart(2,"0");
+  const sec = String(Math.floor((ms % 60000) / 1000)).padStart(2,"0");
+  const cs  = String(Math.floor((ms % 1000) / 10)).padStart(2,"0");
+  return `${min}:${sec}.${cs}`;
+}
+
+function swStart() {
+  const btn = document.getElementById("swStartBtn");
+  if (!swRunning) {
+    const start = Date.now() - swMs;
+    swInterval = setInterval(() => {
+      swMs = Date.now() - start;
+      document.getElementById("swDisplay").textContent = swFormat(swMs);
+    }, 10);
+    swRunning = true;
+    btn.innerHTML = '<i class="fas fa-pause me-1"></i>Pause';
+    btn.className = "btn btn-warning px-4 fw-bold";
+  } else {
+    clearInterval(swInterval); swRunning = false;
+    btn.innerHTML = '<i class="fas fa-play me-1"></i>Resume';
+    btn.className = "btn btn-success px-4 fw-bold";
+  }
+}
+
+function swLap() {
+  if (!swRunning && swMs === 0) return;
+  swLapCount++;
+  const laps = document.getElementById("swLaps");
+  const div = document.createElement("div");
+  div.className = "d-flex justify-content-between small border-bottom py-1";
+  div.innerHTML = `<span class="text-muted">Lap ${swLapCount}</span><span class="fw-bold font-monospace">${swFormat(swMs)}</span>`;
+  laps.prepend(div);
+}
+
+function swReset() {
+  clearInterval(swInterval); swRunning = false; swMs = 0; swLapCount = 0;
+  const el = document.getElementById("swDisplay"); if(el) el.textContent = "00:00.00";
+  const btn = document.getElementById("swStartBtn");
+  if(btn) { btn.innerHTML = '<i class="fas fa-play me-1"></i>Start'; btn.className = "btn btn-success px-4 fw-bold"; }
+  const laps = document.getElementById("swLaps"); if(laps) laps.innerHTML = "";
+}
+
+function timerStart() {
+  const btn = document.getElementById("timerStartBtn");
+  if (!timerRunning) {
+    if (timerLeft === 0) {
+      const m = parseInt(document.getElementById("timerMin").value) || 0;
+      const s = parseInt(document.getElementById("timerSec").value) || 0;
+      timerLeft = m * 60 + s;
+      if (timerLeft <= 0) return showNotify("error", "Set a time first!");
+    }
+    timerRunning = true;
+    btn.innerHTML = '<i class="fas fa-pause me-1"></i>Pause';
+    btn.className = "btn btn-warning px-4 fw-bold";
+    timerInterval = setInterval(() => {
+      timerLeft--;
+      const m = String(Math.floor(timerLeft / 60)).padStart(2,"0");
+      const s = String(timerLeft % 60).padStart(2,"0");
+      const el = document.getElementById("timerDisplay");
+      if(el) { el.textContent = `${m}:${s}`; el.style.color = timerLeft <= 10 ? "#dc2626" : "#dc2626"; }
+      if (timerLeft <= 0) {
+        clearInterval(timerInterval); timerRunning = false;
+        if(el) el.textContent = "00:00";
+        if(btn) { btn.innerHTML = '<i class="fas fa-play me-1"></i>Start'; btn.className = "btn btn-danger px-4 fw-bold"; }
+        showNotify("success", "⏰ Time's up!");
+        try { new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAA...").play(); } catch(e) {}
+      }
+    }, 1000);
+  } else {
+    clearInterval(timerInterval); timerRunning = false;
+    btn.innerHTML = '<i class="fas fa-play me-1"></i>Resume';
+    btn.className = "btn btn-danger px-4 fw-bold";
+  }
+}
+
+function timerReset() {
+  clearInterval(timerInterval); timerRunning = false; timerLeft = 0;
+  const el = document.getElementById("timerDisplay"); if(el) { el.textContent = "00:00"; el.style.color = "#dc2626"; }
+  const btn = document.getElementById("timerStartBtn");
+  if(btn) { btn.innerHTML = '<i class="fas fa-play me-1"></i>Start'; btn.className = "btn btn-danger px-4 fw-bold"; }
+  const m = document.getElementById("timerMin"); if(m) m.value = "";
+  const s = document.getElementById("timerSec"); if(s) s.value = "";
+}
