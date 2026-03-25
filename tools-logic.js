@@ -285,7 +285,7 @@ function showExtra(page) {
           <div class="feature-card h-100">
             <div class="d-flex mb-3"><div class="feature-icon me-3" style="background:#ede9fe"><i class="fas fa-headset text-primary"></i></div><div><h6 class="fw-bold mb-0">Support</h6><p class="small text-muted mb-0">Use the form to reach us. We respond within 24–48 hours.</p></div></div>
             <div class="d-flex mb-3"><div class="feature-icon me-3" style="background:#dcfce7"><i class="fas fa-clock text-success"></i></div><div><h6 class="fw-bold mb-0">Response Time</h6><p class="small text-muted mb-0">Within 24-48 hours</p></div></div>
-            <div class="d-flex"><div class="feature-icon me-3" style="background:#fef3c7"><i class="fas fa-map-marker-alt text-warning"></i></div><div><h6 class="fw-bold mb-0">Location</h6><p class="small text-muted mb-0">Surat, Gujarat, India</p></div></div>
+            <div class="d-flex"><div class="feature-icon me-3" style="background:#fef3c7"><i class="fas fa-map-marker-alt text-warning"></i></div><div><h6 class="fw-bold mb-0">Location</h6><p class="small text-muted mb-0">India</p></div></div>
           </div>
         </div>
         <div class="col-md-7">

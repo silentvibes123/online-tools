@@ -37,6 +37,46 @@
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1MCH61PVHR');</script>
   <base href="/"/>
   <!-- Canonical updated by script.js on tool open -->
+  <script>
+    // Runs synchronously — sets correct title/canonical/description per tool URL
+    // This ensures Googlebot sees correct meta even before JS frameworks load
+    (function(){
+      var META = {
+        resizer:      ["Exam Photo Resizer (20KB-50KB) for SSC, UPSC, Bank | SwiftTool Pro",      "Resize photos for SSC, UPSC, IBPS exams. Compress to 20KB/50KB without quality loss."],
+        compress:     ["Compress Image to 20KB & 50KB Online Free | SwiftTool Pro",                "Reduce image file size without losing clarity. Best for exam portals."],
+        pdf:          ["Images to PDF Converter Online Free | SwiftTool Pro",                      "Convert JPG, PNG, WEBP images into a single PDF instantly. No upload needed."],
+        pdfToImg:     ["PDF to Image Converter Online | SwiftTool Pro",                            "Convert PDF pages into high-quality JPEG images securely in your browser."],
+        merge:        ["Merge PDF Files Online Free | SwiftTool Pro",                              "Combine multiple PDFs into one file. No watermark, no sign-up required."],
+        split:        ["Split PDF Pages Online Free | SwiftTool Pro",                              "Extract specific pages from PDF instantly. 100% browser-based."],
+        removePages:  ["Remove PDF Pages Online Free | SwiftTool Pro",                             "Delete specific pages from PDF with visual preview. No upload needed."],
+        wordToPdf:    ["Word to PDF Converter Online Free | SwiftTool Pro",                        "Convert DOCX to PDF securely in your browser. No Microsoft Office needed."],
+        pdfToWord:    ["PDF to Text Extractor Online | SwiftTool Pro",                             "Extract and edit text from any PDF file in your browser. Free & private."],
+        cash:         ["Online Cash Counter & Denomination Calculator | SwiftTool Pro",            "Calculate total cash with Indian currency denominations. Print professional receipts."],
+        gst:          ["GST Calculator India — Add/Remove GST Free | SwiftTool Pro",               "Calculate GST with CGST/SGST split. Free Indian GST calculator tool."],
+        age:          ["Accurate Age Calculator by Date of Birth | SwiftTool Pro",                 "Calculate exact age in years, months, days. Perfect for govt job forms."],
+        qrcode:       ["Free QR Code Generator Online | SwiftTool Pro",                            "Create custom QR codes for URL, text, UPI. Instant download. No sign-up."],
+        voice:        ["AI Voice — Free Text to Speech & PDF Reader | SwiftTool Pro",              "Convert text or PDF into natural AI voice. Free, private, browser-based."],
+        wordCounter:  ["Word Counter & Text Analyzer Online Free | SwiftTool Pro",                 "Count words, characters, sentences and reading time instantly. No sign-up."],
+        password:     ["Strong Password Generator — Free & Secure | SwiftTool Pro",                "Generate secure random passwords with custom length and symbols instantly."],
+        base64:       ["Base64 Encoder & Decoder Online Free | SwiftTool Pro",                     "Encode or decode Base64 text instantly in your browser. No data stored."],
+        unitConverter:["Unit Converter — Length, Weight, Temperature | SwiftTool Pro",             "Convert units of length, weight, temperature, area and speed. Free online tool."],
+        loremIpsum:   ["Lorem Ipsum Generator — Placeholder Text | SwiftTool Pro",                 "Generate Lorem Ipsum dummy text by words, sentences or paragraphs. Free tool."]
+      };
+      var path = location.pathname.replace(/^\//, "").replace(/\/$/, "");
+      var m = META[path];
+      if (m) {
+        document.title = m[0];
+        var desc = document.querySelector('meta[name="description"]');
+        if (desc) desc.setAttribute("content", m[1]);
+        var og_title = document.querySelector('meta[property="og:title"]');
+        if (og_title) og_title.setAttribute("content", m[0]);
+        var og_desc = document.querySelector('meta[property="og:description"]');
+        if (og_desc) og_desc.setAttribute("content", m[1]);
+      }
+      var canonical = document.getElementById("canonicalTag");
+      if (canonical) canonical.setAttribute("href", "https://www.swifttoolpro.com/" + (path || ""));
+    })();
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>

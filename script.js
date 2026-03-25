@@ -81,11 +81,12 @@ const TOOL_META = {
   gst:     ["GST Calculator India - Add/Remove GST | SwiftTool Pro", "Calculate GST with CGST/SGST split. Free Indian GST tool."],
   removePages: ["Remove PDF Pages Online | SwiftTool Pro", "Delete specific pages from PDF with visual preview."],
   wordToPdf:   ["Word to PDF Converter | SwiftTool Pro", "Convert DOCX to PDF securely in your browser."],
-  wordCounter: ["Word Counter & Text Analyzer | SwiftTool Pro", "Count words, characters, sentences and analyze your text."],
-  password:    ["Strong Password Generator | SwiftTool Pro", "Generate secure random passwords instantly."],
+  pdfToWord:   ["PDF to Text Extractor Online | SwiftTool Pro", "Extract and edit text from any PDF file in your browser."],
+  wordCounter: ["Word Counter & Text Analyzer Online | SwiftTool Pro", "Count words, characters, sentences and reading time instantly."],
+  password:    ["Strong Password Generator — Free & Secure | SwiftTool Pro", "Generate secure random passwords with custom length and symbols."],
   base64:      ["Base64 Encoder & Decoder Online | SwiftTool Pro", "Encode or decode Base64 text instantly in your browser."],
-  unitConverter: ["Unit Converter - Length, Weight, Temperature | SwiftTool Pro", "Convert units of length, weight, temperature and more."],
-  loremIpsum:  ["Lorem Ipsum Generator | SwiftTool Pro", "Generate placeholder dummy text for design and development."],
+  unitConverter: ["Unit Converter — Length, Weight, Temperature | SwiftTool Pro", "Convert units of length, weight, temperature, area and speed."],
+  loremIpsum:  ["Lorem Ipsum Generator — Placeholder Text | SwiftTool Pro", "Generate Lorem Ipsum dummy text by words, sentences or paragraphs."],
 };
 
 function updateDynamicTitle(tool) {
