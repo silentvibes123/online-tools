@@ -49,7 +49,6 @@
         merge:        ["Merge PDF Files Online Free | SwiftTool Pro",                              "Combine multiple PDFs into one file. No watermark, no sign-up required."],
         split:        ["Split PDF Pages Online Free | SwiftTool Pro",                              "Extract specific pages from PDF instantly. 100% browser-based."],
         removePages:  ["Remove PDF Pages Online Free | SwiftTool Pro",                             "Delete specific pages from PDF with visual preview. No upload needed."],
-        wordToPdf:    ["Word to PDF Converter Online Free | SwiftTool Pro",                        "Convert DOCX to PDF securely in your browser. No Microsoft Office needed."],
         pdfToWord:    ["PDF to Text Extractor Online | SwiftTool Pro",                             "Extract and edit text from any PDF file in your browser. Free & private."],
         cash:         ["Online Cash Counter & Denomination Calculator | SwiftTool Pro",            "Calculate total cash with Indian currency denominations. Print professional receipts."],
         gst:          ["GST Calculator India — Add/Remove GST Free | SwiftTool Pro",               "Calculate GST with CGST/SGST split. Free Indian GST calculator tool."],
@@ -77,8 +76,6 @@
       if (canonical) canonical.setAttribute("href", "https://www.swifttoolpro.com/" + (path || ""));
     })();
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
 </head>
 <body>
@@ -257,13 +254,6 @@
           <div class="icon-box bg-danger"><i class="fas fa-file-signature"></i></div>
           <h6 class="fw-bold mb-1">Remove Pages</h6>
           <p class="x-small text-muted">Delete PDF Pages</p>
-        </div>
-      </div>
-      <div class="col-6 col-md-4 col-lg-3 tool-item" data-cat="pdf" data-search="word to pdf docx convert">
-        <div class="card tool-card" onclick="openTool('wordToPdf')">
-          <div class="icon-box" style="background:linear-gradient(135deg,#2980b9,#6dd5fa)"><i class="fas fa-file-word"></i></div>
-          <h6 class="fw-bold mb-1">Word to PDF</h6>
-          <p class="x-small text-muted">DOCX → PDF</p>
         </div>
       </div>
 
@@ -554,7 +544,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="voice-logic.js"></script>
-<script src="wordToPdf-logic.js"></script>
 <script src="gst-logic.js"></script>
 <script src="image-logic.js"></script>
 <script src="pdf-logic.js"></script>

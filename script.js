@@ -1,11 +1,11 @@
 // ===== INIT =====
-const VALID_TOOLS = ["cash","resizer","age","pdf","compress","qrcode","pdfToImg","voice","merge","split","wordToPdf","pdfToWord","gst","removePages","wordCounter","password","base64","unitConverter","loremIpsum"];
+const VALID_TOOLS = ["cash","resizer","age","pdf","compress","qrcode","pdfToImg","voice","merge","split","pdfToWord","gst","removePages","wordCounter","password","base64","unitConverter","loremIpsum"];
 
 // ===== RECENTLY USED =====
 const TOOL_LABELS = {
   cash:"Cash Counter", resizer:"Exam Resizer", age:"Age Calc", pdf:"Images→PDF",
   compress:"Compressor", qrcode:"QR Code", pdfToImg:"PDF→Image", voice:"AI Voice",
-  merge:"Merge PDF", split:"Split PDF", wordToPdf:"Word→PDF", pdfToWord:"PDF→Text",
+  merge:"Merge PDF", split:"Split PDF", pdfToWord:"PDF→Text",
   gst:"GST Calc", removePages:"Remove Pages", wordCounter:"Word Counter",
   password:"Password Gen", base64:"Base64", unitConverter:"Unit Conv", loremIpsum:"Lorem Ipsum"
 };
@@ -13,7 +13,7 @@ const TOOL_ICONS = {
   cash:"fas fa-calculator", resizer:"fas fa-id-card", age:"fas fa-birthday-cake",
   pdf:"fas fa-file-pdf", compress:"fas fa-compress-arrows-alt", qrcode:"fas fa-qrcode",
   pdfToImg:"fas fa-images", voice:"fas fa-volume-up", merge:"fas fa-object-group",
-  split:"fas fa-cut", wordToPdf:"fas fa-file-word", pdfToWord:"fas fa-file-alt",
+  split:"fas fa-cut", pdfToWord:"fas fa-file-alt",
   gst:"fas fa-file-invoice-dollar", removePages:"fas fa-file-signature",
   wordCounter:"fas fa-font", password:"fas fa-key", base64:"fas fa-code",
   unitConverter:"fas fa-ruler-combined", loremIpsum:"fas fa-align-left"
@@ -80,7 +80,6 @@ const TOOL_META = {
   split:   ["Split PDF Pages Online | SwiftTool Pro", "Extract specific pages from PDF instantly."],
   gst:     ["GST Calculator India - Add/Remove GST | SwiftTool Pro", "Calculate GST with CGST/SGST split. Free Indian GST tool."],
   removePages: ["Remove PDF Pages Online | SwiftTool Pro", "Delete specific pages from PDF with visual preview."],
-  wordToPdf:   ["Word to PDF Converter | SwiftTool Pro", "Convert DOCX to PDF securely in your browser."],
   pdfToWord:   ["PDF to Text Extractor Online | SwiftTool Pro", "Extract and edit text from any PDF file in your browser."],
   wordCounter: ["Word Counter & Text Analyzer Online | SwiftTool Pro", "Count words, characters, sentences and reading time instantly."],
   password:    ["Strong Password Generator — Free & Secure | SwiftTool Pro", "Generate secure random passwords with custom length and symbols."],
@@ -296,19 +295,6 @@ function renderToolContent(name, container) {
         </div>
       </div>${PRIVACY}
       ${seoBlock("fas fa-birthday-cake","#dc2626","Age Calculator — Exact Age for Government Forms",["Calculate your exact age in years, months, and days from your date of birth. Also shows total months, weeks, and days lived.","This tool is essential for filling government job application forms (SSC, UPSC, Railway, Bank) where exact age as on a specific date is required.","You can set any target date — not just today — to calculate age as on the exam cutoff date."])}`,
-
-    wordToPdf: `${BACK}
-      <div class="tool-header"><h3><i class="fas fa-file-word me-2 text-primary"></i>Word to PDF</h3><button class="btn btn-sm btn-outline-danger" onclick="openTool('wordToPdf')"><i class="fas fa-redo me-1"></i>Reset</button></div><hr>
-      <div id="dropZone" class="border p-5 text-center rounded bg-light mb-3" onclick="document.getElementById('docInput').click()" style="cursor:pointer;border:2px dashed #0d6efd!important">
-        <i class="fas fa-file-import fa-3x text-primary mb-2"></i><h5 class="fw-bold">Select .docx File</h5>
-        <input type="file" id="docInput" hidden accept=".docx" onchange="convertWordToPdf(this.files[0])">
-      </div>
-      <div id="previewContainer" class="d-none">
-        <div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>File Ready!</div>
-        <div id="wordPreview" class="mb-3 shadow-sm" style="max-height:500px;overflow-y:auto;overflow-x:auto;background:#e8ecf0;padding:16px;border-radius:8px;"></div>
-        <button id="downloadPdfBtn" class="btn btn-primary w-100 btn-lg fw-bold" onclick="downloadGeneratedPDF()"><i class="fas fa-file-pdf me-2"></i>Download as PDF</button>
-      </div>${PRIVACY}
-      ${seoBlock("fas fa-file-word","#2563eb","Word to PDF Converter — DOCX to PDF Online",["Convert your Microsoft Word (.docx) files to PDF format directly in your browser — no Microsoft Office required.","This tool preserves your document's formatting, headings, and paragraphs. Perfect for submitting resumes, reports, and assignments as PDF.","100% client-side conversion using Mammoth.js and html2pdf.js. Your document never leaves your device."])}`,
 
     pdfToWord: `${BACK}
       <div class="tool-header"><h3><i class="fas fa-file-alt me-2 text-info"></i>PDF to Text</h3></div><hr>
