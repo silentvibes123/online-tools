@@ -16,9 +16,13 @@ RewriteRule ^pdf-to-word$ https://www.swifttoolpro.com/ [L,R=301]
 RewriteRule ^word-to-pdf$ https://www.swifttoolpro.com/ [L,R=301]
 
 # ============================================================
-# STEP 3: SPA Tool URL Routing
-# All tool URLs serve index.html (with correct canonical set by JS)
-# Google crawls these URLs — JS sets title/canonical after load
+# STEP 3: Block ?q= search param URL (was causing redirect error)
+# ============================================================
+RewriteCond %{QUERY_STRING} ^q=
+RewriteRule ^$ https://www.swifttoolpro.com/? [L,R=301]
+
+# ============================================================
+# STEP 4: SPA Tool URL Routing — serve index.html for all tools
 # ============================================================
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
