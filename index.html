@@ -80,12 +80,6 @@
       }
       var canonical = document.getElementById("canonicalTag");
       if (canonical) canonical.setAttribute("href", "https://www.swifttoolpro.com/" + (path || ""));
-      // Tell Google: tool pages are part of homepage SPA, not separate indexable pages
-      if (m) {
-        var robots = document.querySelector('meta[name="robots"]');
-        if (!robots) { robots = document.createElement('meta'); robots.name = "robots"; document.head.appendChild(robots); }
-        robots.setAttribute("content", "noindex,follow");
-      }
     })();
   </script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
