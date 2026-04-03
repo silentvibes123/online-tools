@@ -22,7 +22,15 @@ RewriteCond %{QUERY_STRING} ^q=
 RewriteRule ^$ https://www.swifttoolpro.com/? [L,R=301]
 
 # ============================================================
-# STEP 4: SPA Tool URL Routing — serve index.html for all tools
+# STEP 4: Tool HTML files → serve index.html directly (no redirect)
+# Fixes "Alternate page with proper canonical tag" for old .html tool files
+# ============================================================
+RewriteRule ^compressor\.html$ /index.html [L]
+RewriteRule ^imgToPdf\.html$ /index.html [L]
+RewriteRule ^image-resizer\.html$ /index.html [L]
+
+# ============================================================
+# STEP 5: SPA Tool URL Routing — serve index.html for all tools
 # ============================================================
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
