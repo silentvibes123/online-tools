@@ -64,7 +64,8 @@
         imageToText:  ["Image to Text Converter (OCR) Online Free | SwiftTool Pro",                "Extract text from any image or photo instantly. Free OCR tool, no upload needed."],
         percentage:   ["Percentage Calculator Online Free | SwiftTool Pro",                        "Calculate percentage, marks percentage, discount. Free & instant."],
         caseConverter:["Text Case Converter Online Free | SwiftTool Pro",                          "Convert text to UPPERCASE, lowercase, Title Case, camelCase, snake_case instantly."],
-        stopwatch:    ["Online Stopwatch & Countdown Timer Free | SwiftTool Pro",                  "Free online stopwatch with lap times and countdown timer. Works on all devices."]
+        stopwatch:    ["Online Stopwatch & Countdown Timer Free | SwiftTool Pro",                  "Free online stopwatch with lap times and countdown timer. Works on all devices."],
+        videoToMp3:   ["Video to MP3 Converter Online Free | SwiftTool Pro",                       "Convert MP4, MKV, AVI videos to MP3 audio online for free. No upload, 100% private."]
       };
       var path = location.pathname.replace(/^\//, "").replace(/\/$/, "");
       var m = META[path];
@@ -386,6 +387,14 @@
           <div class="icon-box bg-danger"><i class="fas fa-stopwatch"></i></div>
           <h6 class="fw-bold mb-1">Stopwatch</h6>
           <p class="x-small text-muted">Timer + Countdown</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3 tool-item" data-cat="utility" data-search="video to mp3 converter extract audio mp4 mkv avi">
+        <div class="card tool-card" onclick="window.location.href='/video-to-mp3.html'">
+          <span class="badge-new">NEW</span>
+          <div class="icon-box" style="background:linear-gradient(135deg,#4f46e5,#7c3aed)"><i class="fas fa-music"></i></div>
+          <h6 class="fw-bold mb-1">Video to MP3</h6>
+          <p class="x-small text-muted">Extract Audio</p>
         </div>
       </div>
     </div><!-- end row -->

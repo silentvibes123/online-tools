@@ -26,7 +26,7 @@ RewriteRule ^$ https://www.swifttoolpro.com/? [L,R=301]
 # ============================================================
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(resizer|compress|pdf|pdfToImg|merge|split|removePages|pdfToWord|cash|gst|age|qrcode|voice|wordCounter|password|base64|unitConverter|loremIpsum|emi|imageToText|percentage|caseConverter|stopwatch)$ /index.html [L]
+RewriteRule ^(resizer|compress|pdf|pdfToImg|merge|split|removePages|pdfToWord|cash|gst|age|qrcode|voice|wordCounter|password|base64|unitConverter|loremIpsum|emi|imageToText|percentage|caseConverter|stopwatch|video-to-mp3)$ /index.html [L]
 
 # ============================================================
 # STEP 4: Security Headers
