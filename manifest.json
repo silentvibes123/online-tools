@@ -10,9 +10,9 @@
   "lang": "en",
   "icons": [
     {
-      "src": "logo.jpg",
+      "src": "swifttoolpro-icon.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
