@@ -242,100 +242,82 @@ window.downloadFormattedPDF = function() {
     });
 };
 
-async function handleRemovePages() {
-    const fileInput = document.getElementById('removeInput');
-    const pagesInput = document.getElementById('pageNumbers');
-    const btn = document.getElementById('removeBtn');
-
-    if (!fileInput.files[0]) {
-        alert("Select PDF !!");
-        return;
-    }
-    if (!pagesInput.value) {
-        alert("enter a page number! (e.g. 1)");
-        return;
-    }
-
-    try {
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Removing...';
-        btn.disabled = true;
-
-        const file = fileInput.files[0];
-        const arrayBuffer = await file.arrayBuffer();
-        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-        
-        // User jo input de raha hai (e.g. "1, 3") usse array mein convert karo
-        // Indexing 0 se hoti hai isliye -1 kiya hai
-        const pagesToRemove = pagesInput.value.split(',')
-            .map(p => parseInt(p.trim()) - 1)
-            .sort((a, b) => b - a); // Reverse order mein sort karna zaruri hai taaki indexing na bigde
-
-        const totalPages = pdfDoc.getPageCount();
-
-        pagesToRemove.forEach(pageIndex => {
-            if (pageIndex >= 0 && pageIndex < totalPages) {
-                pdfDoc.removePage(pageIndex);
-            }
-        });
-
-        const pdfBytes = await pdfDoc.save();
-        const blob = new Blob([pdfBytes], { type: "application/pdf" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `updated_${file.name}`;
-        link.click();
-
-        btn.innerHTML = '<i class="fas fa-check me-2"></i>Done!';
-        btn.classList.replace('btn-danger', 'btn-success');
-
-    } catch (error) {
-        console.error(error);
-        alert("Enter valid page number!.");
-    } finally {
-        setTimeout(() => {
-            btn.innerHTML = '<i class="fas fa-file-pdf me-2"></i>Remove Pages & Download';
-            btn.classList.replace('btn-success', 'btn-danger');
-            btn.disabled = false;
-        }, 3000);
-    }
-}
-
 // Function to render PDF pages as thumbnails
 async function previewPdfPages() {
     const file = document.getElementById('removeInput').files[0];
     const container = document.getElementById('pdfPreviewContainer');
     if (!file) return;
 
-    container.innerHTML = '<div class="text-center w-100"><span class="spinner-border text-primary"></span><p>Generating Previews...</p></div>';
+    container.innerHTML = '<div class="text-center w-100 py-3"><span class="spinner-border text-primary"></span><p class="mt-2">Generating Previews...</p></div>';
 
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-    container.innerHTML = ""; // Clear loader
+    try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        container.innerHTML = '';
 
-    for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const viewport = page.getViewport({ scale: 0.3 }); // Small scale for thumbnails
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: 0.3 });
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            await page.render({ canvasContext: context, viewport }).promise;
 
-        await page.render({ canvasContext: context, viewport: viewport }).promise;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'col-4 col-md-3 position-relative page-wrapper';
+            wrapper.id = `page-wrapper-${i}`;
+            wrapper.innerHTML = `
+                <div class="card p-1 shadow-sm border" style="cursor:pointer" onclick="togglePageRemoval(${i})">
+                    <img src="${canvas.toDataURL()}" class="img-fluid rounded">
+                    <div class="text-center small fw-bold mt-1">Page ${i}</div>
+                    <div class="removal-overlay d-none" style="position:absolute;inset:0;background:rgba(220,38,38,0.5);display:flex;align-items:center;justify-content:center;border-radius:8px;">
+                        <i class="fas fa-times fa-2x text-white"></i>
+                    </div>
+                </div>`;
+            container.appendChild(wrapper);
+        }
 
-        const wrapper = document.createElement('div');
-        wrapper.className = "col-4 col-md-3 position-relative page-wrapper";
-        wrapper.id = `page-wrapper-${i}`;
-        wrapper.innerHTML = `
-            <div class="card p-1 shadow-sm border">
-                <img src="${canvas.toDataURL()}" class="img-fluid rounded">
-                <div class="text-center small fw-bold mt-1">Page ${i}</div>
-                <div class="removal-overlay d-none">
-                    <i class="fas fa-times text-danger"></i>
-                </div>
-            </div>
-        `;
-        container.appendChild(wrapper);
+        // Show page input and remove button
+        const pageInputSection = document.getElementById('pageInputSection');
+        const removeBtn = document.getElementById('removeBtn');
+        if (pageInputSection) pageInputSection.classList.remove('d-none');
+        if (removeBtn) removeBtn.classList.remove('d-none');
+
+        showNotify('success', `${pdf.numPages} pages loaded. Click pages or enter numbers to mark for removal.`);
+    } catch(e) {
+        container.innerHTML = '';
+        showNotify('error', 'Could not read PDF file.');
     }
+}
+
+// Toggle page selection by clicking thumbnail
+function togglePageRemoval(pageNum) {
+    const wrapper = document.getElementById(`page-wrapper-${pageNum}`);
+    if (!wrapper) return;
+    const overlay = wrapper.querySelector('.removal-overlay');
+    const card = wrapper.querySelector('.card');
+    const isMarked = !overlay.classList.contains('d-none');
+
+    if (isMarked) {
+        overlay.classList.add('d-none');
+        card.classList.remove('border-danger');
+    } else {
+        overlay.classList.remove('d-none');
+        card.classList.add('border-danger');
+    }
+
+    // Sync with text input
+    const marked = [];
+    document.querySelectorAll('.page-wrapper').forEach(w => {
+        const ov = w.querySelector('.removal-overlay');
+        if (ov && !ov.classList.contains('d-none')) {
+            const num = w.id.replace('page-wrapper-', '');
+            marked.push(num);
+        }
+    });
+    const pageNumbers = document.getElementById('pageNumbers');
+    if (pageNumbers) pageNumbers.value = marked.join(', ');
 }
 
 // Function to add the red cross animation in real-time
@@ -375,7 +357,7 @@ async function handleRemovePages() {
         btn.disabled = true;
 
         const arrayBuffer = await fileInput.files[0].arrayBuffer();
-        const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+        const pdfDoc = await window.PDFLib.PDFDocument.load(arrayBuffer);
         
         const pagesToRemove = pagesInput.value.split(',')
             .map(p => parseInt(p.trim()) - 1)

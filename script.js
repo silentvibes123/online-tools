@@ -348,8 +348,13 @@ function renderToolContent(name, container) {
 
     removePages: `${BACK}
       <div class="tool-header"><h3><i class="fas fa-file-signature me-2 text-danger"></i>Remove PDF Pages</h3><button class="btn btn-sm btn-outline-danger" onclick="openTool('removePages')"><i class="fas fa-redo me-1"></i>Reset</button></div><hr>
-      <input type="file" id="removePdfInput" accept="application/pdf" class="form-control mb-3" onchange="previewPdfPages(this.files[0])">
-      <div id="pagePreviewGrid" class="row g-2 mb-3"></div>
+      <input type="file" id="removeInput" accept="application/pdf" class="form-control mb-3" onchange="previewPdfPages()">
+      <div id="pdfPreviewContainer" class="row g-2 mb-3"></div>
+      <div id="pageInputSection" class="d-none mb-3">
+        <label class="form-label fw-semibold">Enter page numbers to remove (e.g. 1, 3, 5):</label>
+        <input type="text" id="pageNumbers" class="form-control" placeholder="e.g. 1, 3, 5" oninput="markPagesForRemoval()">
+        <div class="form-text text-muted">Separate multiple pages with commas</div>
+      </div>
       <button class="btn btn-danger w-100 fw-bold d-none" id="removeBtn" onclick="handleRemovePages()"><i class="fas fa-trash me-2"></i>Remove Selected & Download</button>${PRIVACY}
       ${seoBlock("fas fa-file-signature","#dc2626","Remove PDF Pages — Delete Unwanted Pages",["Select and remove specific pages from any PDF file. A visual thumbnail preview lets you see each page before deciding which ones to delete.","Useful for removing blank pages, confidential pages, or unwanted sections from a PDF before sharing or submitting it.","Runs entirely in your browser using PDF-lib. No uploads, no data stored."])}`,
 
