@@ -205,53 +205,106 @@
     document.getElementById('convertBtn').disabled = true;
     document.getElementById('progressBox').style.display = 'block';
     document.getElementById('resultBox').style.display = 'none';
-    document.getElementById('progressBar').style.width = '10%';
-    document.getElementById('statusText').textContent = 'Loading video...';
+    document.getElementById('progressBar').style.width = '5%';
+    document.getElementById('statusText').textContent = 'Reading file...';
 
     try {
-      // Create a video element to load the file
+      const arrayBuffer = await selectedFile.arrayBuffer();
+      document.getElementById('progressBar').style.width = '20%';
+      document.getElementById('statusText').textContent = 'Decoding audio...';
+
+      // Use OfflineAudioContext — faster than real-time, no autoplay
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') await audioCtx.resume();
+
+      let audioBuffer;
+      try {
+        audioBuffer = await audioCtx.decodeAudioData(arrayBuffer.slice(0));
+      } catch(e) {
+        // If direct decode fails, try via video element (mobile fallback)
+        audioCtx.close();
+        await convertViaVideoElement();
+        return;
+      }
+      audioCtx.close();
+
+      document.getElementById('progressBar').style.width = '60%';
+      document.getElementById('statusText').textContent = 'Converting to audio...';
+
+      // Convert to WAV — works on all browsers, no autoplay
+      const wavBlob = audioBufferToWav(audioBuffer);
+      audioBlob = wavBlob;
+      outputFileName = selectedFile.name.replace(/\.[^/.]+$/, '') + '.wav';
+
+      document.getElementById('progressBar').style.width = '100%';
+      document.getElementById('statusText').textContent = 'Done!';
+
+      // Set audio source but DO NOT autoplay
+      const url = URL.createObjectURL(wavBlob);
+      const player = document.getElementById('audioPlayer');
+      player.src = url;
+      player.load(); // load only, don't play
+
+      document.querySelector('.btn-download').innerHTML = '<i class="fas fa-download me-2"></i>Download Audio';
+
+      setTimeout(() => {
+        document.getElementById('progressBox').style.display = 'none';
+        document.getElementById('resultBox').style.display = 'block';
+      }, 300);
+
+    } catch(err) {
+      console.error(err);
+      document.getElementById('progressBar').style.width = '0%';
+      document.getElementById('statusText').textContent = '⚠️ Could not process this file. Try MP4 format.';
+      document.getElementById('convertBtn').disabled = false;
+    }
+  }
+
+  // Mobile fallback — uses video element but muted to prevent autoplay sound
+  async function convertViaVideoElement() {
+    document.getElementById('statusText').textContent = 'Using mobile method...';
+
+    try {
       const videoURL = URL.createObjectURL(selectedFile);
       const video = document.createElement('video');
       video.src = videoURL;
-      video.muted = false;
-      video.crossOrigin = 'anonymous';
+      video.muted = true; // muted — no autoplay sound
+      video.playsInline = true;
+      video.preload = 'auto';
 
-      // Wait for video metadata
       await new Promise((resolve, reject) => {
         video.onloadedmetadata = resolve;
-        video.onerror = reject;
-        setTimeout(reject, 10000);
+        video.onerror = () => reject(new Error('Video load failed'));
+        setTimeout(() => reject(new Error('Timeout')), 15000);
       });
 
       document.getElementById('progressBar').style.width = '30%';
-      document.getElementById('statusText').textContent = 'Extracting audio track...';
 
-      // Use AudioContext to capture audio from video
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-      // Resume context (required on mobile after user gesture)
       if (audioCtx.state === 'suspended') await audioCtx.resume();
 
       const source = audioCtx.createMediaElementSource(video);
       const dest = audioCtx.createMediaStreamDestination();
       source.connect(dest);
-      source.connect(audioCtx.destination); // also connect to speakers so it plays
+      // NOT connecting to audioCtx.destination — so no sound plays
 
-      // Start MediaRecorder on the audio stream
       const mimeType = getSupportedMimeType();
       const recorder = new MediaRecorder(dest.stream, mimeType ? { mimeType } : {});
       const chunks = [];
-
       recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
 
+      const duration = video.duration || 0;
+
       recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: mimeType || 'audio/webm' });
-        audioBlob = blob;
         const ext = mimeType && mimeType.includes('mp4') ? 'm4a' : mimeType && mimeType.includes('ogg') ? 'ogg' : 'webm';
+        audioBlob = new Blob(chunks, { type: mimeType || 'audio/webm' });
         outputFileName = selectedFile.name.replace(/\.[^/.]+$/, '') + '.' + ext;
 
-        const url = URL.createObjectURL(blob);
-        document.getElementById('audioPlayer').src = url;
+        const url = URL.createObjectURL(audioBlob);
+        const player = document.getElementById('audioPlayer');
+        player.src = url;
+        player.load(); // load only, no autoplay
+
         document.getElementById('progressBar').style.width = '100%';
         document.getElementById('statusText').textContent = 'Done!';
         document.querySelector('.btn-download').innerHTML = '<i class="fas fa-download me-2"></i>Download Audio';
@@ -259,68 +312,47 @@
         setTimeout(() => {
           document.getElementById('progressBox').style.display = 'none';
           document.getElementById('resultBox').style.display = 'block';
-        }, 400);
+        }, 300);
 
         audioCtx.close();
         URL.revokeObjectURL(videoURL);
       };
 
-      recorder.start();
-      video.currentTime = 0;
+      recorder.start(1000);
       await video.play();
 
-      // Update progress while video plays
-      const duration = video.duration || 60;
-      const progressInterval = setInterval(() => {
-        const pct = 30 + Math.min(60, (video.currentTime / duration) * 60);
-        document.getElementById('progressBar').style.width = pct + '%';
-        document.getElementById('statusText').textContent = `Recording audio... ${Math.round(video.currentTime)}s / ${Math.round(duration)}s`;
-      }, 500);
+      // Progress update
+      const interval = setInterval(() => {
+        if (duration > 0) {
+          const pct = 30 + Math.min(65, (video.currentTime / duration) * 65);
+          document.getElementById('progressBar').style.width = pct + '%';
+          document.getElementById('statusText').textContent =
+            `Processing... ${Math.round(video.currentTime)}s / ${Math.round(duration)}s`;
+        }
+      }, 800);
 
-      // Wait for video to end
-      await new Promise(resolve => { video.onended = resolve; });
-      clearInterval(progressInterval);
+      await new Promise(resolve => {
+        video.onended = resolve;
+        // Safety timeout
+        setTimeout(resolve, (duration + 5) * 1000);
+      });
 
-      document.getElementById('progressBar').style.width = '90%';
-      document.getElementById('statusText').textContent = 'Finalizing...';
-      recorder.stop();
+      clearInterval(interval);
       video.pause();
+      recorder.stop();
 
     } catch(err) {
       console.error(err);
-      // Fallback: try AudioContext decodeAudioData for formats that support it
-      try {
-        document.getElementById('statusText').textContent = 'Trying alternative method...';
-        const arrayBuffer = await selectedFile.arrayBuffer();
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') await audioCtx.resume();
-        const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-        const wavBlob = audioBufferToWav(audioBuffer);
-        audioBlob = wavBlob;
-        outputFileName = selectedFile.name.replace(/\.[^/.]+$/, '') + '.wav';
-        const url = URL.createObjectURL(wavBlob);
-        document.getElementById('audioPlayer').src = url;
-        document.getElementById('progressBar').style.width = '100%';
-        document.getElementById('statusText').textContent = 'Done!';
-        document.querySelector('.btn-download').innerHTML = '<i class="fas fa-download me-2"></i>Download Audio';
-        setTimeout(() => {
-          document.getElementById('progressBox').style.display = 'none';
-          document.getElementById('resultBox').style.display = 'block';
-        }, 400);
-        audioCtx.close();
-      } catch(err2) {
-        console.error(err2);
-        document.getElementById('progressBar').style.width = '0%';
-        document.getElementById('statusText').textContent = '⚠️ This video format is not supported on your browser. Try MP4 format.';
-        document.getElementById('convertBtn').disabled = false;
-      }
+      document.getElementById('progressBar').style.width = '0%';
+      document.getElementById('statusText').textContent = '⚠️ Conversion failed. Try a different video format.';
+      document.getElementById('convertBtn').disabled = false;
     }
   }
 
   function getSupportedMimeType() {
     const types = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus', 'audio/ogg'];
     for (const type of types) {
-      if (MediaRecorder.isTypeSupported(type)) return type;
+      try { if (MediaRecorder.isTypeSupported(type)) return type; } catch(e) {}
     }
     return '';
   }
