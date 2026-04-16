@@ -26,6 +26,19 @@ RewriteRule ^pdf-to-word$ https://www.swifttoolpro.com/ [L,R=301]
 RewriteRule ^word-to-pdf$ https://www.swifttoolpro.com/ [L,R=301]
 
 # ============================================================
+# STEP 2B: .html tool files → clean SPA URLs (301)
+# Fixes "Duplicate canonical" — cash.html → /cash etc.
+# ============================================================
+RewriteRule ^cash\.html$ https://www.swifttoolpro.com/cash [L,R=301]
+RewriteRule ^gst\.html$ https://www.swifttoolpro.com/gst [L,R=301]
+RewriteRule ^age\.html$ https://www.swifttoolpro.com/age [L,R=301]
+RewriteRule ^emi\.html$ https://www.swifttoolpro.com/emi [L,R=301]
+RewriteRule ^base64\.html$ https://www.swifttoolpro.com/base64 [L,R=301]
+RewriteRule ^caseConverter\.html$ https://www.swifttoolpro.com/caseConverter [L,R=301]
+RewriteRule ^imageToText\.html$ https://www.swifttoolpro.com/imageToText [L,R=301]
+RewriteRule ^aiVoice\.html$ https://www.swifttoolpro.com/voice [L,R=301]
+
+# ============================================================
 # STEP 3: Block ?q= search param URL — return 410 Gone (removes from index)
 # ============================================================
 RewriteCond %{QUERY_STRING} ^q=
