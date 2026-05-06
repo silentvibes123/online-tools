@@ -44,6 +44,11 @@ RewriteRule ^aiVoice\.html$ https://www.swifttoolpro.com/voice [L,R=301]
 RewriteCond %{QUERY_STRING} ^q=
 RewriteRule ^$ - [G,L]
 
+# Block any other query string on homepage
+RewriteCond %{QUERY_STRING} .+
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^$ https://www.swifttoolpro.com/? [L,R=301]
+
 # ============================================================
 # STEP 4: Tool HTML files → serve index.html directly (no redirect)
 # Fixes "Alternate page with proper canonical tag" for old .html tool files
