@@ -20,10 +20,19 @@ RewriteCond %{HTTP_HOST} ^swifttoolpro\.com$ [NC]
 RewriteRule ^(.*)$ https://www.swifttoolpro.com/$1 [L,R=301]
 
 # ============================================================
+# STEP 1B: Remove trailing slash from non-index pages (canonical cleanup)
+# ============================================================
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} ^/(.+)/$
+RewriteRule ^(.+)/$ /$1 [L,R=301]
+
+# ============================================================
 # STEP 2: Old/deleted tool URLs → Home (301)
 # ============================================================
 RewriteRule ^pdf-to-word$ https://www.swifttoolpro.com/ [L,R=301]
 RewriteRule ^word-to-pdf$ https://www.swifttoolpro.com/ [L,R=301]
+RewriteRule ^wordToPdf$ https://www.swifttoolpro.com/ [L,R=301]
+RewriteRule ^wordToPdf\.html$ https://www.swifttoolpro.com/ [L,R=301]
 
 # ============================================================
 # STEP 2B: .html tool files → clean SPA URLs (301)
