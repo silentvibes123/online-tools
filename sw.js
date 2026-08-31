@@ -29,12 +29,7 @@ self.addEventListener('activate', event => {
 
 // Fetch: Network first, then cache fallback
 self.addEventListener('fetch', event => {
-  // AdSense aur Analytics requests ko cache mat karo
-  if (event.request.url.includes('googlesyndication') || 
-      event.request.url.includes('googletagmanager') ||
-      event.request.url.includes('google-analytics')) {
-    return;
-  }
+ 
   event.respondWith(
     fetch(event.request).catch(() => caches.match(event.request))
   );
