@@ -5,6 +5,15 @@ if (typeof pdfjsLib !== "undefined") {
 
 let extractedImages = [];
 
+// Helper: dynamic script loader (fallback if library not already loaded)
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = src; s.onload = resolve; s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
 // 2. Merge PDF Logic
 async function mergePDFs() {
     const files = document.getElementById("mergeInput").files;

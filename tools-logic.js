@@ -35,10 +35,37 @@ async function handlePrint() {
 // ===== QR CODE =====
 function generateQR() {
   const text = document.getElementById("qrText").value.trim();
-  if (!text) return showNotify("error","Please enter text or URL!");
-  const url = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}`;
-  document.getElementById("qrResult").innerHTML = `<img src="${url}" class="img-fluid rounded shadow" style="max-width:200px"><br><a href="${url}" download="qrcode.png" class="btn btn-sm btn-outline-dark mt-3"><i class="fas fa-download me-1"></i>Download QR</a>`;
-  showNotify("success","QR Code Ready!");
+  if (!text) return showNotify("error", "Please enter text or URL!");
+
+  const resultEl = document.getElementById("qrResult");
+  resultEl.innerHTML = '<div id="qrCanvas"></div>';
+
+  new QRCode(document.getElementById("qrCanvas"), {
+    text: text,
+    width: 200,
+    height: 200,
+    correctLevel: QRCode.CorrectLevel.M
+  });
+
+  // Download button — get canvas/img after short delay for QRCode to render
+  setTimeout(() => {
+    const img = resultEl.querySelector("img") || resultEl.querySelector("canvas");
+    let downloadUrl;
+    if (img && img.tagName === "CANVAS") {
+      downloadUrl = img.toDataURL("image/png");
+    } else if (img) {
+      downloadUrl = img.src;
+    }
+    if (downloadUrl) {
+      const btn = document.createElement("a");
+      btn.href = downloadUrl;
+      btn.download = "qrcode.png";
+      btn.className = "btn btn-sm btn-outline-dark mt-3 d-block";
+      btn.innerHTML = '<i class="fas fa-download me-1"></i>Download QR';
+      resultEl.appendChild(btn);
+    }
+    showNotify("success", "QR Code Ready!");
+  }, 200);
 }
 
 function resetQR() {
@@ -78,7 +105,14 @@ function previewImage() {
   r.onload = e => { document.getElementById("previewArea").innerHTML = `<img src="${e.target.result}" class="img-fluid rounded" style="max-height:120px"><p class="small text-muted mt-1">${(f.size/1024).toFixed(1)} KB</p>`; };
   r.readAsDataURL(f);
 }
-function resetPDFTool() { document.getElementById("imageInput").value = ""; showNotify("info","Cleared"); }
+function resetPDFTool() {
+  document.getElementById("imageInput").value = "";
+  const grid = document.getElementById("imgPreviewGrid");
+  if (grid) grid.innerHTML = "";
+  const count = document.getElementById("imgPreviewCount");
+  if (count) count.textContent = "";
+  showNotify("info","Cleared");
+}
 function resetCompressor() {
   document.getElementById("compressInput").value = "";
   document.getElementById("qualityRange").value = 0.7;
@@ -601,7 +635,13 @@ function timerStart() {
         if(el) el.textContent = "00:00";
         if(btn) { btn.innerHTML = '<i class="fas fa-play me-1"></i>Start'; btn.className = "btn btn-danger px-4 fw-bold"; }
         showNotify("success", "⏰ Time's up!");
-        try { new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAA...").play(); } catch(e) {}
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const osc = ctx.createOscillator();
+          osc.connect(ctx.destination);
+          osc.frequency.value = 880;
+          osc.start(); osc.stop(ctx.currentTime + 0.3);
+        } catch(e) {}
       }
     }, 1000);
   } else {
@@ -618,4 +658,119 @@ function timerReset() {
   if(btn) { btn.innerHTML = '<i class="fas fa-play me-1"></i>Start'; btn.className = "btn btn-danger px-4 fw-bold"; }
   const m = document.getElementById("timerMin"); if(m) m.value = "";
   const s = document.getElementById("timerSec"); if(s) s.value = "";
+}
+
+// ===== PREVIEW HELPERS =====
+
+// Generic: show PDF file name and size
+function showPdfFileInfo(inputId, containerId) {
+  const file = document.getElementById(inputId).files[0];
+  const el = document.getElementById(containerId);
+  if (!el || !file) return;
+  el.innerHTML = `<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background:#f8f7ff;border:1px solid #e0e7ff">
+    <i class="fas fa-file-pdf text-danger" style="flex-shrink:0"></i>
+    <div class="flex-fill" style="min-width:0">
+      <div class="small fw-bold text-truncate">${file.name}</div>
+      <div class="small text-muted">${(file.size/1024).toFixed(0)} KB</div>
+    </div>
+    <i class="fas fa-check-circle text-success"></i>
+  </div>`;
+}
+
+// Images to PDF — show thumbnail grid after selection
+function previewImagesToPDF() {
+  const files = document.getElementById("imageInput").files;
+  const container = document.getElementById("imgPreviewGrid");
+  if (!container) return;
+  container.innerHTML = "";
+  if (!files.length) return;
+  Array.from(files).forEach((f, i) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const div = document.createElement("div");
+      div.className = "col-4 col-md-3 text-center";
+      div.innerHTML = `<img src="${e.target.result}" class="img-fluid rounded shadow-sm mb-1" style="max-height:90px;object-fit:cover">
+        <div class="small text-muted" style="font-size:0.7rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${f.name}</div>`;
+      container.appendChild(div);
+    };
+    reader.readAsDataURL(f);
+  });
+  document.getElementById("imgPreviewCount").textContent = `${files.length} image${files.length > 1 ? "s" : ""} selected`;
+}
+
+// Merge PDF — show file list with sizes after selection
+function previewMergeFiles() {
+  const files = document.getElementById("mergeInput").files;
+  const container = document.getElementById("mergeFileList");
+  if (!container) return;
+  container.innerHTML = "";
+  if (!files.length) return;
+  Array.from(files).forEach((f, i) => {
+    const div = document.createElement("div");
+    div.className = "d-flex align-items-center gap-2 p-2 rounded-3 mb-2";
+    div.style.background = "#f8f7ff";
+    div.style.border = "1px solid #e0e7ff";
+    div.innerHTML = `<i class="fas fa-file-pdf text-danger" style="flex-shrink:0"></i>
+      <div class="flex-fill" style="min-width:0">
+        <div class="small fw-bold text-truncate">${f.name}</div>
+        <div class="small text-muted">${(f.size/1024).toFixed(0)} KB</div>
+      </div>
+      <span class="badge bg-primary rounded-pill">${i + 1}</span>`;
+    container.appendChild(div);
+  });
+  document.getElementById("mergeFileCount").textContent = `${files.length} PDF${files.length > 1 ? "s" : ""} selected`;
+}
+
+// Split PDF — show file name and get total pages
+async function previewSplitFile() {
+  const file = document.getElementById("splitInput").files[0];
+  const info = document.getElementById("splitFileInfo");
+  if (!info || !file) return;
+  info.innerHTML = `<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background:#f8f7ff;border:1px solid #e0e7ff">
+    <i class="fas fa-file-pdf text-danger"></i>
+    <div class="flex-fill">
+      <div class="small fw-bold">${file.name}</div>
+      <div class="small text-muted" id="splitPageCount">Reading pages...</div>
+    </div>
+  </div>`;
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const el = document.getElementById("splitPageCount");
+    if (el) el.textContent = `${pdf.numPages} pages total`;
+    // Pre-fill end page
+    const endEl = document.getElementById("endPage");
+    if (endEl && !endEl.value) endEl.value = pdf.numPages;
+  } catch(e) {
+    const el = document.getElementById("splitPageCount");
+    if (el) el.textContent = "Could not read page count";
+  }
+}
+
+// Resizer — improved preview with file size display
+function previewResize() {
+  const f = document.getElementById("resizeInput").files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    document.getElementById("resPreview").innerHTML = `
+      <div class="text-center">
+        <img src="${e.target.result}" class="img-fluid rounded shadow-sm" style="max-height:160px;max-width:100%">
+        <div class="small text-muted mt-2"><i class="fas fa-file-image me-1"></i>${f.name} &nbsp;|&nbsp; ${(f.size/1024).toFixed(1)} KB</div>
+      </div>`;
+  };
+  r.readAsDataURL(f);
+}
+
+// Compressor — improved preview with original size display
+function previewImage() {
+  const f = document.getElementById("compressInput").files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    document.getElementById("previewArea").innerHTML = `
+      <img src="${e.target.result}" class="img-fluid rounded" style="max-height:150px">
+      <p class="small text-muted mt-2 mb-0"><strong>Original:</strong> ${(f.size/1024).toFixed(1)} KB</p>`;
+  };
+  r.readAsDataURL(f);
 }

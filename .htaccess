@@ -1,112 +1,91 @@
 RewriteEngine On
 
 # ============================================================
-# 1. CANONICAL DOMAIN
-#    Everything → https://www.swifttoolpro.com
+# STEP 1: Force HTTPS + WWW — no redirect chain
 # ============================================================
 
-# http://swifttoolpro.com/* → https://www.swifttoolpro.com/*
+# http://swifttoolpro.com → https://www.swifttoolpro.com
 RewriteCond %{HTTPS} off
 RewriteCond %{HTTP_HOST} ^swifttoolpro\.com$ [NC]
-RewriteRule ^(.*)$ https://www.swifttoolpro.com/$1 [R=301,L]
+RewriteRule ^(.*)$ https://www.swifttoolpro.com/$1 [L,R=301]
 
-# http://www.swifttoolpro.com/* → https://www.swifttoolpro.com/*
+# http://www.swifttoolpro.com → https://www.swifttoolpro.com
 RewriteCond %{HTTPS} off
 RewriteCond %{HTTP_HOST} ^www\.swifttoolpro\.com$ [NC]
-RewriteRule ^(.*)$ https://www.swifttoolpro.com/$1 [R=301,L]
+RewriteRule ^(.*)$ https://www.swifttoolpro.com/$1 [L,R=301]
 
-# https://swifttoolpro.com/* → https://www.swifttoolpro.com/*
+# https://swifttoolpro.com → https://www.swifttoolpro.com
 RewriteCond %{HTTPS} on
 RewriteCond %{HTTP_HOST} ^swifttoolpro\.com$ [NC]
-RewriteRule ^(.*)$ https://www.swifttoolpro.com/$1 [R=301,L]
-
+RewriteRule ^(.*)$ https://www.swifttoolpro.com/$1 [L,R=301]
 
 # ============================================================
-# 2. REMOVE TRAILING SLASH FROM NON-DIRECTORY PAGES
+# STEP 2: Remove trailing slash (canonical cleanup)
 # ============================================================
-
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} ^/(.+)/$
-RewriteRule ^(.+)/$ /$1 [R=301,L]
-
-
-# ============================================================
-# 3. OLD / DELETED URLs → HOMEPAGE
-# ============================================================
-
-RewriteRule ^pdf-to-word$ https://www.swifttoolpro.com/ [R=301,L]
-RewriteRule ^word-to-pdf$ https://www.swifttoolpro.com/ [R=301,L]
-RewriteRule ^wordToPdf$ https://www.swifttoolpro.com/ [R=301,L]
-RewriteRule ^wordToPdf\.html$ https://www.swifttoolpro.com/ [R=301,L]
-
+RewriteRule ^(.+)/$ /$1 [L,R=301]
 
 # ============================================================
-# 4. OLD .HTML TOOL URLs → CURRENT CLEAN TOOL URLs
+# STEP 3: Block ?q= and other query strings on homepage
 # ============================================================
-
-RewriteRule ^cash\.html$ https://www.swifttoolpro.com/cash [R=301,L]
-RewriteRule ^gst\.html$ https://www.swifttoolpro.com/gst [R=301,L]
-RewriteRule ^age\.html$ https://www.swifttoolpro.com/age [R=301,L]
-RewriteRule ^emi\.html$ https://www.swifttoolpro.com/emi [R=301,L]
-RewriteRule ^base64\.html$ https://www.swifttoolpro.com/base64 [R=301,L]
-RewriteRule ^caseConverter\.html$ https://www.swifttoolpro.com/caseConverter [R=301,L]
-RewriteRule ^imageToText\.html$ https://www.swifttoolpro.com/imageToText [R=301,L]
-RewriteRule ^aiVoice\.html$ https://www.swifttoolpro.com/voice [R=301,L]
-RewriteRule ^compressor\.html$ https://www.swifttoolpro.com/compress [R=301,L]
-RewriteRule ^imgToPdf\.html$ https://www.swifttoolpro.com/pdf [R=301,L]
-RewriteRule ^image-resizer\.html$ https://www.swifttoolpro.com/resizer [R=301,L]
-RewriteRule ^loremIpsum\.html$ https://www.swifttoolpro.com/loremIpsum [R=301,L]
-RewriteRule ^pdfToImg\.html$ https://www.swifttoolpro.com/pdfToImg [R=301,L]
-RewriteRule ^qr\.html$ https://www.swifttoolpro.com/qrcode [R=301,L]
-RewriteRule ^removePages\.html$ https://www.swifttoolpro.com/removePages [R=301,L]
-RewriteRule ^stopwatch\.html$ https://www.swifttoolpro.com/stopwatch [R=301,L]
-RewriteRule ^wordCounter\.html$ https://www.swifttoolpro.com/wordCounter [R=301,L]
-RewriteRule ^password\.html$ https://www.swifttoolpro.com/password [R=301,L]
-RewriteRule ^percentage\.html$ https://www.swifttoolpro.com/percentage [R=301,L]
-RewriteRule ^unitConverter\.html$ https://www.swifttoolpro.com/unitConverter [R=301,L]
-RewriteRule ^split\.html$ https://www.swifttoolpro.com/split [R=301,L]
-RewriteRule ^merge\.html$ https://www.swifttoolpro.com/merge [R=301,L]
-RewriteRule ^pdf\.html$ https://www.swifttoolpro.com/pdf [R=301,L]
-RewriteRule ^resizer\.html$ https://www.swifttoolpro.com/resizer [R=301,L]
-
-
-# ============================================================
-# 5. REMOVE UNWANTED HOMEPAGE QUERY URLS
-# ============================================================
-
-# Example:
-# https://www.swifttoolpro.com/?q=something
-# → https://www.swifttoolpro.com/
-#
-# 410 Gone tells Google this URL should not exist.
-RewriteCond %{QUERY_STRING} (^|&)q= [NC]
+RewriteCond %{QUERY_STRING} ^q=
 RewriteRule ^$ - [G,L]
 
-
-# ============================================================
-# 6. CLEAN OTHER HOMEPAGE QUERY STRINGS
-# ============================================================
-
-# https://www.swifttoolpro.com/?anything
-# → https://www.swifttoolpro.com/
 RewriteCond %{QUERY_STRING} .+
-RewriteRule ^$ https://www.swifttoolpro.com/ [R=301,L,NE]
-
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^$ https://www.swifttoolpro.com/? [L,R=301]
 
 # ============================================================
-# 7. VALID SPA TOOL ROUTES
-#    ONLY known tool URLs are allowed to load index.html
+# STEP 4: Old/deleted URLs → Home
 # ============================================================
+RewriteRule ^pdf-to-word$ https://www.swifttoolpro.com/ [L,R=301]
+RewriteRule ^word-to-pdf$ https://www.swifttoolpro.com/ [L,R=301]
+RewriteRule ^wordToPdf$ https://www.swifttoolpro.com/ [L,R=301]
+RewriteRule ^wordToPdf\.html$ https://www.swifttoolpro.com/ [L,R=301]
+RewriteRule ^voice$ https://www.swifttoolpro.com/ [L,R=301]
+RewriteRule ^aiVoice\.html$ https://www.swifttoolpro.com/ [L,R=301]
 
+# ============================================================
+# STEP 5: Tool .html files → clean SPA URLs (301)
+# ============================================================
+# Note: compress.html, resizer.html, merge.html, pdf.html, wordCounter.html
+# redirect to their guide pages (which have the tool embedded)
+RewriteRule ^compress\.html$ https://www.swifttoolpro.com/how-to-compress-image-online.html [L,R=301]
+RewriteRule ^resizer\.html$ https://www.swifttoolpro.com/how-to-resize-photo-for-ssc-exam.html [L,R=301]
+RewriteRule ^merge\.html$ https://www.swifttoolpro.com/free-online-pdf-merger-guide.html [L,R=301]
+RewriteRule ^wordCounter\.html$ https://www.swifttoolpro.com/word-counter-online-guide.html [L,R=301]
+RewriteRule ^pdf\.html$ https://www.swifttoolpro.com/image-to-pdf-guide.html [L,R=301]
+RewriteRule ^cash\.html$ https://www.swifttoolpro.com/cash [L,R=301]
+RewriteRule ^gst\.html$ https://www.swifttoolpro.com/gst [L,R=301]
+RewriteRule ^age\.html$ https://www.swifttoolpro.com/age [L,R=301]
+RewriteRule ^emi\.html$ https://www.swifttoolpro.com/emi [L,R=301]
+RewriteRule ^base64\.html$ https://www.swifttoolpro.com/base64 [L,R=301]
+RewriteRule ^caseConverter\.html$ https://www.swifttoolpro.com/caseConverter [L,R=301]
+RewriteRule ^imageToText\.html$ https://www.swifttoolpro.com/imageToText [L,R=301]
+RewriteRule ^compressor\.html$ https://www.swifttoolpro.com/compress [L,R=301]
+RewriteRule ^imgToPdf\.html$ https://www.swifttoolpro.com/pdf [L,R=301]
+RewriteRule ^image-resizer\.html$ https://www.swifttoolpro.com/resizer [L,R=301]
+RewriteRule ^loremIpsum\.html$ https://www.swifttoolpro.com/loremIpsum [L,R=301]
+RewriteRule ^pdfToImg\.html$ https://www.swifttoolpro.com/pdfToImg [L,R=301]
+RewriteRule ^qr\.html$ https://www.swifttoolpro.com/qrcode [L,R=301]
+RewriteRule ^removePages\.html$ https://www.swifttoolpro.com/removePages [L,R=301]
+RewriteRule ^stopwatch\.html$ https://www.swifttoolpro.com/stopwatch [L,R=301]
+RewriteRule ^password\.html$ https://www.swifttoolpro.com/password [L,R=301]
+RewriteRule ^percentage\.html$ https://www.swifttoolpro.com/percentage [L,R=301]
+RewriteRule ^unitConverter\.html$ https://www.swifttoolpro.com/unitConverter [L,R=301]
+RewriteRule ^split\.html$ https://www.swifttoolpro.com/split [L,R=301]
+
+# ============================================================
+# STEP 6: SPA Tool URL Routing
+# ============================================================
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(resizer|compress|pdf|pdfToImg|merge|split|removePages|cash|gst|age|qrcode|voice|wordCounter|password|base64|unitConverter|loremIpsum|emi|imageToText|percentage|caseConverter|stopwatch|video-to-mp3)$ /index.html [L]
-
+RewriteRule ^(resizer|compress|pdf|pdfToImg|merge|split|removePages|pdfToWord|cash|gst|age|qrcode|wordCounter|password|base64|unitConverter|loremIpsum|emi|imageToText|percentage|caseConverter|stopwatch)$ /index.html [L]
 
 # ============================================================
-# 8. SECURITY HEADERS
+# STEP 7: Security Headers
 # ============================================================
-
 <IfModule mod_headers.c>
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-Frame-Options "SAMEORIGIN"
@@ -115,37 +94,32 @@ RewriteRule ^(resizer|compress|pdf|pdfToImg|merge|split|removePages|cash|gst|age
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
 </IfModule>
 
-
 # ============================================================
-# 9. BROWSER CACHING
+# STEP 8: Browser Caching
 # ============================================================
-
 <IfModule mod_expires.c>
     ExpiresActive On
-
     ExpiresByType image/jpg "access plus 1 month"
     ExpiresByType image/jpeg "access plus 1 month"
     ExpiresByType image/png "access plus 1 month"
     ExpiresByType image/gif "access plus 1 month"
-
+    ExpiresByType image/webp "access plus 1 month"
     ExpiresByType text/css "access plus 1 week"
     ExpiresByType application/javascript "access plus 1 week"
     ExpiresByType application/json "access plus 1 day"
-
     ExpiresByType text/html "access plus 1 hour"
 </IfModule>
 
-
 # ============================================================
-# 10. GZIP COMPRESSION
+# STEP 9: GZIP Compression
 # ============================================================
-
 <IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html
-    AddOutputFilterByType DEFLATE text/plain
-    AddOutputFilterByType DEFLATE text/xml
-    AddOutputFilterByType DEFLATE text/css
-    AddOutputFilterByType DEFLATE application/javascript
-    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE application/javascript application/json
     AddOutputFilterByType DEFLATE image/svg+xml
 </IfModule>
+
+# ============================================================
+# STEP 10: 404 Fallback
+# ============================================================
+ErrorDocument 404 /index.html

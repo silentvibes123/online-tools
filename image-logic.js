@@ -12,7 +12,7 @@ function readFileAsDataURL(file) {
 async function smartResize() {
     const file = document.getElementById("resizeInput").files[0];
     const targetKB = parseInt(document.getElementById("targetSize").value);
-    if (!file) return showNotify("error", "Please sekect photo!");
+    if (!file) return showNotify("error", "Please select a photo!");
 
     const btn = document.querySelector("button[onclick='smartResize()']");
     const originalText = btn.innerHTML;
@@ -218,17 +218,4 @@ async function generatePDF() {
         btn.disabled = false;
         btn.innerHTML = originalText;
     }
-}
-
-// Helper to show SweetAlert notifications
-function showNotify(icon, title) {
-    Swal.fire({
-        icon: icon,
-        title: title,
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true
-    });
 }

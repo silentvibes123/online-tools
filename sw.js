@@ -1,12 +1,11 @@
 const CACHE_NAME = 'swifttool-v5';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/script.js',
-  '/tools-logic.js',
-  '/logo.jpg',
-  '/manifest.json'
+  'index.html',
+  'style.css',
+  'script.js',
+  'tools-logic.js',
+  'logo.jpg',
+  'manifest.json'
 ];
 
 // Install: Cache important files
