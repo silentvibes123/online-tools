@@ -1,10 +1,10 @@
-const CACHE_NAME = 'swifttool-v5';
+﻿const CACHE_NAME = 'onlinetools-v5';
 const urlsToCache = [
   'index.html',
   'style.css',
   'script.js',
   'tools-logic.js',
-  'logo.jpg',
+  'onlineTools.png',
   'manifest.json'
 ];
 

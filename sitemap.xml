@@ -1,52 +1,52 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Homepage -->
-  <url><loc>https://www.swifttoolpro.com/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.onlineTools.com/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
 
   <!-- Tool Pages (SPA routes — served by index.html) -->
-  <url><loc>https://www.swifttoolpro.com/pdfToImg</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/pdfToWord</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.swifttoolpro.com/split</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/removePages</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.swifttoolpro.com/cash</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/gst</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.swifttoolpro.com/emi</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.swifttoolpro.com/age</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/qrcode</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/password</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/base64</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.swifttoolpro.com/unitConverter</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.swifttoolpro.com/loremIpsum</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.swifttoolpro.com/imageToText</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/percentage</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/caseConverter</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.swifttoolpro.com/stopwatch</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.onlineTools.com/pdfToImg</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/pdfToWord</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.onlineTools.com/split</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/removePages</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.onlineTools.com/cash</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/gst</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.onlineTools.com/emi</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.onlineTools.com/age</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/qrcode</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/password</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/base64</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.onlineTools.com/unitConverter</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.onlineTools.com/loremIpsum</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.onlineTools.com/imageToText</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/percentage</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/caseConverter</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.onlineTools.com/stopwatch</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
   <!-- Standalone Pages -->
-  <url><loc>https://www.swifttoolpro.com/video-to-mp3.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/about.html</loc><lastmod>2026-06-01</lastmod><changefreq>yearly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.swifttoolpro.com/contact.html</loc><lastmod>2026-06-01</lastmod><changefreq>yearly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.swifttoolpro.com/privacy-policy.html</loc><lastmod>2026-06-01</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.swifttoolpro.com/student-gadgets.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.onlineTools.com/video-to-mp3.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/about.html</loc><lastmod>2026-06-01</lastmod><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.onlineTools.com/contact.html</loc><lastmod>2026-06-01</lastmod><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.onlineTools.com/privacy-policy.html</loc><lastmod>2026-06-01</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.onlineTools.com/student-gadgets.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- Guide Pages -->
-  <url><loc>https://www.swifttoolpro.com/how-to-resize-photo-for-ssc-exam.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.swifttoolpro.com/how-to-compress-image-online.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.swifttoolpro.com/emi-calculator-india-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.swifttoolpro.com/gst-calculator-india-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/free-pdf-tools-online-india.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/free-online-pdf-merger-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/how-to-merge-pdf-online.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/image-to-pdf-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/age-calculator-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/qr-code-generator-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/password-generator-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/word-counter-online-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/online-cash-counter-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.swifttoolpro.com/video-to-mp3-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.swifttoolpro.com/image-to-text-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/percentage-calculator-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.swifttoolpro.com/pdf-to-image-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/how-to-resize-photo-for-ssc-exam.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.onlineTools.com/how-to-compress-image-online.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.onlineTools.com/emi-calculator-india-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.onlineTools.com/gst-calculator-india-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/free-pdf-tools-online-india.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/free-online-pdf-merger-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/how-to-merge-pdf-online.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/image-to-pdf-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/age-calculator-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/qr-code-generator-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/password-generator-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/word-counter-online-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/online-cash-counter-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.onlineTools.com/video-to-mp3-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.onlineTools.com/image-to-text-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/percentage-calculator-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.onlineTools.com/pdf-to-image-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 
 </urlset>

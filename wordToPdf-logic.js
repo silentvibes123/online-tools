@@ -1,4 +1,4 @@
-// ===== WORD TO PDF — Advanced Fix =====
+﻿// ===== WORD TO PDF — Advanced Fix =====
 // Strategy: render content in a hidden off-screen A4 div,
 // then use html2pdf with correct mm-based settings.
 // This eliminates the left-shift / layout bug completely.
@@ -101,7 +101,7 @@ window.downloadGeneratedPDF = function() {
 
     const opt = {
         margin:      [10, 10, 10, 10],   // mm: top, left, bottom, right
-        filename:    'SwiftToolPro_Document.pdf',
+        filename:    'onlineTools_Document.pdf',
         image:       { type: 'jpeg', quality: 0.97 },
         html2canvas: {
             scale: 2,

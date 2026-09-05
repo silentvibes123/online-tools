@@ -1,6 +1,6 @@
-{
-  "name": "SwiftTool Pro - Free Online Digital Toolkit",
-  "short_name": "SwiftTool",
+﻿{
+  "name": "onlineTools - Free Online Digital Toolkit",
+  "short_name": "onlineTools",
   "description": "Free online tools: 20KB image resizer, PDF merger, GST calculator and more. 100% browser-based and private.",
   "start_url": "/",
   "scope": "/",
@@ -10,7 +10,7 @@
   "lang": "en",
   "icons": [
     {
-      "src": "swifttoolpro-icon.png",
+      "src": "onlineToolsWithoutText.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"

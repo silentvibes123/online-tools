@@ -1,4 +1,4 @@
-// ===== INIT =====
+﻿// ===== INIT =====
 // TOOL COUNT — update this single number when new tools are added
 const TOOL_COUNT = 23;
 
@@ -67,33 +67,33 @@ function showNotify(type, msg) {
 
 // ===== TITLE UPDATE =====
 const TOOL_META = {
-  cash:["Online Cash Counter & Denomination Calculator | SwiftTool Pro","Calculate total cash with Indian currency denominations. Print professional receipts."],
-  resizer:["Exam Photo Resizer (20KB-50KB) for SSC, UPSC, Bank | SwiftTool Pro","Resize photos for SSC, UPSC, IBPS exams. Compress to 20KB/50KB without quality loss."],
-  age:["Accurate Age Calculator by Date of Birth | SwiftTool Pro","Calculate exact age in years, months, days. Perfect for govt job forms."],
-  pdf:["Images to PDF Converter | SwiftTool Pro","Convert JPG, PNG, WEBP images into a single PDF instantly."],
-  compress:["Compress Image to 20KB & 50KB Online | SwiftTool Pro","Reduce image file size without losing clarity. Best for exam portals."],
-  qrcode:["Free QR Code Generator | SwiftTool Pro","Create custom QR codes for URL, text, UPI. Instant download."],
-  pdfToImg:["PDF to Image Converter Online | SwiftTool Pro","Convert PDF pages into high-quality JPEG images securely."],
-  merge:["Merge PDF Files Online | SwiftTool Pro","Combine multiple PDFs into one file securely."],
-  split:["Split PDF Pages Online | SwiftTool Pro","Extract specific pages from PDF instantly."],
-  gst:["GST Calculator India - Add/Remove GST | SwiftTool Pro","Calculate GST with CGST/SGST split. Free Indian GST tool."],
-  removePages:["Remove PDF Pages Online | SwiftTool Pro","Delete specific pages from PDF with visual preview."],
-  pdfToWord:["PDF to Text Extractor Online | SwiftTool Pro","Extract and edit text from any PDF file in your browser."],
-  wordCounter:["Word Counter & Text Analyzer Online | SwiftTool Pro","Count words, characters, sentences and reading time instantly."],
-  password:["Strong Password Generator | SwiftTool Pro","Generate secure random passwords with custom length and symbols."],
-  base64:["Base64 Encoder & Decoder Online | SwiftTool Pro","Encode or decode Base64 text instantly in your browser."],
-  unitConverter:["Unit Converter | SwiftTool Pro","Convert units of length, weight, temperature, area and speed."],
-  loremIpsum:["Lorem Ipsum Generator | SwiftTool Pro","Generate Lorem Ipsum dummy text by words, sentences or paragraphs."],
-  emi:["EMI Calculator — Home, Car & Personal Loan | SwiftTool Pro","Calculate monthly EMI for home loan, car loan, personal loan."],
-  imageToText:["Image to Text Converter (OCR) | SwiftTool Pro","Extract text from any image or photo instantly."],
-  percentage:["Percentage Calculator | SwiftTool Pro","Calculate percentage, marks percentage, discount. Free & instant."],
-  caseConverter:["Text Case Converter | SwiftTool Pro","Convert text to UPPERCASE, lowercase, Title Case, camelCase instantly."],
-  stopwatch:["Online Stopwatch & Countdown Timer | SwiftTool Pro","Free online stopwatch with lap times and countdown timer."],
+  cash:["Online Cash Counter & Denomination Calculator | onlineTools","Calculate total cash with Indian currency denominations. Print professional receipts."],
+  resizer:["Exam Photo Resizer (20KB-50KB) for SSC, UPSC, Bank | onlineTools","Resize photos for SSC, UPSC, IBPS exams. Compress to 20KB/50KB without quality loss."],
+  age:["Accurate Age Calculator by Date of Birth | onlineTools","Calculate exact age in years, months, days. Perfect for govt job forms."],
+  pdf:["Images to PDF Converter | onlineTools","Convert JPG, PNG, WEBP images into a single PDF instantly."],
+  compress:["Compress Image to 20KB & 50KB Online | onlineTools","Reduce image file size without losing clarity. Best for exam portals."],
+  qrcode:["Free QR Code Generator | onlineTools","Create custom QR codes for URL, text, UPI. Instant download."],
+  pdfToImg:["PDF to Image Converter Online | onlineTools","Convert PDF pages into high-quality JPEG images securely."],
+  merge:["Merge PDF Files Online | onlineTools","Combine multiple PDFs into one file securely."],
+  split:["Split PDF Pages Online | onlineTools","Extract specific pages from PDF instantly."],
+  gst:["GST Calculator India - Add/Remove GST | onlineTools","Calculate GST with CGST/SGST split. Free Indian GST tool."],
+  removePages:["Remove PDF Pages Online | onlineTools","Delete specific pages from PDF with visual preview."],
+  pdfToWord:["PDF to Text Extractor Online | onlineTools","Extract and edit text from any PDF file in your browser."],
+  wordCounter:["Word Counter & Text Analyzer Online | onlineTools","Count words, characters, sentences and reading time instantly."],
+  password:["Strong Password Generator | onlineTools","Generate secure random passwords with custom length and symbols."],
+  base64:["Base64 Encoder & Decoder Online | onlineTools","Encode or decode Base64 text instantly in your browser."],
+  unitConverter:["Unit Converter | onlineTools","Convert units of length, weight, temperature, area and speed."],
+  loremIpsum:["Lorem Ipsum Generator | onlineTools","Generate Lorem Ipsum dummy text by words, sentences or paragraphs."],
+  emi:["EMI Calculator — Home, Car & Personal Loan | onlineTools","Calculate monthly EMI for home loan, car loan, personal loan."],
+  imageToText:["Image to Text Converter (OCR) | onlineTools","Extract text from any image or photo instantly."],
+  percentage:["Percentage Calculator | onlineTools","Calculate percentage, marks percentage, discount. Free & instant."],
+  caseConverter:["Text Case Converter | onlineTools","Convert text to UPPERCASE, lowercase, Title Case, camelCase instantly."],
+  stopwatch:["Online Stopwatch & Countdown Timer | onlineTools","Free online stopwatch with lap times and countdown timer."],
 };
 
 function updateDynamicTitle(tool) {
   const meta = TOOL_META[tool];
-  document.title = meta ? meta[0] : "SwiftTool Pro - Free Online Digital Toolkit";
+  document.title = meta ? meta[0] : "onlineTools - Free Online Digital Toolkit";
   const tag = document.querySelector('meta[name="description"]');
   if (tag) tag.setAttribute("content", meta ? meta[1] : "Free online tools: image resizer, PDF tools, GST calculator. 100% browser-based.");
 }
@@ -111,7 +111,7 @@ function openTool(name) {
   updateDynamicTitle(name);
   saveRecent(name);
   const canonical = document.getElementById("canonicalTag");
-  if (canonical) canonical.setAttribute("href", "https://www.swifttoolpro.com/" + name);
+  if (canonical) canonical.setAttribute("href", "https://www.onlineTools.com/" + name);
   if (toolUI) { toolUI.innerHTML = ""; renderToolContent(name, toolUI); }
   // Scroll to top of tool after render, not before
   requestAnimationFrame(() => {
