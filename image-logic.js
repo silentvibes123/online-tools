@@ -163,7 +163,7 @@ async function compressImage() {
         
         const a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
-        a.download = `SwiftTool_Compressed_${file.name}`;
+        a.download = `iLoveFastTools_Compressed_${file.name}`;
         a.click();
 
         showNotify("success", `Done! Size: ${(blob.size / 1024).toFixed(1)}KB`);
@@ -210,7 +210,7 @@ async function generatePDF() {
             doc.addImage(data, "JPEG", x, y, w, h);
         }
 
-        doc.save("SwiftTool_Images.pdf");
+        doc.save("iLoveFastTools_Images.pdf");
         showNotify("success", "PDF Generated!");
     } catch (e) {
         showNotify("error", "PDF Error!");

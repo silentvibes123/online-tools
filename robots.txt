@@ -3,4 +3,4 @@ Allow: /
 
 Disallow: /404
 
-Sitemap: https://www.onlineTools.com/sitemap.xml
+Sitemap: https://ilovefasttools.in/sitemap.xml

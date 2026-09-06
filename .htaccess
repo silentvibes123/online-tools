@@ -4,20 +4,20 @@
 # STEP 1: Force HTTPS + WWW — no redirect chain
 # ============================================================
 
-# http://onlineTools.com → https://www.onlineTools.com
+# http://onlineTools.com → https://ilovefasttools.in
 RewriteCond %{HTTPS} off
 RewriteCond %{HTTP_HOST} ^onlineTools\.com$ [NC]
-RewriteRule ^(.*)$ https://www.onlineTools.com/$1 [L,R=301]
+RewriteRule ^(.*)$ https://ilovefasttools.in/$1 [L,R=301]
 
-# http://www.onlineTools.com → https://www.onlineTools.com
+# http://www.onlineTools.com → https://ilovefasttools.in
 RewriteCond %{HTTPS} off
 RewriteCond %{HTTP_HOST} ^www\.onlineTools\.com$ [NC]
-RewriteRule ^(.*)$ https://www.onlineTools.com/$1 [L,R=301]
+RewriteRule ^(.*)$ https://ilovefasttools.in/$1 [L,R=301]
 
-# https://onlineTools.com → https://www.onlineTools.com
+# https://onlineTools.com → https://ilovefasttools.in
 RewriteCond %{HTTPS} on
 RewriteCond %{HTTP_HOST} ^onlineTools\.com$ [NC]
-RewriteRule ^(.*)$ https://www.onlineTools.com/$1 [L,R=301]
+RewriteRule ^(.*)$ https://ilovefasttools.in/$1 [L,R=301]
 
 # ============================================================
 # STEP 2: Remove trailing slash (canonical cleanup)
@@ -34,47 +34,47 @@ RewriteRule ^$ - [G,L]
 
 RewriteCond %{QUERY_STRING} .+
 RewriteCond %{REQUEST_URI} ^/$
-RewriteRule ^$ https://www.onlineTools.com/? [L,R=301]
+RewriteRule ^$ https://ilovefasttools.in/? [L,R=301]
 
 # ============================================================
 # STEP 4: Old/deleted URLs → Home
 # ============================================================
-RewriteRule ^pdf-to-word$ https://www.onlineTools.com/ [L,R=301]
-RewriteRule ^word-to-pdf$ https://www.onlineTools.com/ [L,R=301]
-RewriteRule ^wordToPdf$ https://www.onlineTools.com/ [L,R=301]
-RewriteRule ^wordToPdf\.html$ https://www.onlineTools.com/ [L,R=301]
-RewriteRule ^voice$ https://www.onlineTools.com/ [L,R=301]
-RewriteRule ^aiVoice\.html$ https://www.onlineTools.com/ [L,R=301]
+RewriteRule ^pdf-to-word$ https://ilovefasttools.in/ [L,R=301]
+RewriteRule ^word-to-pdf$ https://ilovefasttools.in/ [L,R=301]
+RewriteRule ^wordToPdf$ https://ilovefasttools.in/ [L,R=301]
+RewriteRule ^wordToPdf\.html$ https://ilovefasttools.in/ [L,R=301]
+RewriteRule ^voice$ https://ilovefasttools.in/ [L,R=301]
+RewriteRule ^aiVoice\.html$ https://ilovefasttools.in/ [L,R=301]
 
 # ============================================================
 # STEP 5: Tool .html files → clean SPA URLs (301)
 # ============================================================
 # Note: compress.html, resizer.html, merge.html, pdf.html, wordCounter.html
 # redirect to their guide pages (which have the tool embedded)
-RewriteRule ^compress\.html$ https://www.onlineTools.com/how-to-compress-image-online.html [L,R=301]
-RewriteRule ^resizer\.html$ https://www.onlineTools.com/how-to-resize-photo-for-ssc-exam.html [L,R=301]
-RewriteRule ^merge\.html$ https://www.onlineTools.com/free-online-pdf-merger-guide.html [L,R=301]
-RewriteRule ^wordCounter\.html$ https://www.onlineTools.com/word-counter-online-guide.html [L,R=301]
-RewriteRule ^pdf\.html$ https://www.onlineTools.com/image-to-pdf-guide.html [L,R=301]
-RewriteRule ^cash\.html$ https://www.onlineTools.com/cash [L,R=301]
-RewriteRule ^gst\.html$ https://www.onlineTools.com/gst [L,R=301]
-RewriteRule ^age\.html$ https://www.onlineTools.com/age [L,R=301]
-RewriteRule ^emi\.html$ https://www.onlineTools.com/emi [L,R=301]
-RewriteRule ^base64\.html$ https://www.onlineTools.com/base64 [L,R=301]
-RewriteRule ^caseConverter\.html$ https://www.onlineTools.com/caseConverter [L,R=301]
-RewriteRule ^imageToText\.html$ https://www.onlineTools.com/imageToText [L,R=301]
-RewriteRule ^compressor\.html$ https://www.onlineTools.com/compress [L,R=301]
-RewriteRule ^imgToPdf\.html$ https://www.onlineTools.com/pdf [L,R=301]
-RewriteRule ^image-resizer\.html$ https://www.onlineTools.com/resizer [L,R=301]
-RewriteRule ^loremIpsum\.html$ https://www.onlineTools.com/loremIpsum [L,R=301]
-RewriteRule ^pdfToImg\.html$ https://www.onlineTools.com/pdfToImg [L,R=301]
-RewriteRule ^qr\.html$ https://www.onlineTools.com/qrcode [L,R=301]
-RewriteRule ^removePages\.html$ https://www.onlineTools.com/removePages [L,R=301]
-RewriteRule ^stopwatch\.html$ https://www.onlineTools.com/stopwatch [L,R=301]
-RewriteRule ^password\.html$ https://www.onlineTools.com/password [L,R=301]
-RewriteRule ^percentage\.html$ https://www.onlineTools.com/percentage [L,R=301]
-RewriteRule ^unitConverter\.html$ https://www.onlineTools.com/unitConverter [L,R=301]
-RewriteRule ^split\.html$ https://www.onlineTools.com/split [L,R=301]
+RewriteRule ^compress\.html$ https://ilovefasttools.in/how-to-compress-image-online.html [L,R=301]
+RewriteRule ^resizer\.html$ https://ilovefasttools.in/how-to-resize-photo-for-ssc-exam.html [L,R=301]
+RewriteRule ^merge\.html$ https://ilovefasttools.in/free-online-pdf-merger-guide.html [L,R=301]
+RewriteRule ^wordCounter\.html$ https://ilovefasttools.in/word-counter-online-guide.html [L,R=301]
+RewriteRule ^pdf\.html$ https://ilovefasttools.in/image-to-pdf-guide.html [L,R=301]
+RewriteRule ^cash\.html$ https://ilovefasttools.in/cash [L,R=301]
+RewriteRule ^gst\.html$ https://ilovefasttools.in/gst [L,R=301]
+RewriteRule ^age\.html$ https://ilovefasttools.in/age [L,R=301]
+RewriteRule ^emi\.html$ https://ilovefasttools.in/emi [L,R=301]
+RewriteRule ^base64\.html$ https://ilovefasttools.in/base64 [L,R=301]
+RewriteRule ^caseConverter\.html$ https://ilovefasttools.in/caseConverter [L,R=301]
+RewriteRule ^imageToText\.html$ https://ilovefasttools.in/imageToText [L,R=301]
+RewriteRule ^compressor\.html$ https://ilovefasttools.in/compress [L,R=301]
+RewriteRule ^imgToPdf\.html$ https://ilovefasttools.in/pdf [L,R=301]
+RewriteRule ^image-resizer\.html$ https://ilovefasttools.in/resizer [L,R=301]
+RewriteRule ^loremIpsum\.html$ https://ilovefasttools.in/loremIpsum [L,R=301]
+RewriteRule ^pdfToImg\.html$ https://ilovefasttools.in/pdfToImg [L,R=301]
+RewriteRule ^qr\.html$ https://ilovefasttools.in/qrcode [L,R=301]
+RewriteRule ^removePages\.html$ https://ilovefasttools.in/removePages [L,R=301]
+RewriteRule ^stopwatch\.html$ https://ilovefasttools.in/stopwatch [L,R=301]
+RewriteRule ^password\.html$ https://ilovefasttools.in/password [L,R=301]
+RewriteRule ^percentage\.html$ https://ilovefasttools.in/percentage [L,R=301]
+RewriteRule ^unitConverter\.html$ https://ilovefasttools.in/unitConverter [L,R=301]
+RewriteRule ^split\.html$ https://ilovefasttools.in/split [L,R=301]
 
 # ============================================================
 # STEP 6: SPA Tool URL Routing

@@ -39,7 +39,7 @@ async function mergePDFs() {
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
         
         // --- AD TRIGGER HERE ---
-        saveAsFile(blob, "SwiftTool_Merged.pdf");
+        saveAsFile(blob, "iLoveFastTools_Merged.pdf");
         showNotify("success", "PDF Merged Successfully!");
     } catch (e) {
         showNotify("error", "Merging failed!");
@@ -81,7 +81,7 @@ async function splitPDF() {
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
 
         // --- AD TRIGGER HERE ---
-        saveAsFile(blob, `SwiftTool_Split_${start}_to_${end}.pdf`);
+        saveAsFile(blob, `iLoveFastTools_Split_${start}_to_${end}.pdf`);
         showNotify("success", "PDF Split Successfully!");
     } catch (e) {
         showNotify("error", e.message);
@@ -162,7 +162,7 @@ async function downloadAllAsZip() {
         });
 
         const content = await zip.generateAsync({ type: "blob" });
-        saveAsFile(content, "SwiftTool_Images.zip");
+        saveAsFile(content, "ilovefasttools_Images.zip");
         showNotify("success", "ZIP Downloaded!");
     } catch (e) {
         showNotify("error", "ZIP failed!");

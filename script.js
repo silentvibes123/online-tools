@@ -111,7 +111,7 @@ function openTool(name) {
   updateDynamicTitle(name);
   saveRecent(name);
   const canonical = document.getElementById("canonicalTag");
-  if (canonical) canonical.setAttribute("href", "https://www.onlineTools.com/" + name);
+  if (canonical) canonical.setAttribute("href", "https://ilovefasttools.in/" + name);
   if (toolUI) { toolUI.innerHTML = ""; renderToolContent(name, toolUI); }
   // Scroll to top of tool after render, not before
   requestAnimationFrame(() => {
