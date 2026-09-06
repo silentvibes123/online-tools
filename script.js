@@ -45,8 +45,12 @@ window.addEventListener("load", () => {
   if (typeof pdfjsLib !== "undefined") {
     pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
   }
+  // Support ?tool=toolname for blog page links (works without .htaccess locally)
+  const urlParams = new URLSearchParams(window.location.search);
+  const toolParam = urlParams.get("tool");
   const path = location.pathname.replace(/^\//, "").replace(/\/$/, "");
-  if (VALID_TOOLS.includes(path)) openTool(path);
+  const toolToOpen = toolParam || path;
+  if (VALID_TOOLS.includes(toolToOpen)) openTool(toolToOpen);
   else { updateDynamicTitle(null); renderRecentBar(); }
   const btn = document.getElementById("scrollTopBtn");
   if (btn) window.addEventListener("scroll", () => btn.classList.toggle("visible", window.scrollY > 400));
