@@ -4,19 +4,19 @@
 # STEP 1: Force HTTPS + WWW — no redirect chain
 # ============================================================
 
-# http://onlineTools.com → https://ilovefasttools.in
+# http://iLoveFastTools.com → https://ilovefasttools.in
 RewriteCond %{HTTPS} off
-RewriteCond %{HTTP_HOST} ^onlineTools\.com$ [NC]
+RewriteCond %{HTTP_HOST} ^iLoveFastTools\.com$ [NC]
 RewriteRule ^(.*)$ https://ilovefasttools.in/$1 [L,R=301]
 
-# http://www.onlineTools.com → https://ilovefasttools.in
+# http://www.iLoveFastTools.com → https://ilovefasttools.in
 RewriteCond %{HTTPS} off
-RewriteCond %{HTTP_HOST} ^www\.onlineTools\.com$ [NC]
+RewriteCond %{HTTP_HOST} ^www\.iLoveFastTools\.com$ [NC]
 RewriteRule ^(.*)$ https://ilovefasttools.in/$1 [L,R=301]
 
-# https://onlineTools.com → https://ilovefasttools.in
+# https://iLoveFastTools.com → https://ilovefasttools.in
 RewriteCond %{HTTPS} on
-RewriteCond %{HTTP_HOST} ^onlineTools\.com$ [NC]
+RewriteCond %{HTTP_HOST} ^iLoveFastTools\.com$ [NC]
 RewriteRule ^(.*)$ https://ilovefasttools.in/$1 [L,R=301]
 
 # ============================================================

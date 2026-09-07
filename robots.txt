@@ -1,6 +1,5 @@
-﻿bhai mene User-agent: *
+﻿User-agent: *
 Allow: /
-
 Disallow: /404
 
 Sitemap: https://ilovefasttools.in/sitemap.xml

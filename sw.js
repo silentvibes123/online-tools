@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'onlinetools-v5';
+﻿const CACHE_NAME = 'ilovefasttools-v6';
 const urlsToCache = [
   'index.html',
   'style.css',

@@ -101,7 +101,7 @@ window.downloadGeneratedPDF = function() {
 
     const opt = {
         margin:      [10, 10, 10, 10],   // mm: top, left, bottom, right
-        filename:    'onlineTools_Document.pdf',
+        filename:    'iLoveFastTools_Document.pdf',
         image:       { type: 'jpeg', quality: 0.97 },
         html2canvas: {
             scale: 2,

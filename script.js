@@ -71,33 +71,33 @@ function showNotify(type, msg) {
 
 // ===== TITLE UPDATE =====
 const TOOL_META = {
-  cash:["Online Cash Counter & Denomination Calculator | onlineTools","Calculate total cash with Indian currency denominations. Print professional receipts."],
-  resizer:["Exam Photo Resizer (20KB-50KB) for SSC, UPSC, Bank | onlineTools","Resize photos for SSC, UPSC, IBPS exams. Compress to 20KB/50KB without quality loss."],
-  age:["Accurate Age Calculator by Date of Birth | onlineTools","Calculate exact age in years, months, days. Perfect for govt job forms."],
-  pdf:["Images to PDF Converter | onlineTools","Convert JPG, PNG, WEBP images into a single PDF instantly."],
-  compress:["Compress Image to 20KB & 50KB Online | onlineTools","Reduce image file size without losing clarity. Best for exam portals."],
-  qrcode:["Free QR Code Generator | onlineTools","Create custom QR codes for URL, text, UPI. Instant download."],
-  pdfToImg:["PDF to Image Converter Online | onlineTools","Convert PDF pages into high-quality JPEG images securely."],
-  merge:["Merge PDF Files Online | onlineTools","Combine multiple PDFs into one file securely."],
-  split:["Split PDF Pages Online | onlineTools","Extract specific pages from PDF instantly."],
-  gst:["GST Calculator India - Add/Remove GST | onlineTools","Calculate GST with CGST/SGST split. Free Indian GST tool."],
-  removePages:["Remove PDF Pages Online | onlineTools","Delete specific pages from PDF with visual preview."],
-  pdfToWord:["PDF to Text Extractor Online | onlineTools","Extract and edit text from any PDF file in your browser."],
-  wordCounter:["Word Counter & Text Analyzer Online | onlineTools","Count words, characters, sentences and reading time instantly."],
-  password:["Strong Password Generator | onlineTools","Generate secure random passwords with custom length and symbols."],
-  base64:["Base64 Encoder & Decoder Online | onlineTools","Encode or decode Base64 text instantly in your browser."],
-  unitConverter:["Unit Converter | onlineTools","Convert units of length, weight, temperature, area and speed."],
-  loremIpsum:["Lorem Ipsum Generator | onlineTools","Generate Lorem Ipsum dummy text by words, sentences or paragraphs."],
-  emi:["EMI Calculator — Home, Car & Personal Loan | onlineTools","Calculate monthly EMI for home loan, car loan, personal loan."],
-  imageToText:["Image to Text Converter (OCR) | onlineTools","Extract text from any image or photo instantly."],
-  percentage:["Percentage Calculator | onlineTools","Calculate percentage, marks percentage, discount. Free & instant."],
-  caseConverter:["Text Case Converter | onlineTools","Convert text to UPPERCASE, lowercase, Title Case, camelCase instantly."],
-  stopwatch:["Online Stopwatch & Countdown Timer | onlineTools","Free online stopwatch with lap times and countdown timer."],
+  cash:["Online Cash Counter & Denomination Calculator | iLoveFastTools","Calculate total cash with Indian currency denominations. Print professional receipts."],
+  resizer:["Exam Photo Resizer (20KB-50KB) for SSC, UPSC, Bank | iLoveFastTools","Resize photos for SSC, UPSC, IBPS exams. Compress to 20KB/50KB without quality loss."],
+  age:["Accurate Age Calculator by Date of Birth | iLoveFastTools","Calculate exact age in years, months, days. Perfect for govt job forms."],
+  pdf:["Images to PDF Converter | iLoveFastTools","Convert JPG, PNG, WEBP images into a single PDF instantly."],
+  compress:["Compress Image to 20KB & 50KB Online | iLoveFastTools","Reduce image file size without losing clarity. Best for exam portals."],
+  qrcode:["Free QR Code Generator | iLoveFastTools","Create custom QR codes for URL, text, UPI. Instant download."],
+  pdfToImg:["PDF to Image Converter Online | iLoveFastTools","Convert PDF pages into high-quality JPEG images securely."],
+  merge:["Merge PDF Files Online | iLoveFastTools","Combine multiple PDFs into one file securely."],
+  split:["Split PDF Pages Online | iLoveFastTools","Extract specific pages from PDF instantly."],
+  gst:["GST Calculator India - Add/Remove GST | iLoveFastTools","Calculate GST with CGST/SGST split. Free Indian GST tool."],
+  removePages:["Remove PDF Pages Online | iLoveFastTools","Delete specific pages from PDF with visual preview."],
+  pdfToWord:["PDF to Text Extractor Online | iLoveFastTools","Extract and edit text from any PDF file in your browser."],
+  wordCounter:["Word Counter & Text Analyzer Online | iLoveFastTools","Count words, characters, sentences and reading time instantly."],
+  password:["Strong Password Generator | iLoveFastTools","Generate secure random passwords with custom length and symbols."],
+  base64:["Base64 Encoder & Decoder Online | iLoveFastTools","Encode or decode Base64 text instantly in your browser."],
+  unitConverter:["Unit Converter | iLoveFastTools","Convert units of length, weight, temperature, area and speed."],
+  loremIpsum:["Lorem Ipsum Generator | iLoveFastTools","Generate Lorem Ipsum dummy text by words, sentences or paragraphs."],
+  emi:["EMI Calculator — Home, Car & Personal Loan | iLoveFastTools","Calculate monthly EMI for home loan, car loan, personal loan."],
+  imageToText:["Image to Text Converter (OCR) | iLoveFastTools","Extract text from any image or photo instantly."],
+  percentage:["Percentage Calculator | iLoveFastTools","Calculate percentage, marks percentage, discount. Free & instant."],
+  caseConverter:["Text Case Converter | iLoveFastTools","Convert text to UPPERCASE, lowercase, Title Case, camelCase instantly."],
+  stopwatch:["Online Stopwatch & Countdown Timer | iLoveFastTools","Free online stopwatch with lap times and countdown timer."],
 };
 
 function updateDynamicTitle(tool) {
   const meta = TOOL_META[tool];
-  document.title = meta ? meta[0] : "onlineTools - Free Online Digital Toolkit";
+  document.title = meta ? meta[0] : "iLoveFastTools - Free Online Tools";
   const tag = document.querySelector('meta[name="description"]');
   if (tag) tag.setAttribute("content", meta ? meta[1] : "Free online tools: image resizer, PDF tools, GST calculator. 100% browser-based.");
 }
