@@ -3,12 +3,816 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="canonical" href="https://ilovefasttools.in/imageToText"/>
+  <link id="canonicalTag" rel="canonical" href="https://ilovefasttools.in/imageToText"/>
   <title>Image to Text Converter (OCR) Online Free | iLoveFastTools</title>
-  <meta name="description" content="Extract text from any image or photo instantly. Free OCR tool, no upload needed."/>
+  <meta name="description" content="Extract text from any image using OCR. Free online image to text converter."/>
   <meta name="robots" content="index,follow"/>
-  <meta http-equiv="refresh" content="0;url=https://ilovefasttools.in/imageToText"/>
-  <script>window.location.replace("https://ilovefasttools.in/imageToText");</script>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://ilovefasttools.in/imageToText"/>
+  <meta property="og:title" content="Image to Text Converter (OCR) Online Free | iLoveFastTools"/>
+  <meta property="og:description" content="Extract text from any image using OCR. Free online image to text converter."/>
+  <meta property="og:site_name" content="iLoveFastTools"/>
+  <link rel="icon" type="image/png" href="/logo.png"/>
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
 </head>
-<body></body>
+<body>
+  <div class="content-wrapper">
+
+    <!-- TRUST BAR -->
+    <div class="trust-bar d-none d-md-block">
+      <span><i class="fas fa-shield-halved"></i>100% Private — Files Never Uploaded</span>
+      <span><i class="fas fa-bolt"></i>Lightning Fast — No Sign-up</span>
+      <span><i class="fas fa-infinity"></i>Free Forever — No Watermarks</span>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top"
+      style="background:linear-gradient(135deg,#e8e6e6,#cdcdce);">
+      <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#" onclick="showDashboard()">
+          <!-- Mobile: icon only -->
+          <img src="logo.png" alt="iLoveFastTools" class="d-sm-none rounded-2" style="height:48px;width:auto;max-width:160px;object-fit:contain"/>
+          <!-- Desktop: full logo with text -->
+          <img src="logo.png" alt="iLoveFastTools" class="d-none d-sm-block" style="height:44px;width:auto;max-width:180px;object-fit:contain"/>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto align-items-center gap-1">
+            <li class="nav-item"><a class="nav-link" href="#" onclick="showDashboard()"><i
+                  class="fas fa-home me-1"></i>Home</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><i
+                  class="fas fa-th-large me-1"></i>Tools</a>
+              <ul class="dropdown-menu border-0 shadow-lg">
+                <li>
+                  <h6 class="dropdown-header text-muted small fw-bold px-3 pt-1">IMAGE TOOLS</h6>
+                </li>
+                <li><a class="dropdown-item" href="javascript:void(0)" onclick="openTool('resizer')"><i
+                      class="fas fa-id-card me-2 text-warning"></i>Exam Photo Resizer</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" onclick="openTool('compress')"><i
+                      class="fas fa-compress-arrows-alt me-2 text-info"></i>Image Compressor</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" onclick="openTool('pdf')"><i
+                      class="fas fa-file-pdf me-2 text-danger"></i>Images to PDF</a></li>
+                <li>
+                  <hr class="dropdown-divider my-1" />
+                </li>
+                <li>
+                  <h6 class="dropdown-header text-muted small fw-bold px-3">PDF TOOLS</h6>
+                </li>
+                <li><a class="dropdown-item" href="javascript:void(0)" onclick="openTool('pdfToImg')"><i
+                      class="fas fa-images me-2 text-primary"></i>PDF to Image</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" onclick="openTool('merge')"><i
+                      class="fas fa-object-group me-2 text-primary"></i>Merge PDF</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" onclick="openTool('split')"><i
+                      class="fas fa-cut me-2 text-warning"></i>Split PDF</a></li>
+                <li>
+                  <hr class="dropdown-divider my-1" />
+                </li>
+                <li>
+                  <h6 class="dropdown-header text-muted small fw-bold px-3">FINANCE & UTILITY</h6>
+                </li>
+                <li><a class="dropdown-item" href="javascript:void(0)" onclick="openTool('cash')"><i
+                      class="fas fa-calculator me-2 text-success"></i>Cash Counter</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" onclick="openTool('gst')"><i
+                      class="fas fa-file-invoice-dollar me-2 text-success"></i>GST Calculator</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" onclick="openTool('password')"><i
+                      class="fas fa-key me-2 text-warning"></i>Password Generator</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" onclick="openTool('qrcode')"><i
+                      class="fas fa-qrcode me-2"></i>QR Generator</a></li>
+                <li><a class="dropdown-item" href="/video-to-mp3.html"><i
+                      class="fas fa-music me-2 text-primary"></i>Video to MP3</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="/blog.html"><i class="fas fa-book-open me-1"></i>Blog</a></li>
+            <li class="nav-item"><a class="nav-link" href="/about.html">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="/contact.html">Contact</a></li>
+            <li class="nav-item ms-lg-2">
+              <a href="/privacy-policy.html" class="btn btn-light btn-sm rounded-pill px-4 fw-bold text-primary">
+                <i class="fas fa-shield-halved me-1"></i>Privacy
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <div id="heroSection" class="container mt-4 mb-2 animate__animated animate__fadeIn">
+      <div class="hero-section">
+        <div class="row align-items-center position-relative" style="z-index:1">
+          <div class="col-lg-7">
+            <div class="hero-badge mb-3"><i class="fas fa-bolt me-1"></i> <span class="tool-count-badge"></span> Free Tools — No Sign-up Required</div>
+            <h1 class="hero-title mb-3">Your All-in-One<br /><span style="color:#a5b4fc">Digital Toolkit</span></h1>
+            <p class="hero-subtitle mb-4">PDF tools, image resizer, GST calculator & more.<br />100% browser-based —
+              your files never leave your device.</p>
+            <div class="position-relative" style="max-width:500px">
+              <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3"
+                style="color:rgba(255,255,255,0.45);z-index:2"></i>
+              <input type="text" id="toolSearch" class="form-control form-control-lg ps-5 hero-search"
+                placeholder="Search tools... try 'PDF', 'GST', '20KB'" onkeyup="filterTools()" />
+            </div>
+            <div class="mt-3 d-flex flex-wrap gap-2">
+              <span onclick="openTool('resizer')" class="hero-quick-tag"><i class="fas fa-id-card me-1"></i>Exam
+                Resizer</span>
+              <span onclick="openTool('merge')" class="hero-quick-tag"><i class="fas fa-object-group me-1"></i>Merge
+                PDF</span>
+              <span onclick="openTool('gst')" class="hero-quick-tag"><i class="fas fa-file-invoice-dollar me-1"></i>GST
+                Calc</span>
+              <span onclick="openTool('qrcode')" class="hero-quick-tag"><i class="fas fa-qrcode me-1"></i>QR Code</span>
+            </div>
+          </div>
+          <div class="col-lg-5 mt-4 mt-lg-0">
+            <div class="row g-2">
+              <div class="col-6">
+                <div class="hero-stat"><i class="fas fa-shield-halved text-success mb-2 d-block fa-lg"></i>
+                  <div class="fw-bold text-white small">100% Private</div>
+                  <div style="font-size:0.7rem;color:rgba(255,255,255,0.5)">Local Processing</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="hero-stat"><i class="fas fa-infinity text-warning mb-2 d-block fa-lg"></i>
+                  <div class="fw-bold text-white small">Free Forever</div>
+                  <div style="font-size:0.7rem;color:rgba(255,255,255,0.5)">No Hidden Limits</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="hero-stat"><i class="fas fa-bolt text-info mb-2 d-block fa-lg"></i>
+                  <div class="fw-bold text-white small">Instant Results</div>
+                  <div style="font-size:0.7rem;color:rgba(255,255,255,0.5)">No Waiting</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="hero-stat"><i class="fas fa-layer-group mb-2 d-block fa-lg" style="color:#f093fb"></i>
+                  <div class="fw-bold text-white small"><span class="tool-count-badge"></span> Tools</div>
+                  <div style="font-size:0.7rem;color:rgba(255,255,255,0.5)">All Categories</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS BAR -->
+
+
+    <!-- TOOLS GRID -->
+    <div id="toolsGrid" class="container pb-5">
+
+      <!-- Recently Used (shown dynamically) -->
+      <div id="recentBar" class="mb-4 d-none">
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+          <span class="small fw-bold text-muted"><i class="fas fa-history me-1"></i>Recently Used:</span>
+          <div id="recentChips" class="d-flex gap-2 flex-wrap"></div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2>All Tools</h2>
+        <p>Click any tool to get started instantly — no sign-up, no limits</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <!-- Category filter pills -->
+      <div class="category-pills mb-4">
+        <span class="cat-pill active" onclick="filterByCategory('all',this)">All</span>
+        <span class="cat-pill" onclick="filterByCategory('image',this)">🖼 Image</span>
+        <span class="cat-pill" onclick="filterByCategory('pdf',this)">📄 PDF</span>
+        <span class="cat-pill" onclick="filterByCategory('finance',this)">💰 Finance</span>
+        <span class="cat-pill" onclick="filterByCategory('calculator',this)">� Calculator</span>
+        <span class="cat-pill" onclick="filterByCategory('utility',this)">🔧 Utility</span>
+        <span class="cat-pill" onclick="filterByCategory('video',this)">🎬 Video</span>
+      </div>
+
+      <!-- IMAGE TOOLS -->
+      <div class="cat-box">
+        <div class="cat-section-header img-cat">
+          <div class="cat-icon-wrap"><i class="fas fa-image"></i></div>
+          <div>
+            <div class="cat-title">🖼️ Image Tools</div>
+            <div class="cat-count">4 tools — resize, compress, convert</div>
+          </div>
+        </div>
+        <div class="cat-section-body">
+          <div class="row g-2">
+            <div class="col-6 col-md-3 tool-item" data-cat="image" data-search="exam resizer 20kb 50kb ssc upsc photo">
+              <div class="cat-tool-card" onclick="openTool('resizer')">
+                <span class="badge-hot">HOT</span>
+                <div class="icon-box bg-warning text-dark"><i class="fas fa-id-card"></i></div>
+                <h6>Exam Resizer</h6>
+                <div class="sub">20KB / 50KB Photo</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="image" data-search="compress image reduce size kb">
+              <div class="cat-tool-card" onclick="openTool('compress')">
+                <div class="icon-box bg-compress"><i class="fas fa-compress-arrows-alt"></i></div>
+                <h6>Image Compressor</h6>
+                <div class="sub">Reduce File Size</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="image" data-search="images to pdf convert jpg png webp">
+              <div class="cat-tool-card" onclick="openTool('pdf')">
+                <div class="icon-box bg-pdf"><i class="fas fa-file-pdf"></i></div>
+                <h6>Images to PDF</h6>
+                <div class="sub">JPG / PNG → PDF</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="image" data-search="image to text ocr extract text photo scan">
+              <div class="cat-tool-card" onclick="openTool('imageToText')">
+                <span class="badge-new">NEW</span>
+                <div class="icon-box" style="background:linear-gradient(135deg,#4f46e5,#7c3aed)"><i class="fas fa-camera"></i></div>
+                <h6>Image to Text</h6>
+                <div class="sub">OCR — Extract Text</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PDF TOOLS -->
+      <div class="cat-box">
+        <div class="cat-section-header pdf-cat">
+          <div class="cat-icon-wrap"><i class="fas fa-file-pdf"></i></div>
+          <div>
+            <div class="cat-title">📄 PDF Tools</div>
+            <div class="cat-count">5 tools — merge, split, convert, remove pages</div>
+          </div>
+        </div>
+        <div class="cat-section-body">
+          <div class="row g-2">
+            <div class="col-6 col-md-3 tool-item" data-cat="pdf" data-search="merge pdf combine files">
+              <div class="cat-tool-card" onclick="openTool('merge')">
+                <div class="icon-box" style="background:linear-gradient(135deg,#4f46e5,#7c3aed)"><i class="fas fa-object-group"></i></div>
+                <h6>Merge PDF</h6>
+                <div class="sub">Combine PDF Files</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="pdf" data-search="split pdf extract pages range">
+              <div class="cat-tool-card" onclick="openTool('split')">
+                <div class="icon-box bg-warning text-dark"><i class="fas fa-cut"></i></div>
+                <h6>Split PDF</h6>
+                <div class="sub">Extract Page Range</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="pdf" data-search="pdf to image jpg extract pages">
+              <div class="cat-tool-card" onclick="openTool('pdfToImg')">
+                <div class="icon-box bg-imgpdf"><i class="fas fa-images"></i></div>
+                <h6>PDF to Image</h6>
+                <div class="sub">Extract PDF Pages</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="pdf" data-search="remove delete pdf pages">
+              <div class="cat-tool-card" onclick="openTool('removePages')">
+                <div class="icon-box bg-danger"><i class="fas fa-file-signature"></i></div>
+                <h6>Remove Pages</h6>
+                <div class="sub">Delete PDF Pages</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="pdf" data-search="pdf to text word extract content">
+              <div class="cat-tool-card" onclick="openTool('pdfToWord')">
+                <div class="icon-box bg-compress"><i class="fas fa-file-alt"></i></div>
+                <h6>PDF to Text</h6>
+                <div class="sub">Extract Text Content</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FINANCE TOOLS -->
+      <div class="cat-box">
+        <div class="cat-section-header fin-cat">
+          <div class="cat-icon-wrap"><i class="fas fa-rupee-sign"></i></div>
+          <div>
+            <div class="cat-title">💰 Finance Tools</div>
+            <div class="cat-count">3 tools — GST, EMI, cash counter</div>
+          </div>
+        </div>
+        <div class="cat-section-body">
+          <div class="row g-2">
+            <div class="col-6 col-md-4 tool-item" data-cat="finance" data-search="gst calculator india add remove cgst sgst">
+              <div class="cat-tool-card" onclick="openTool('gst')">
+                <div class="icon-box" style="background:linear-gradient(135deg,#11998e,#38ef7d)"><i class="fas fa-file-invoice-dollar"></i></div>
+                <h6>GST Calculator</h6>
+                <div class="sub">Add / Remove GST</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 tool-item" data-cat="finance" data-search="emi calculator home loan car loan personal loan india">
+              <div class="cat-tool-card" onclick="openTool('emi')">
+                <span class="badge-hot">HOT</span>
+                <div class="icon-box" style="background:linear-gradient(135deg,#059669,#10b981)"><i class="fas fa-home"></i></div>
+                <h6>EMI Calculator</h6>
+                <div class="sub">Loan EMI + Schedule</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 tool-item" data-cat="finance" data-search="cash counter denomination calculator india rupee notes">
+              <div class="cat-tool-card" onclick="openTool('cash')">
+                <div class="icon-box bg-cash"><i class="fas fa-calculator"></i></div>
+                <h6>Cash Counter</h6>
+                <div class="sub">Currency Calculator</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALCULATOR TOOLS -->
+      <div class="cat-box">
+        <div class="cat-section-header" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">
+          <div class="cat-icon-wrap"><i class="fas fa-calculator"></i></div>
+          <div>
+            <div class="cat-title">🔢 Calculators</div>
+            <div class="cat-count">3 tools — percentage, age, unit converter</div>
+          </div>
+        </div>
+        <div class="cat-section-body">
+          <div class="row g-2">
+            <div class="col-6 col-md-4 tool-item" data-cat="calculator" data-search="percentage calculator marks discount increase decrease">
+              <div class="cat-tool-card" onclick="openTool('percentage')">
+                <span class="badge-hot">HOT</span>
+                <div class="icon-box bg-warning text-dark"><i class="fas fa-percent"></i></div>
+                <h6>% Calculator</h6>
+                <div class="sub">Marks, Discount & More</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 tool-item" data-cat="calculator" data-search="age calculator date of birth exact years months ssc upsc">
+              <div class="cat-tool-card" onclick="openTool('age')">
+                <div class="icon-box bg-danger"><i class="fas fa-birthday-cake"></i></div>
+                <h6>Age Calculator</h6>
+                <div class="sub">Exact Age for Forms</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 tool-item" data-cat="calculator" data-search="unit converter length weight temperature speed area">
+              <div class="cat-tool-card" onclick="openTool('unitConverter')">
+                <span class="badge-new">NEW</span>
+                <div class="icon-box bg-teal"><i class="fas fa-ruler-combined"></i></div>
+                <h6>Unit Converter</h6>
+                <div class="sub">Length, Weight, Temp</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UTILITY TOOLS -->
+      <div class="cat-box">
+        <div class="cat-section-header util-cat">
+          <div class="cat-icon-wrap"><i class="fas fa-tools"></i></div>
+          <div>
+            <div class="cat-title">🔧 Utility Tools</div>
+            <div class="cat-count">6 tools — QR code, password, text tools & more</div>
+          </div>
+        </div>
+        <div class="cat-section-body">
+          <div class="row g-2">
+            <div class="col-6 col-md-3 tool-item" data-cat="utility" data-search="qr code generator url text upi">
+              <div class="cat-tool-card" onclick="openTool('qrcode')">
+                <div class="icon-box bg-dark"><i class="fas fa-qrcode"></i></div>
+                <h6>QR Generator</h6>
+                <div class="sub">Custom QR Codes</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="utility" data-search="password generator strong secure random">
+              <div class="cat-tool-card" onclick="openTool('password')">
+                <span class="badge-new">NEW</span>
+                <div class="icon-box bg-orange"><i class="fas fa-key"></i></div>
+                <h6>Password Gen</h6>
+                <div class="sub">Strong Passwords</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="utility" data-search="word counter character count text analysis">
+              <div class="cat-tool-card" onclick="openTool('wordCounter')">
+                <div class="icon-box bg-pink"><i class="fas fa-font"></i></div>
+                <h6>Word Counter</h6>
+                <div class="sub">Text Analyzer</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="utility" data-search="text case converter uppercase lowercase camelcase snake">
+              <div class="cat-tool-card" onclick="openTool('caseConverter')">
+                <span class="badge-new">NEW</span>
+                <div class="icon-box" style="background:linear-gradient(135deg,#8e2de2,#4a00e0)"><i class="fas fa-text-height"></i></div>
+                <h6>Case Converter</h6>
+                <div class="sub">UPPER / lower / camel</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="utility" data-search="base64 encode decode text converter developer">
+              <div class="cat-tool-card" onclick="openTool('base64')">
+                <span class="badge-new">NEW</span>
+                <div class="icon-box" style="background:linear-gradient(135deg,#8e2de2,#4a00e0)"><i class="fas fa-code"></i></div>
+                <h6>Base64 Tool</h6>
+                <div class="sub">Encode / Decode</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="utility" data-search="lorem ipsum text generator placeholder dummy">
+              <div class="cat-tool-card" onclick="openTool('loremIpsum')">
+                <span class="badge-new">NEW</span>
+                <div class="icon-box" style="background:linear-gradient(135deg,#f7971e,#ffd200)"><i class="fas fa-align-left"></i></div>
+                <h6>Lorem Ipsum</h6>
+                <div class="sub">Dummy Text Gen</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 tool-item" data-cat="utility" data-search="stopwatch timer countdown online lap">
+              <div class="cat-tool-card" onclick="openTool('stopwatch')">
+                <span class="badge-new">NEW</span>
+                <div class="icon-box bg-danger"><i class="fas fa-stopwatch"></i></div>
+                <h6>Stopwatch</h6>
+                <div class="sub">Timer + Countdown</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIDEO TOOLS -->
+      <div class="cat-box">
+        <div class="cat-section-header vid-cat">
+          <div class="cat-icon-wrap"><i class="fas fa-film"></i></div>
+          <div>
+            <div class="cat-title">🎬 Video & Audio</div>
+            <div class="cat-count">1 tool — extract audio from video</div>
+          </div>
+        </div>
+        <div class="cat-section-body">
+          <div class="row g-2">
+            <div class="col-6 col-md-3 tool-item" data-cat="video" data-search="video to mp3 converter extract audio mp4 mkv avi">
+              <div class="cat-tool-card" onclick="window.location.href='/video-to-mp3.html'">
+                <span class="badge-new">NEW</span>
+                <div class="icon-box" style="background:linear-gradient(135deg,#4f46e5,#7c3aed)"><i class="fas fa-music"></i></div>
+                <h6>Video to MP3</h6>
+                <div class="sub">Extract Audio</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden search result container (used by filterTools) -->
+      <div class="row g-3 d-none" id="toolCardsRow"></div>
+
+      <!-- WHY US SECTION -->
+      <div class="row g-3 mt-4">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon" style="background:#ede9fe"><i class="fas fa-shield-halved text-primary"></i></div>
+            <h6 class="fw-bold">100% Private</h6>
+            <p class="small text-muted mb-0">All processing happens in your browser. Files never reach any server.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon" style="background:#dcfce7"><i class="fas fa-graduation-cap text-success"></i>
+            </div>
+            <h6 class="fw-bold">Built for India</h6>
+            <p class="small text-muted mb-0">Specialized tools for SSC, UPSC, IBPS exam portals with exact KB limits.
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card">
+            <div class="feature-icon" style="background:#fef3c7"><i class="fas fa-bolt text-warning"></i></div>
+            <h6 class="fw-bold">Instant & Free</h6>
+            <p class="small text-muted mb-0">No registration, no watermarks, no limits. Just open and use.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- AFFILIATE BANNER -->
+      <!-- <div class="mt-5 mb-2">
+        <div
+          style="background:linear-gradient(135deg,#0f0f1a,#1a0a2e);border:1px solid #4f46e5;border-radius:16px;padding:2rem;position:relative;overflow:hidden;">
+          <div
+            style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(99,102,241,0.2),transparent);border-radius:50%;pointer-events:none;">
+          </div>
+          <div class="row align-items-center g-3">
+            <div class="col-md-8">
+              <div
+                style="display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;padding:4px 12px;border-radius:50px;font-size:0.75rem;font-weight:700;margin-bottom:0.75rem;">
+                <i class="fas fa-fire"></i> STUDENT DEALS
+              </div>
+              <h4 style="color:#fff;font-weight:800;margin-bottom:0.5rem;">Top 3 Tech Gadgets Under ₹1000 🚀</h4>
+              <p style="color:#94a3b8;font-size:0.9rem;margin-bottom:0.75rem;">EvoFox Gaming Mouse, Laptop Stand &
+                Cleaning Kit — best Amazon deals for students</p>
+              <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+                <span style="color:#4ade80;font-size:0.85rem;font-weight:600;"><i class="fas fa-tag me-1"></i>Up to 58%
+                  OFF</span>
+                <span style="color:#60a5fa;font-size:0.85rem;font-weight:600;"><i class="fab fa-amazon me-1"></i>Amazon
+                  Verified</span>
+                <span style="color:#fbbf24;font-size:0.85rem;font-weight:600;"><i class="fas fa-truck me-1"></i>Free
+                  Delivery</span>
+              </div>
+            </div>
+            <div class="col-md-4 text-md-end text-start mt-3 mt-md-0">
+              <a href="/student-gadgets.html"
+                style="display:inline-block;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;font-weight:700;padding:0.75rem 1.75rem;border-radius:50px;text-decoration:none;font-size:0.95rem;">
+                <i class="fab fa-amazon me-2"></i>View Deals →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- FAQ -->
+      <div class="mt-5">
+        <div class="section-header">
+          <h2>Frequently Asked Questions</h2>
+          <div class="section-divider"></div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-md-9">
+            <div class="accordion shadow-sm rounded-4 overflow-hidden border-0" id="faqAccordion">
+              <div class="accordion-item border-0 border-bottom">
+                <h2 class="accordion-header"><button class="accordion-button fw-semibold bg-white shadow-none"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#faq1">Is iLoveFastTools completely
+                    free?</button></h2>
+                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body text-muted small">Yes, 100% free. No hidden charges, no premium plans, no
+                    watermarks.</div>
+                </div>
+              </div>
+              <div class="accordion-item border-0 border-bottom">
+                <h2 class="accordion-header"><button class="accordion-button collapsed fw-semibold bg-white shadow-none"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#faq2">Is my data safe?</button></h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body text-muted small">Absolutely. We use client-side processing — your files
+                    never leave your browser or get uploaded to any server.</div>
+                </div>
+              </div>
+              <div class="accordion-item border-0 border-bottom">
+                <h2 class="accordion-header"><button class="accordion-button collapsed fw-semibold bg-white shadow-none"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#faq3">Do I need to create an
+                    account?</button></h2>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body text-muted small">No registration needed. Open the tool and start using it
+                    immediately.</div>
+                </div>
+              </div>
+              <div class="accordion-item border-0">
+                <h2 class="accordion-header"><button class="accordion-button collapsed fw-semibold bg-white shadow-none"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#faq4">Which devices are supported?</button>
+                </h2>
+                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body text-muted small">All devices — Windows, macOS, Android, iOS. Any modern
+                    browser works.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- end toolsGrid -->
+
+    <!-- AD SLOT 1: Between tools grid and SEO content -->
+    <div class="container mb-3">
+      <div class="text-center">
+
+      </div>
+    </div>
+
+    <!-- SEO CONTENT SECTION — Static HTML for Google crawler & AdSense -->
+    <div id="seoContent" class="container pb-5">
+
+      <!-- Article: Why iLoveFastTools -->
+      <div class="section-header mt-5">
+        <h2>Free Online Tools for Every Indian User</h2>
+        <p>No sign-up. No uploads. No watermarks. Just open and use.</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="row g-4 mb-4">
+        <div class="col-md-6">
+          <div class="seo-card">
+            <h3 class="h5 fw-bold text-primary mb-2"><i class="fas fa-id-card me-2"></i>Exam Photo Resizer for SSC, UPSC
+              & Bank Forms</h3>
+            <p class="small text-muted mb-2">Government exam portals like SSC CGL, UPSC Civil Services, IBPS PO, SBI
+              Clerk, and Railway NTPC require passport-size photos under 20KB or 50KB. Most candidates struggle to
+              compress their photo to the exact size without losing quality.</p>
+            <p class="small text-muted mb-3">Our <strong>Exam Photo Resizer</strong> automatically compresses your photo
+              to the exact KB limit you choose — 20KB for signatures, 50KB for photos, or 100KB for other documents.
+              Works with JPG, PNG, and WEBP formats. No software installation needed.</p>
+            <a href="javascript:void(0)" onclick="openTool('resizer')"
+              class="btn btn-sm btn-outline-primary rounded-pill">Try Exam Photo Resizer →</a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="seo-card">
+            <h3 class="h5 fw-bold text-success mb-2"><i class="fas fa-home me-2"></i>EMI Calculator — Home Loan, Car
+              Loan, Personal Loan</h3>
+            <p class="small text-muted mb-2">Planning to take a loan? Use our <strong>free EMI Calculator</strong> to
+              find out your exact monthly installment before you visit the bank. Enter the loan amount, interest rate,
+              and tenure to get instant results.</p>
+            <p class="small text-muted mb-3">Our EMI calculator also shows the complete month-by-month amortization
+              schedule — so you can see exactly how much principal and interest you pay each month, and what your
+              outstanding balance will be.</p>
+            <a href="javascript:void(0)" onclick="openTool('emi')"
+              class="btn btn-sm btn-outline-success rounded-pill">Calculate EMI Now →</a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="seo-card">
+            <h3 class="h5 fw-bold text-danger mb-2"><i class="fas fa-file-pdf me-2"></i>Complete PDF Toolkit — Free &
+              Browser-Based</h3>
+            <p class="small text-muted mb-2">iLoveFastTools offers a complete set of PDF tools that work entirely in your
+              browser — no file uploads, no watermarks, no account required.</p>
+            <ul class="small text-muted mb-3 ps-3">
+              <li><strong>Merge PDF</strong> — Combine multiple PDF files into one</li>
+              <li><strong>Split PDF</strong> — Extract specific pages from a PDF</li>
+              <li><strong>PDF to Image</strong> — Convert PDF pages to JPG images</li>
+              <li><strong>Images to PDF</strong> — Convert JPG/PNG photos to PDF</li>
+              <li><strong>Remove Pages</strong> — Delete unwanted pages from PDF</li>
+            </ul>
+            <a href="javascript:void(0)"
+              onclick="filterByCategory('pdf', document.querySelector('.cat-pill:nth-child(3)'))"
+              class="btn btn-sm btn-outline-danger rounded-pill">Explore PDF Tools →</a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="seo-card">
+            <h3 class="h5 fw-bold mb-2" style="color:#d97706"><i class="fas fa-percent me-2"></i>Percentage Calculator —
+              Marks, Discount & More</h3>
+            <p class="small text-muted mb-2">Our <strong>Percentage Calculator</strong> is a 4-in-1 tool that handles
+              the most common percentage calculations:</p>
+            <ul class="small text-muted mb-3 ps-3">
+              <li>Find what X% of a number is</li>
+              <li>Calculate percentage increase or decrease</li>
+              <li>Find your exam marks percentage</li>
+              <li>Calculate discount price and savings</li>
+            </ul>
+            <p class="small text-muted mb-3">Extremely useful during exam result season, shopping sales, and business
+              calculations.</p>
+            <a href="javascript:void(0)" onclick="openTool('percentage')"
+              class="btn btn-sm btn-outline-warning rounded-pill">Open % Calculator →</a>
+          </div>
+        </div>
+      </div>
+
+    
+
+     
+
+    </div><!-- end seoContent -->
+
+    <!-- ACTIVE TOOL CONTAINER -->
+    <div id="activeTool" class="container py-4 d-none" style="scroll-margin-top:70px">
+      <div id="toolUI" class="card shadow border-0 rounded-4 p-4 animate__animated animate__fadeInUp"></div>
+    </div>
+
+    <!-- EXTRA SCREENS (About/Privacy/Contact) -->
+    <div id="extraScreens" class="container py-5 d-none">
+      <button class="btn btn-outline-primary btn-sm rounded-pill px-4 mb-4" onclick="goBack()"><i
+          class="fas fa-arrow-left me-2"></i>Back</button>
+      <div id="extraContent" class="card shadow-lg border-0 rounded-4 p-4 p-md-5 animate__animated animate__fadeIn">
+      </div>
+    </div>
+
+  </div><!-- end content-wrapper -->
+
+  <!-- FOOTER -->
+  <footer class="py-5 mt-auto">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <img src="logo.png" alt="iLoveFastTools" height="44" class="mb-3" style="max-width:180px;object-fit:contain"/>
+          <p class="small text-muted mb-3">Your all-in-one digital toolkit. 100% browser-based — your data never leaves
+            your device.</p>
+          <div class="footer-social d-flex gap-2">
+            <a href="https://youtube.com/@SmartDigitalLifeAIHacks" target="_blank" rel="noopener" title="YouTube"><i
+                class="fab fa-youtube"></i></a>
+            <a href="/contact.html" title="Contact Us"><i class="fas fa-envelope"></i></a>
+            <a href="/about.html" title="About Us"><i class="fas fa-info-circle"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-6">
+          <h6 class="fw-bold mb-3">Popular Tools</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2"><a href="javascript:void(0)" onclick="openTool('resizer')"
+                class="text-muted text-decoration-none"><i class="fas fa-id-card me-2 text-warning"></i>Exam Photo
+                Resizer</a></li>
+            <li class="mb-2"><a href="javascript:void(0)" onclick="openTool('merge')"
+                class="text-muted text-decoration-none"><i class="fas fa-object-group me-2 text-primary"></i>Merge
+                PDF</a></li>
+            <li class="mb-2"><a href="javascript:void(0)" onclick="openTool('gst')"
+                class="text-muted text-decoration-none"><i class="fas fa-file-invoice-dollar me-2 text-success"></i>GST
+                Calculator</a></li>
+            <li class="mb-2"><a href="javascript:void(0)" onclick="openTool('qrcode')"
+                class="text-muted text-decoration-none"><i class="fas fa-qrcode me-2"></i>QR Generator</a></li>
+            <li class="mb-2"><a href="javascript:void(0)" onclick="openTool('cash')"
+                class="text-muted text-decoration-none"><i class="fas fa-calculator me-2 text-success"></i>Cash
+                Counter</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-6">
+          <h6 class="fw-bold mb-3">More Tools</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2"><a href="javascript:void(0)" onclick="openTool('compress')"
+                class="text-muted text-decoration-none"><i
+                  class="fas fa-compress-arrows-alt me-2 text-info"></i>Compressor</a></li>
+            <li class="mb-2"><a href="javascript:void(0)" onclick="openTool('pdfToImg')"
+                class="text-muted text-decoration-none"><i class="fas fa-images me-2 text-primary"></i>PDF to Image</a>
+            </li>
+            <li class="mb-2"><a href="javascript:void(0)" onclick="openTool('age')"
+                class="text-muted text-decoration-none"><i class="fas fa-birthday-cake me-2 text-danger"></i>Age
+                Calculator</a></li>
+            <li class="mb-2"><a href="javascript:void(0)" onclick="openTool('password')"
+                class="text-muted text-decoration-none"><i class="fas fa-key me-2 text-warning"></i>Password Gen</a>
+            </li>
+            <li class="mb-2"><a href="/video-to-mp3.html" class="text-muted text-decoration-none"><i
+                  class="fas fa-music me-2 text-primary"></i>Video to MP3</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3 col-6">
+          <h6 class="fw-bold mb-3">Guides & Articles</h6>
+          <ul class="list-unstyled small">
+            <li class="mb-2"><a href="/how-to-resize-photo-for-ssc-exam.html" class="text-muted text-decoration-none"><i
+                  class="fas fa-book-open me-2 text-primary"></i>How to Resize Photo for SSC</a></li>
+            <li class="mb-2"><a href="/emi-calculator-india-guide.html" class="text-muted text-decoration-none"><i
+                  class="fas fa-book-open me-2 text-success"></i>EMI Calculator Guide</a></li>
+            <li class="mb-2"><a href="/free-pdf-tools-online-india.html" class="text-muted text-decoration-none"><i
+                  class="fas fa-book-open me-2 text-danger"></i>Free PDF Tools Guide</a></li>
+            <li class="mb-2"><a href="/gst-calculator-india-guide.html" class="text-muted text-decoration-none"><i
+                  class="fas fa-book-open me-2 text-success"></i>GST Calculator Guide</a></li>
+            <li class="mb-2"><a href="/how-to-compress-image-online.html" class="text-muted text-decoration-none"><i
+                  class="fas fa-book-open me-2 text-info"></i>Image Compressor Guide</a></li>
+            <li class="mb-2"><a href="/age-calculator-guide.html" class="text-muted text-decoration-none"><i
+                  class="fas fa-book-open me-2 text-danger"></i>Age Calculator Guide</a></li>
+            <li class="mb-2"><a href="/image-to-text-guide.html" class="text-muted text-decoration-none"><i
+                  class="fas fa-book-open me-2 text-primary"></i>Image to Text Guide</a></li>
+            <li class="mb-2"><a href="/percentage-calculator-guide.html" class="text-muted text-decoration-none"><i
+                  class="fas fa-book-open me-2 text-warning"></i>Percentage Calculator Guide</a></li>
+            <li class="mb-2"><a href="/pdf-to-image-guide.html" class="text-muted text-decoration-none"><i
+                  class="fas fa-book-open me-2 text-info"></i>PDF to Image Guide</a></li>
+            <li class="mb-2"><a href="/student-gadgets.html" class="text-muted text-decoration-none"><i
+                  class="fas fa-shopping-cart me-2 text-warning"></i>Top Gadgets Under ₹1000</a></li>
+          </ul>
+        </div>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a href="/about.html" class="text-muted text-decoration-none"><i
+                class="fas fa-building me-2"></i>About Us</a></li>
+          <li class="mb-2"><a href="/contact.html" class="text-muted text-decoration-none"><i
+                class="fas fa-envelope me-2"></i>Contact Us</a></li>
+          <li class="mb-2"><a href="/privacy-policy.html" class="text-muted text-decoration-none"><i
+                class="fas fa-shield-halved me-2"></i>Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr class="my-4 opacity-25" />
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <p class="small text-muted mb-0">&copy; 2026 iLoveFastTools. All rights reserved. Made with <i
+          class="fas fa-heart text-danger"></i> in India.</p>
+      <div class="d-flex flex-wrap gap-3 align-items-center">
+        <a href="/privacy-policy.html" class="small text-muted text-decoration-none"><i
+            class="fas fa-shield-halved me-1 text-primary"></i>Privacy Policy</a>
+        <a href="/blog.html" class="small text-muted text-decoration-none"><i
+            class="fas fa-book-open me-1 text-primary"></i>Blog</a>
+        <a href="/about.html" class="small text-muted text-decoration-none"><i
+            class="fas fa-building me-1 text-primary"></i>About</a>
+        <a href="/contact.html" class="small text-muted text-decoration-none"><i
+            class="fas fa-envelope me-1 text-primary"></i>Contact</a>
+        <span class="small text-muted"><i class="fas fa-lock me-1 text-success"></i>SSL Secured</span>
+      </div>
+    </div>
+    </div>
+  </footer>
+
+  <!-- SCROLL TO TOP -->
+  <button id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- LOADER -->
+  <div id="loaderOverlay" class="d-none" style="display:none!important">
+    <div class="spinner-border text-primary" style="width:3rem;height:3rem" role="status"></div>
+    <h5 class="mt-3 fw-bold">Processing...</h5>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="gst-logic.js"></script>
+  <script src="image-logic.js"></script>
+  <script src="pdf-logic.js"></script>
+  <script src="tools-logic.js"></script>
+  <script src="wordToPdf-logic.js"></script>
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => { }));
+    }
+  </script>
+</body>
 </html>
