@@ -2,14 +2,24 @@
 <html lang="en">
 
 <head>
-  <script>
+<script>
+  // Force Clear Service Workers & Cache Storage
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for(let registration of registrations) {
+      for (let registration of registrations) {
         registration.unregister();
       }
     });
   }
+
+  if ('caches' in window) {
+    caches.keys().then(function(names) {
+      for (let name of names) {
+        caches.delete(name);
+      }
+    });
+  }
+</script>
 </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
