@@ -2,31 +2,83 @@
 // TOOL COUNT — update this single number when new tools are added
 const TOOL_COUNT = 23;
 
-const VALID_TOOLS = ["cash","resizer","age","pdf","compress","qrcode","pdfToImg","merge","split","pdfToWord","gst","removePages","wordCounter","password","base64","unitConverter","loremIpsum","emi","imageToText","percentage","caseConverter","stopwatch"];
+const VALID_TOOLS = [
+  "cash",
+  "resizer",
+  "age",
+  "pdf",
+  "compress",
+  "qrcode",
+  "pdfToImg",
+  "merge",
+  "split",
+  "pdfToWord",
+  "gst",
+  "removePages",
+  "wordCounter",
+  "password",
+  "base64",
+  "unitConverter",
+  "loremIpsum",
+  "emi",
+  "imageToText",
+  "percentage",
+  "caseConverter",
+  "stopwatch",
+];
 
 const TOOL_LABELS = {
-  cash:"Cash Counter", resizer:"Exam Resizer", age:"Age Calc", pdf:"Images→PDF",
-  compress:"Compressor", qrcode:"QR Code", pdfToImg:"PDF→Image",
-  merge:"Merge PDF", split:"Split PDF", pdfToWord:"PDF→Text",
-  gst:"GST Calc", removePages:"Remove Pages", wordCounter:"Word Counter",
-  password:"Password Gen", base64:"Base64", unitConverter:"Unit Conv", loremIpsum:"Lorem Ipsum",
-  emi:"EMI Calc", imageToText:"Image→Text", percentage:"% Calc", caseConverter:"Case Conv", stopwatch:"Stopwatch"
+  cash: "Cash Counter",
+  resizer: "Exam Resizer",
+  age: "Age Calc",
+  pdf: "Images→PDF",
+  compress: "Compressor",
+  qrcode: "QR Code",
+  pdfToImg: "PDF→Image",
+  merge: "Merge PDF",
+  split: "Split PDF",
+  pdfToWord: "PDF→Text",
+  gst: "GST Calc",
+  removePages: "Remove Pages",
+  wordCounter: "Word Counter",
+  password: "Password Gen",
+  base64: "Base64",
+  unitConverter: "Unit Conv",
+  loremIpsum: "Lorem Ipsum",
+  emi: "EMI Calc",
+  imageToText: "Image→Text",
+  percentage: "% Calc",
+  caseConverter: "Case Conv",
+  stopwatch: "Stopwatch",
 };
 const TOOL_ICONS = {
-  cash:"fas fa-calculator", resizer:"fas fa-id-card", age:"fas fa-birthday-cake",
-  pdf:"fas fa-file-pdf", compress:"fas fa-compress-arrows-alt", qrcode:"fas fa-qrcode",
-  pdfToImg:"fas fa-images", merge:"fas fa-object-group",
-  split:"fas fa-cut", pdfToWord:"fas fa-file-alt",
-  gst:"fas fa-file-invoice-dollar", removePages:"fas fa-file-signature",
-  wordCounter:"fas fa-font", password:"fas fa-key", base64:"fas fa-code",
-  unitConverter:"fas fa-ruler-combined", loremIpsum:"fas fa-align-left",
-  emi:"fas fa-home", imageToText:"fas fa-camera", percentage:"fas fa-percent",
-  caseConverter:"fas fa-text-height", stopwatch:"fas fa-stopwatch"
+  cash: "fas fa-calculator",
+  resizer: "fas fa-id-card",
+  age: "fas fa-birthday-cake",
+  pdf: "fas fa-file-pdf",
+  compress: "fas fa-compress-arrows-alt",
+  qrcode: "fas fa-qrcode",
+  pdfToImg: "fas fa-images",
+  merge: "fas fa-object-group",
+  split: "fas fa-cut",
+  pdfToWord: "fas fa-file-alt",
+  gst: "fas fa-file-invoice-dollar",
+  removePages: "fas fa-file-signature",
+  wordCounter: "fas fa-font",
+  password: "fas fa-key",
+  base64: "fas fa-code",
+  unitConverter: "fas fa-ruler-combined",
+  loremIpsum: "fas fa-align-left",
+  emi: "fas fa-home",
+  imageToText: "fas fa-camera",
+  percentage: "fas fa-percent",
+  caseConverter: "fas fa-text-height",
+  stopwatch: "fas fa-stopwatch",
 };
 
 function saveRecent(name) {
   let recent = JSON.parse(localStorage.getItem("stp_recent") || "[]");
-  recent = [name, ...recent.filter(t => t !== name)].slice(0, 5);
+  recent = [name, ...recent.filter((t) => t !== name)].slice(0, 5);
   localStorage.setItem("stp_recent", JSON.stringify(recent));
 }
 
@@ -35,15 +87,19 @@ function renderRecentBar() {
   const bar = document.getElementById("recentBar");
   const chips = document.getElementById("recentChips");
   if (!bar || !chips || recent.length === 0) return;
-  chips.innerHTML = recent.map(t =>
-    `<span class="recent-chip" onclick="openTool('${t}')"><i class="${TOOL_ICONS[t]||'fas fa-tools'} me-1"></i>${TOOL_LABELS[t]||t}</span>`
-  ).join("");
+  chips.innerHTML = recent
+    .map(
+      (t) =>
+        `<span class="recent-chip" onclick="openTool('${t}')"><i class="${TOOL_ICONS[t] || "fas fa-tools"} me-1"></i>${TOOL_LABELS[t] || t}</span>`,
+    )
+    .join("");
   bar.classList.remove("d-none");
 }
 
 window.addEventListener("load", () => {
   if (typeof pdfjsLib !== "undefined") {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
   }
   // Support ?tool=toolname for blog page links (works without .htaccess locally)
   const urlParams = new URLSearchParams(window.location.search);
@@ -51,9 +107,15 @@ window.addEventListener("load", () => {
   const path = location.pathname.replace(/^\//, "").replace(/\/$/, "");
   const toolToOpen = toolParam || path;
   if (VALID_TOOLS.includes(toolToOpen)) openTool(toolToOpen);
-  else { updateDynamicTitle(null); renderRecentBar(); }
+  else {
+    updateDynamicTitle(null);
+    renderRecentBar();
+  }
   const btn = document.getElementById("scrollTopBtn");
-  if (btn) window.addEventListener("scroll", () => btn.classList.toggle("visible", window.scrollY > 400));
+  if (btn)
+    window.addEventListener("scroll", () =>
+      btn.classList.toggle("visible", window.scrollY > 400),
+    );
 });
 
 window.addEventListener("popstate", (e) => {
@@ -69,63 +131,169 @@ window.addEventListener("popstate", (e) => {
 
 // ===== NOTIFY =====
 function showNotify(type, msg) {
-  if (type === "success") Swal.fire({icon:"success",title:"Done!",text:msg,confirmButtonColor:"#4f46e5"});
-  else if (type === "error") Swal.fire({icon:"error",title:"Error",text:msg,confirmButtonColor:"#dc3545"});
-  else Swal.mixin({toast:true,position:"top-end",showConfirmButton:false,timer:3000,timerProgressBar:true}).fire({icon:"info",title:msg});
+  if (type === "success")
+    Swal.fire({
+      icon: "success",
+      title: "Done!",
+      text: msg,
+      confirmButtonColor: "#4f46e5",
+    });
+  else if (type === "error")
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: msg,
+      confirmButtonColor: "#dc3545",
+    });
+  else
+    Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+    }).fire({ icon: "info", title: msg });
 }
 
 // ===== TITLE UPDATE =====
 const TOOL_META = {
-  cash:["Online Cash Counter & Denomination Calculator | iLoveFastTools","Calculate total cash with Indian currency denominations. Print professional receipts."],
-  resizer:["Exam Photo Resizer (20KB-50KB) for SSC, UPSC, Bank | iLoveFastTools","Resize photos for SSC, UPSC, IBPS exams. Compress to 20KB/50KB without quality loss."],
-  age:["Accurate Age Calculator by Date of Birth | iLoveFastTools","Calculate exact age in years, months, days. Perfect for govt job forms."],
-  pdf:["Images to PDF Converter | iLoveFastTools","Convert JPG, PNG, WEBP images into a single PDF instantly."],
-  compress:["Compress Image to 20KB & 50KB Online | iLoveFastTools","Reduce image file size without losing clarity. Best for exam portals."],
-  qrcode:["Free QR Code Generator | iLoveFastTools","Create custom QR codes for URL, text, UPI. Instant download."],
-  pdfToImg:["PDF to Image Converter Online | iLoveFastTools","Convert PDF pages into high-quality JPEG images securely."],
-  merge:["Merge PDF Files Online | iLoveFastTools","Combine multiple PDFs into one file securely."],
-  split:["Split PDF Pages Online | iLoveFastTools","Extract specific pages from PDF instantly."],
-  gst:["GST Calculator India - Add/Remove GST | iLoveFastTools","Calculate GST with CGST/SGST split. Free Indian GST tool."],
-  removePages:["Remove PDF Pages Online | iLoveFastTools","Delete specific pages from PDF with visual preview."],
-  pdfToWord:["PDF to Text Extractor Online | iLoveFastTools","Extract and edit text from any PDF file in your browser."],
-  wordCounter:["Word Counter & Text Analyzer Online | iLoveFastTools","Count words, characters, sentences and reading time instantly."],
-  password:["Strong Password Generator | iLoveFastTools","Generate secure random passwords with custom length and symbols."],
-  base64:["Base64 Encoder & Decoder Online | iLoveFastTools","Encode or decode Base64 text instantly in your browser."],
-  unitConverter:["Unit Converter | iLoveFastTools","Convert units of length, weight, temperature, area and speed."],
-  loremIpsum:["Lorem Ipsum Generator | iLoveFastTools","Generate Lorem Ipsum dummy text by words, sentences or paragraphs."],
-  emi:["EMI Calculator — Home, Car & Personal Loan | iLoveFastTools","Calculate monthly EMI for home loan, car loan, personal loan."],
-  imageToText:["Image to Text Converter (OCR) | iLoveFastTools","Extract text from any image or photo instantly."],
-  percentage:["Percentage Calculator | iLoveFastTools","Calculate percentage, marks percentage, discount. Free & instant."],
-  caseConverter:["Text Case Converter | iLoveFastTools","Convert text to UPPERCASE, lowercase, Title Case, camelCase instantly."],
-  stopwatch:["Online Stopwatch & Countdown Timer | iLoveFastTools","Free online stopwatch with lap times and countdown timer."],
+  cash: [
+    "Online Cash Counter & Denomination Calculator | iLoveFastTools",
+    "Calculate total cash with Indian currency denominations. Print professional receipts.",
+  ],
+  resizer: [
+    "Exam Photo Resizer (20KB-50KB) for SSC, UPSC, Bank | iLoveFastTools",
+    "Resize photos for SSC, UPSC, IBPS exams. Compress to 20KB/50KB without quality loss.",
+  ],
+  age: [
+    "Accurate Age Calculator by Date of Birth | iLoveFastTools",
+    "Calculate exact age in years, months, days. Perfect for govt job forms.",
+  ],
+  pdf: [
+    "Images to PDF Converter | iLoveFastTools",
+    "Convert JPG, PNG, WEBP images into a single PDF instantly.",
+  ],
+  compress: [
+    "Compress Image to 20KB & 50KB Online | iLoveFastTools",
+    "Reduce image file size without losing clarity. Best for exam portals.",
+  ],
+  qrcode: [
+    "Free QR Code Generator | iLoveFastTools",
+    "Create custom QR codes for URL, text, UPI. Instant download.",
+  ],
+  pdfToImg: [
+    "PDF to Image Converter Online | iLoveFastTools",
+    "Convert PDF pages into high-quality JPEG images securely.",
+  ],
+  merge: [
+    "Merge PDF Files Online | iLoveFastTools",
+    "Combine multiple PDFs into one file securely.",
+  ],
+  split: [
+    "Split PDF Pages Online | iLoveFastTools",
+    "Extract specific pages from PDF instantly.",
+  ],
+  gst: [
+    "GST Calculator India - Add/Remove GST | iLoveFastTools",
+    "Calculate GST with CGST/SGST split. Free Indian GST tool.",
+  ],
+  removePages: [
+    "Remove PDF Pages Online | iLoveFastTools",
+    "Delete specific pages from PDF with visual preview.",
+  ],
+  pdfToWord: [
+    "PDF to Text Extractor Online | iLoveFastTools",
+    "Extract and edit text from any PDF file in your browser.",
+  ],
+  wordCounter: [
+    "Word Counter & Text Analyzer Online | iLoveFastTools",
+    "Count words, characters, sentences and reading time instantly.",
+  ],
+  password: [
+    "Strong Password Generator | iLoveFastTools",
+    "Generate secure random passwords with custom length and symbols.",
+  ],
+  base64: [
+    "Base64 Encoder & Decoder Online | iLoveFastTools",
+    "Encode or decode Base64 text instantly in your browser.",
+  ],
+  unitConverter: [
+    "Unit Converter | iLoveFastTools",
+    "Convert units of length, weight, temperature, area and speed.",
+  ],
+  loremIpsum: [
+    "Lorem Ipsum Generator | iLoveFastTools",
+    "Generate Lorem Ipsum dummy text by words, sentences or paragraphs.",
+  ],
+  emi: [
+    "EMI Calculator — Home, Car & Personal Loan | iLoveFastTools",
+    "Calculate monthly EMI for home loan, car loan, personal loan.",
+  ],
+  imageToText: [
+    "Image to Text Converter (OCR) | iLoveFastTools",
+    "Extract text from any image or photo instantly.",
+  ],
+  percentage: [
+    "Percentage Calculator | iLoveFastTools",
+    "Calculate percentage, marks percentage, discount. Free & instant.",
+  ],
+  caseConverter: [
+    "Text Case Converter | iLoveFastTools",
+    "Convert text to UPPERCASE, lowercase, Title Case, camelCase instantly.",
+  ],
+  stopwatch: [
+    "Online Stopwatch & Countdown Timer | iLoveFastTools",
+    "Free online stopwatch with lap times and countdown timer.",
+  ],
 };
 
 function updateDynamicTitle(tool) {
   const meta = TOOL_META[tool];
   document.title = meta ? meta[0] : "iLoveFastTools - Free Online Tools";
   const tag = document.querySelector('meta[name="description"]');
-  if (tag) tag.setAttribute("content", meta ? meta[1] : "Free online tools: image resizer, PDF tools, GST calculator. 100% browser-based.");
+  if (tag)
+    tag.setAttribute(
+      "content",
+      meta
+        ? meta[1]
+        : "Free online tools: image resizer, PDF tools, GST calculator. 100% browser-based.",
+    );
 }
 
 // ===== NAVIGATION =====
 function openTool(name) {
-  ["toolsGrid","heroSection","statsSection","extraScreens","seoContent"].forEach(id => {
+  [
+    "toolsGrid",
+    "heroSection",
+    "statsSection",
+    "extraScreens",
+    "seoContent",
+  ].forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.classList.add("d-none");
   });
   const activeTool = document.getElementById("activeTool");
   const toolUI = document.getElementById("toolUI");
-  if (activeTool) { activeTool.classList.remove("d-none"); activeTool.removeAttribute("style"); }
-  if (location.pathname !== "/" + name) history.pushState({tool:name}, "", "/" + name);
+  if (activeTool) {
+    activeTool.classList.remove("d-none");
+    activeTool.removeAttribute("style");
+  }
+  if (location.pathname !== "/" + name)
+    history.pushState({ tool: name }, "", "/" + name);
   updateDynamicTitle(name);
   saveRecent(name);
   const canonical = document.getElementById("canonicalTag");
-  if (canonical) canonical.setAttribute("href", "https://ilovefasttools.in/" + name);
-  if (toolUI) { toolUI.innerHTML = ""; renderToolContent(name, toolUI); }
+  if (canonical)
+    canonical.setAttribute("href", "https://ilovefasttools.in/" + name);
+  if (toolUI) {
+    toolUI.innerHTML = "";
+    renderToolContent(name, toolUI);
+  }
   // Scroll to top of tool after render, not before
   requestAnimationFrame(() => {
     const activeTool = document.getElementById("activeTool");
-    if (activeTool) activeTool.scrollIntoView({behavior:"smooth", block:"start"});
+    if (activeTool)
+      activeTool.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 }
 
@@ -133,10 +301,16 @@ function goToDashboard() {
   const activeTool = document.getElementById("activeTool");
   const extraScreens = document.getElementById("extraScreens");
   const toolUI = document.getElementById("toolUI");
-  if (activeTool) { activeTool.classList.add("d-none"); activeTool.removeAttribute("style"); }
-  if (extraScreens) { extraScreens.classList.add("d-none"); extraScreens.removeAttribute("style"); }
+  if (activeTool) {
+    activeTool.classList.add("d-none");
+    activeTool.removeAttribute("style");
+  }
+  if (extraScreens) {
+    extraScreens.classList.add("d-none");
+    extraScreens.removeAttribute("style");
+  }
   if (toolUI) toolUI.innerHTML = "";
-  ["toolsGrid","heroSection","statsSection","seoContent"].forEach(id => {
+  ["toolsGrid", "heroSection", "statsSection", "seoContent"].forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.classList.remove("d-none");
   });
@@ -145,19 +319,32 @@ function goToDashboard() {
   renderRecentBar();
 }
 
-function showDashboard() { goToDashboard(); window.scrollTo(0,0); }
-function goBack() { goToDashboard(); }
+function showDashboard() {
+  goToDashboard();
+  window.scrollTo(0, 0);
+}
+function goBack() {
+  goToDashboard();
+}
 
 function filterByCategory(cat, el) {
-  document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
+  document
+    .querySelectorAll(".cat-pill")
+    .forEach((p) => p.classList.remove("active"));
   el.classList.add("active");
-  document.querySelectorAll(".tool-item").forEach(item => {
-    item.style.display = (cat === "all" || item.dataset.cat === cat) ? "" : "none";
+  document.querySelectorAll(".tool-item").forEach((item) => {
+    item.style.display =
+      cat === "all" || item.dataset.cat === cat ? "" : "none";
   });
   // Show/hide category boxes based on filter
-  document.querySelectorAll(".cat-box").forEach(box => {
-    if (cat === "all") { box.style.display = ""; return; }
-    const visible = Array.from(box.querySelectorAll(".tool-item")).some(i => i.style.display !== "none");
+  document.querySelectorAll(".cat-box").forEach((box) => {
+    if (cat === "all") {
+      box.style.display = "";
+      return;
+    }
+    const visible = Array.from(box.querySelectorAll(".tool-item")).some(
+      (i) => i.style.display !== "none",
+    );
     box.style.display = visible ? "" : "none";
   });
 }
@@ -166,19 +353,27 @@ function filterTools() {
   const q = document.getElementById("toolSearch").value.toLowerCase().trim();
   if (!q) {
     // Restore all
-    document.querySelectorAll(".tool-item").forEach(i => i.style.display = "");
-    document.querySelectorAll(".cat-box").forEach(b => b.style.display = "");
+    document
+      .querySelectorAll(".tool-item")
+      .forEach((i) => (i.style.display = ""));
+    document
+      .querySelectorAll(".cat-box")
+      .forEach((b) => (b.style.display = ""));
     return;
   }
   let found = 0;
-  document.querySelectorAll(".tool-item").forEach(item => {
-    const match = item.dataset.search.includes(q) || item.querySelector("h6").innerText.toLowerCase().includes(q);
+  document.querySelectorAll(".tool-item").forEach((item) => {
+    const match =
+      item.dataset.search.includes(q) ||
+      item.querySelector("h6").innerText.toLowerCase().includes(q);
     item.style.display = match ? "" : "none";
     if (match) found++;
   });
   // Hide empty category boxes
-  document.querySelectorAll(".cat-box").forEach(box => {
-    const visible = Array.from(box.querySelectorAll(".tool-item")).some(i => i.style.display !== "none");
+  document.querySelectorAll(".cat-box").forEach((box) => {
+    const visible = Array.from(box.querySelectorAll(".tool-item")).some(
+      (i) => i.style.display !== "none",
+    );
     box.style.display = visible ? "" : "none";
   });
 }
@@ -203,22 +398,21 @@ function infoBox(what, example) {
 function seoBlock(icon, color, title, paras) {
   return `<div class="mt-4 p-4 bg-white rounded-3 border shadow-sm">
     <h2 class="h5 fw-bold mb-3" style="color:${color}"><i class="${icon} me-2"></i>${title}</h2>
-    ${paras.map(p=>`<p class="small text-muted mb-2">${p}</p>`).join("")}
+    ${paras.map((p) => `<p class="small text-muted mb-2">${p}</p>`).join("")}
   </div>`;
 }
 
 // ===== RENDER TOOL CONTENT =====
 function renderToolContent(name, container) {
   const tpl = {
-
     cash: `${BACK}
       ${infoBox("Count Indian currency notes denomination-wise and get the total amount instantly. Enter how many notes you have of each denomination.", "₹500 × 5 notes = ₹2500<br>₹100 × 3 notes = ₹300<br><strong>Total = ₹2800</strong>")}
       <div class="tool-header"><h3><i class="fas fa-calculator me-2 text-success"></i>Cash Counter</h3><button class="btn btn-sm btn-outline-danger rounded-pill" onclick="resetCash()"><i class="fas fa-redo me-1"></i>Reset</button></div>
       <div class="row g-3 mt-1">
-        <div class="col-md-7"><div class="tool-panel">${[2000,500,200,100,50,20,10,5,2,1].map(n=>`<div class="denom-row"><span class="denom-label">₹${n}</span><input type="number" class="form-control input-premium flex-fill" id="note-${n}" oninput="calcCash()" placeholder="0" min="0"><span class="denom-result" id="res-${n}">₹0</span></div>`).join("")}</div></div>
+        <div class="col-md-7"><div class="tool-panel">${[2000, 500, 200, 100, 50, 20, 10, 5, 2, 1].map((n) => `<div class="denom-row"><span class="denom-label">₹${n}</span><input type="number" class="form-control input-premium flex-fill" id="note-${n}" oninput="calcCash()" placeholder="0" min="0"><span class="denom-result" id="res-${n}">₹0</span></div>`).join("")}</div></div>
         <div class="col-md-5"><div class="total-box"><div class="total-label">Total Amount</div><div class="total-amount">₹<span id="grandTotal">0</span></div><button class="btn btn-light fw-bold rounded-pill px-4 mt-3" onclick="handlePrint()"><i class="fas fa-print me-2 text-primary"></i>Print Receipt</button></div></div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-info-circle","#16a34a","About Cash Counter",["Count Indian currency notes denomination-wise — ₹2000, ₹500, ₹200, ₹100, ₹50, ₹20, ₹10, ₹5, ₹2, and ₹1. Ideal for shopkeepers, accountants and bank staff.","Enter the count for each note and get the grand total instantly. Print a professional cash receipt directly from the browser."])}`,
+      ${seoBlock("fas fa-info-circle", "#16a34a", "About Cash Counter", ["Count Indian currency notes denomination-wise — ₹2000, ₹500, ₹200, ₹100, ₹50, ₹20, ₹10, ₹5, ₹2, and ₹1. Ideal for shopkeepers, accountants and bank staff.", "Enter the count for each note and get the grand total instantly. Print a professional cash receipt directly from the browser."])}`,
 
     pdf: `${BACK}
       ${infoBox("Convert multiple JPG, PNG, or WEBP images into a single PDF file — useful for submitting scanned documents on govt portals.", "3 photos of your marksheet → select all 3 → click Generate → one PDF file ready to upload")}
@@ -233,7 +427,7 @@ function renderToolContent(name, container) {
       <div id="imgPreviewCount" class="small text-muted mt-2 text-center"></div>
       <div id="imgPreviewGrid" class="row g-2 mt-1"></div>
       <button class="btn-premium red mt-3" id="pdfBtn" onclick="generatePDF()"><i class="fas fa-magic me-2"></i>Generate PDF</button>${PRIVACY}
-      ${seoBlock("fas fa-file-pdf","#dc3545","Images to PDF Converter",["Convert multiple JPG, PNG, or WEBP images into a single PDF instantly. Perfect for submitting scanned documents, government form attachments, or combining photos into one PDF.","No file size limits, no watermarks, no uploads. 100% private."])}`,
+      ${seoBlock("fas fa-file-pdf", "#dc3545", "Images to PDF Converter", ["Convert multiple JPG, PNG, or WEBP images into a single PDF instantly. Perfect for submitting scanned documents, government form attachments, or combining photos into one PDF.", "No file size limits, no watermarks, no uploads. 100% private."])}`,
 
     resizer: `${BACK}
       ${infoBox("Resize your passport photo to the exact KB size required by SSC, UPSC, IBPS, or Railway exam portals — without losing visible quality.", "Your photo is 2MB → select 'Under 50KB' → download → file is now 48KB, ready to upload on SSC portal")}
@@ -265,7 +459,7 @@ function renderToolContent(name, container) {
           </div>
         </div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-id-card","#d97706","Exam Photo Resizer — SSC, UPSC, Bank Forms",["Automatically compress your photo to the exact size limit (20KB/50KB) without visible quality loss. Ready to upload on any exam portal.","Works for JPG, PNG, WEBP. No software needed. 100% free and private."])}`,
+      ${seoBlock("fas fa-id-card", "#d97706", "Exam Photo Resizer — SSC, UPSC, Bank Forms", ["Automatically compress your photo to the exact size limit (20KB/50KB) without visible quality loss. Ready to upload on any exam portal.", "Works for JPG, PNG, WEBP. No software needed. 100% free and private."])}`,
 
     merge: `${BACK}
       ${infoBox("Combine 2 or more PDF files into a single PDF — useful when a govt portal or college asks to submit all documents as one file.", "Resume.pdf + Marksheet.pdf + Aadhaar.pdf → Merge → All_Documents.pdf (1 file, ready to upload)")}
@@ -280,7 +474,7 @@ function renderToolContent(name, container) {
       <div id="mergeFileCount" class="small text-muted mt-2 text-center"></div>
       <div id="mergeFileList" class="mt-2"></div>
       <button class="btn-premium mt-3" id="mergeBtn" onclick="mergePDFs()"><i class="fas fa-layer-group me-2"></i>Merge & Download</button>${PRIVACY}
-      ${seoBlock("fas fa-object-group","#4f46e5","Merge PDF Files Online — Free & Secure",["Combine two or more PDF files into a single document in seconds. No file size limit, no watermark, no account required.","All merging happens locally in your browser using PDF-lib. Your files are never uploaded to any server."])}`,
+      ${seoBlock("fas fa-object-group", "#4f46e5", "Merge PDF Files Online — Free & Secure", ["Combine two or more PDF files into a single document in seconds. No file size limit, no watermark, no account required.", "All merging happens locally in your browser using PDF-lib. Your files are never uploaded to any server."])}`,
 
     split: `${BACK}
       ${infoBox("Extract a specific range of pages from a PDF and save as a new file — useful when you need only a few pages from a large document.", "50-page PDF, you need pages 10 to 15 → enter From: 10, To: 15 → download → 6-page PDF")}
@@ -298,7 +492,7 @@ function renderToolContent(name, container) {
         <div class="col-6"><label class="form-label fw-bold small">To Page</label><input type="number" id="endPage" class="form-control input-premium" placeholder="3" min="1"></div>
       </div>
       <button class="btn-premium orange mt-3" id="splitBtn" onclick="splitPDF()"><i class="fas fa-file-export me-2"></i>Split & Download</button>${PRIVACY}
-      ${seoBlock("fas fa-cut","#d97706","Split PDF — Extract Specific Pages",["Extract a specific page range from any PDF and download it as a new file. Fast, free, and completely private — no uploads, no registration."])}`,
+      ${seoBlock("fas fa-cut", "#d97706", "Split PDF — Extract Specific Pages", ["Extract a specific page range from any PDF and download it as a new file. Fast, free, and completely private — no uploads, no registration."])}`,
 
     compress: `${BACK}
       ${infoBox("Reduce the file size of any JPG, PNG, or WEBP image by adjusting quality — no visible difference at 70%+ quality.", "5MB photo → set quality 70% → compress → 180KB photo, same clarity, ready for email or WhatsApp")}
@@ -326,7 +520,7 @@ function renderToolContent(name, container) {
         </div>
       </div>
       <button class="btn-premium info mt-3" onclick="compressImage()"><i class="fas fa-download me-2"></i>Compress & Download</button>${PRIVACY}
-      ${seoBlock("fas fa-compress-arrows-alt","#0891b2","Image Compressor — Reduce File Size Online",["Compress JPG, PNG, or WEBP images without losing visible quality. Ideal for exam portals, websites, WhatsApp, or email.","All compression runs in your browser using HTML5 Canvas API. No server, no upload, 100% private."])}`,
+      ${seoBlock("fas fa-compress-arrows-alt", "#0891b2", "Image Compressor — Reduce File Size Online", ["Compress JPG, PNG, or WEBP images without losing visible quality. Ideal for exam portals, websites, WhatsApp, or email.", "All compression runs in your browser using HTML5 Canvas API. No server, no upload, 100% private."])}`,
 
     qrcode: `${BACK}
       ${infoBox("Generate a scannable QR code for any URL, UPI ID, phone number, or text — download as PNG and print or share.", "Your UPI ID: manav@okaxis → paste it → Generate → QR image ready → print on shop counter for payments")}
@@ -337,7 +531,7 @@ function renderToolContent(name, container) {
         <button class="btn-premium dark" onclick="generateQR()"><i class="fas fa-qrcode me-2"></i>Generate QR Code</button>
       </div>
       <div id="qrResult" class="text-center mt-4"></div>${PRIVACY}
-      ${seoBlock("fas fa-qrcode","#1e293b","Free QR Code Generator",["Generate QR codes for URL, UPI ID, text, phone number — instantly, for free, 100% browser-based. Download as PNG.","No sign-up required. Works on all devices — mobile, tablet, and desktop."])}`,
+      ${seoBlock("fas fa-qrcode", "#1e293b", "Free QR Code Generator", ["Generate QR codes for URL, UPI ID, text, phone number — instantly, for free, 100% browser-based. Download as PNG.", "No sign-up required. Works on all devices — mobile, tablet, and desktop."])}`,
 
     pdfToImg: `${BACK}
       ${infoBox("Convert every page of a PDF into separate JPG images — useful when you need to share individual pages as photos.", "10-page PDF → Extract → 10 JPG images, one per page → download all as ZIP or save individually")}
@@ -353,7 +547,7 @@ function renderToolContent(name, container) {
       <button class="btn-premium info mt-3" id="pdfImgBtn" onclick="convertPdfToImg()"><i class="fas fa-images me-2"></i>Extract All Pages</button>
       <button class="btn-premium green mt-2 d-none" id="downloadAllBtn" onclick="downloadAllAsZip()"><i class="fas fa-file-archive me-2"></i>Download All as ZIP</button>
       <div id="pdfPreview" class="row g-3 mt-3"></div>${PRIVACY}
-      ${seoBlock("fas fa-images","#0891b2","PDF to Image Converter — Extract Pages as JPG",["Convert every page of a PDF into high-quality JPEG images. Download all pages as ZIP or save individually.","Powered by PDF.js — runs entirely in your browser. No file upload, no data stored."])}`,
+      ${seoBlock("fas fa-images", "#0891b2", "PDF to Image Converter — Extract Pages as JPG", ["Convert every page of a PDF into high-quality JPEG images. Download all pages as ZIP or save individually.", "Powered by PDF.js — runs entirely in your browser. No file upload, no data stored."])}`,
 
     pdfToWord: `${BACK}
       ${infoBox("Extract all readable text from a PDF file so you can copy, edit, or save it as a text file — works on digital PDFs (not scanned images).", "Bank statement PDF → Extract Text → editable text with all transaction details → download as .txt")}
@@ -404,7 +598,7 @@ function renderToolContent(name, container) {
           <span class="text-white fw-bold" style="font-size:1.4rem">₹<span id="resTotal">0</span></span>
         </div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-file-invoice-dollar","#16a34a","GST Calculator India — Add or Remove GST",["Calculate GST at 5%, 12%, 18%, or 28%. Shows CGST and SGST split automatically.","Use Add GST to find total price, or Remove GST to find base price. Trusted by Indian freelancers and small businesses."])}`,
+      ${seoBlock("fas fa-file-invoice-dollar", "#16a34a", "GST Calculator India — Add or Remove GST", ["Calculate GST at 5%, 12%, 18%, or 28%. Shows CGST and SGST split automatically.", "Use Add GST to find total price, or Remove GST to find base price. Trusted by Indian freelancers and small businesses."])}`,
 
     age: `${BACK}
       ${infoBox("Calculate your exact age in years, months, and days from your date of birth — set any cutoff date for govt exam eligibility check.", "DOB: 15 Jan 1995, Cutoff: 01 Jan 2026 → Age: 30 Years, 11 Months, 17 Days (eligible for SSC CGL)")}
@@ -428,7 +622,7 @@ function renderToolContent(name, container) {
           <div class="col-4"><div class="age-stat"><div class="age-val" id="totalDays">--</div><div class="age-lbl">Days</div></div></div>
         </div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-birthday-cake","#dc2626","Age Calculator — Exact Age for Government Forms",["Calculate exact age in years, months, and days. Set any target date — useful for SSC, UPSC, Railway exam cutoff dates."])}`,
+      ${seoBlock("fas fa-birthday-cake", "#dc2626", "Age Calculator — Exact Age for Government Forms", ["Calculate exact age in years, months, and days. Set any target date — useful for SSC, UPSC, Railway exam cutoff dates."])}`,
 
     removePages: `${BACK}
       ${infoBox("Visually select and delete specific pages from a PDF — see thumbnail previews before removing.", "20-page PDF has 3 blank pages at positions 5, 12, 18 → click those thumbnails → Remove → 17-page clean PDF")}
@@ -447,7 +641,7 @@ function renderToolContent(name, container) {
         <div class="form-text text-muted">Or click thumbnails above to select pages</div>
       </div>
       <button class="btn-premium red d-none" id="removeBtn" onclick="handleRemovePages()"><i class="fas fa-trash me-2"></i>Remove Selected & Download</button>${PRIVACY}
-      ${seoBlock("fas fa-file-signature","#dc2626","Remove PDF Pages — Delete Unwanted Pages",["Select and remove specific pages from any PDF. Visual thumbnail preview lets you see each page before deleting.","Runs entirely in your browser using PDF-lib. No uploads, no data stored."])}`,
+      ${seoBlock("fas fa-file-signature", "#dc2626", "Remove PDF Pages — Delete Unwanted Pages", ["Select and remove specific pages from any PDF. Visual thumbnail preview lets you see each page before deleting.", "Runs entirely in your browser using PDF-lib. No uploads, no data stored."])}`,
 
     wordCounter: `${BACK}
       ${infoBox("Count words, characters, sentences and estimate reading time for any text — useful for UPSC/SSC essays, articles, and social media posts.", "Paste your UPSC answer (250 words limit) → instantly see word count → trim if over limit before writing in answer sheet")}
@@ -459,7 +653,7 @@ function renderToolContent(name, container) {
         <div class="col-6 col-md-3"><div class="stat-badge" style="background:linear-gradient(135deg,#fff8f0,#fef3c7);border-color:#fde68a"><div class="stat-val" style="color:#d97706" id="wcSentences">0</div><div class="stat-lbl">Sentences</div></div></div>
         <div class="col-6 col-md-3"><div class="stat-badge" style="background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:#fecaca"><div class="stat-val" style="color:#dc2626" id="wcReadTime">0</div><div class="stat-lbl">Min Read</div></div></div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-font","#9333ea","Word Counter & Text Analyzer",["Count words, characters, sentences, and estimated reading time instantly. Useful for essays, UPSC/SSC answers, social media, and articles.","Works entirely in your browser — no data is sent anywhere."])}`,
+      ${seoBlock("fas fa-font", "#9333ea", "Word Counter & Text Analyzer", ["Count words, characters, sentences, and estimated reading time instantly. Useful for essays, UPSC/SSC answers, social media, and articles.", "Works entirely in your browser — no data is sent anywhere."])}`,
 
     password: `${BACK}
       ${infoBox("Generate a strong, random password with uppercase, lowercase, numbers and symbols — choose length from 8 to 64 characters.", "Length: 16, all options ON → generates: Kx#9mP2@qRtY7vLw → copy and save in your password manager")}
@@ -486,7 +680,7 @@ function renderToolContent(name, container) {
           <span id="pwdStrLabel" class="small fw-bold" style="min-width:50px"></span>
         </div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-key","#d97706","Strong Password Generator — Free & Secure",["Generate cryptographically random passwords. Choose any length from 8 to 64 characters with uppercase, lowercase, numbers, and symbols.","Passwords are generated entirely in your browser — never transmitted or stored anywhere."])}`,
+      ${seoBlock("fas fa-key", "#d97706", "Strong Password Generator — Free & Secure", ["Generate cryptographically random passwords. Choose any length from 8 to 64 characters with uppercase, lowercase, numbers, and symbols.", "Passwords are generated entirely in your browser — never transmitted or stored anywhere."])}`,
 
     base64: `${BACK}
       ${infoBox("Encode plain text to Base64 format or decode Base64 back to readable text — used by developers for APIs, data URLs, and debugging.", "Text: Hello World → Encode → SGVsbG8gV29ybGQ=<br>Or paste SGVsbG8gV29ybGQ= → Decode → Hello World")}
@@ -506,7 +700,7 @@ function renderToolContent(name, container) {
           <button class="btn btn-outline-secondary" onclick="navigator.clipboard.writeText(document.getElementById('b64Output').value);showNotify('info','Copied!')"><i class="fas fa-copy"></i></button>
         </div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-code","#7c3aed","Base64 Encoder & Decoder Online",["Encode plain text to Base64 or decode Base64 back to readable text. Used by developers for CSS image encoding, URL data, and API debugging.","Runs entirely in your browser — no server, no data logging."])}`,
+      ${seoBlock("fas fa-code", "#7c3aed", "Base64 Encoder & Decoder Online", ["Encode plain text to Base64 or decode Base64 back to readable text. Used by developers for CSS image encoding, URL data, and API debugging.", "Runs entirely in your browser — no server, no data logging."])}`,
 
     unitConverter: `${BACK}
       ${infoBox("Convert between units of length, weight, temperature, area and speed — instant results as you type.", "5 feet → meters: 1.524 m | 100°F → Celsius: 37.78°C | 10 km/h → mph: 6.21 mph")}
@@ -534,7 +728,7 @@ function renderToolContent(name, container) {
           </div>
         </div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-ruler-combined","#0d9488","Unit Converter — Length, Weight, Temperature & More",["Convert between length, weight, temperature, area, and speed units. Instant results as you type."])}`,
+      ${seoBlock("fas fa-ruler-combined", "#0d9488", "Unit Converter — Length, Weight, Temperature & More", ["Convert between length, weight, temperature, area, and speed units. Instant results as you type."])}`,
 
     loremIpsum: `${BACK}
       ${infoBox("Generate placeholder dummy text by words, sentences, or paragraphs — used by designers and developers to fill layouts before real content is ready.", "Select: Paragraphs, Count: 3 → Generate → 3 paragraphs of Lorem Ipsum text → copy and paste into your Figma/HTML design mockup")}
@@ -552,7 +746,7 @@ function renderToolContent(name, container) {
           <button class="btn btn-outline-secondary" onclick="navigator.clipboard.writeText(document.getElementById('loremOutput').value);showNotify('info','Copied!')"><i class="fas fa-copy"></i></button>
         </div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-align-left","#d97706","Lorem Ipsum Generator — Placeholder Text for Designers",["Generate Lorem Ipsum placeholder text by words, sentences, or paragraphs. Used by designers and developers to fill layouts."])}`,
+      ${seoBlock("fas fa-align-left", "#d97706", "Lorem Ipsum Generator — Placeholder Text for Designers", ["Generate Lorem Ipsum placeholder text by words, sentences, or paragraphs. Used by designers and developers to fill layouts."])}`,
 
     emi: `${BACK}
       ${infoBox("Calculate your monthly EMI for any loan — home, car, or personal. Shows total interest payable and month-by-month repayment schedule.", "Loan: ₹5,00,000 | Rate: 9% | Tenure: 60 months → EMI: ₹10,378/month | Total interest: ₹1,22,670")}
@@ -582,7 +776,7 @@ function renderToolContent(name, container) {
           </table>
         </div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-home","#16a34a","EMI Calculator — Home, Car & Personal Loan",["Calculate exact monthly EMI for any loan. Enter amount, interest rate, and tenure to get instant results with full amortization schedule.","100% free, no sign-up, instant calculation."])}`,
+      ${seoBlock("fas fa-home", "#16a34a", "EMI Calculator — Home, Car & Personal Loan", ["Calculate exact monthly EMI for any loan. Enter amount, interest rate, and tenure to get instant results with full amortization schedule.", "100% free, no sign-up, instant calculation."])}`,
 
     imageToText: `${BACK}
       ${infoBox("Extract editable text from any image or photo — works on screenshots, textbook photos, signboards, scanned documents. Powered by Tesseract OCR running in your browser.", "Photo of a printed letter → upload → OCR reads it → copy the extracted text → paste into Word or Google Docs")}
@@ -609,7 +803,7 @@ function renderToolContent(name, container) {
         </div>
         <button class="btn-premium mt-2" onclick="downloadOCRText()"><i class="fas fa-download me-2"></i>Download as .txt</button>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-camera","#4f46e5","Image to Text Converter — Free OCR Online",["Extract text from any image, screenshot, photo, or scanned document instantly. Powered by Tesseract.js — runs 100% in your browser.","No image is uploaded to any server."])}`,
+      ${seoBlock("fas fa-camera", "#4f46e5", "Image to Text Converter — Free OCR Online", ["Extract text from any image, screenshot, photo, or scanned document instantly. Powered by Tesseract.js — runs 100% in your browser.", "No image is uploaded to any server."])}`,
 
     percentage: `${BACK}
       ${infoBox("4 calculators in one — find X% of Y, calculate % increase/decrease, find marks percentage, and calculate discount price.", "Marks: 385 out of 500 → Marks %: 77%  |  Original price ₹2000, discount 25% → Final price: ₹1500 (Save ₹500)")}
@@ -656,7 +850,7 @@ function renderToolContent(name, container) {
           </div>
         </div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-percent","#d97706","Percentage Calculator — Marks, Discount & More",["4 calculators in one: find X% of Y, percentage increase/decrease, marks percentage, and discount price. Instant results."])}`,
+      ${seoBlock("fas fa-percent", "#d97706", "Percentage Calculator — Marks, Discount & More", ["4 calculators in one: find X% of Y, percentage increase/decrease, marks percentage, and discount price. Instant results."])}`,
 
     caseConverter: `${BACK}
       ${infoBox("Convert any text to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, or snake_case with one click — no retyping needed.", "Input: 'hello world from india' → Title Case → 'Hello World From India'  |  camelCase → 'helloWorldFromIndia'")}
@@ -677,7 +871,7 @@ function renderToolContent(name, container) {
           <button class="btn btn-outline-secondary" onclick="navigator.clipboard.writeText(document.getElementById('caseOutput').value);showNotify('success','Copied!')"><i class="fas fa-copy"></i></button>
         </div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-text-height","#7c3aed","Text Case Converter — UPPERCASE, lowercase, camelCase",["Convert text to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, or snake_case with one click. Paste text, click format, copy result."])}`,
+      ${seoBlock("fas fa-text-height", "#7c3aed", "Text Case Converter — UPPERCASE, lowercase, camelCase", ["Convert text to UPPERCASE, lowercase, Title Case, Sentence case, camelCase, or snake_case with one click. Paste text, click format, copy result."])}`,
 
     stopwatch: `${BACK}
       ${infoBox("A precise stopwatch with lap recording + a countdown timer — both in one tool. Use for workouts, cooking, study sessions (Pomodoro), or any timed activity.", "Pomodoro study: set timer 25 min → Study → Start → timer beeps → take 5 min break. Lap feature records each session time.")}
@@ -710,10 +904,12 @@ function renderToolContent(name, container) {
           </div>
         </div>
       </div>${PRIVACY}
-      ${seoBlock("fas fa-stopwatch","#dc2626","Online Stopwatch & Countdown Timer",["Precise stopwatch with lap time recording, plus a countdown timer. Works on mobile and desktop.","No app download needed. Free forever."])}`,
+      ${seoBlock("fas fa-stopwatch", "#dc2626", "Online Stopwatch & Countdown Timer", ["Precise stopwatch with lap time recording, plus a countdown timer. Works on mobile and desktop.", "No app download needed. Free forever."])}`,
   };
 
-  container.innerHTML = tpl[name] || `${BACK}<div class="text-center py-5"><i class="fas fa-tools fa-3x text-muted mb-3"></i><h5>Tool not found</h5></div>`;
+  container.innerHTML =
+    tpl[name] ||
+    `${BACK}<div class="text-center py-5"><i class="fas fa-tools fa-3x text-muted mb-3"></i><h5>Tool not found</h5></div>`;
 
   if (name === "unitConverter") updateUnitOptions();
   if (name === "stopwatch") initStopwatch();
