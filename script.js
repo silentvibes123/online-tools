@@ -66,8 +66,6 @@ window.addEventListener("popstate", (e) => {
     else goToDashboard();
   }
 });
-  else goToDashboard();
-});
 
 // ===== NOTIFY =====
 function showNotify(type, msg) {
