@@ -2,52 +2,61 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Homepage -->
-  <url><loc>https://ilovefasttools.in/</loc><lastmod>2026-06-01</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url>
+    <loc>https://ilovefasttools.in/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
 
-  <!-- Tool Pages (SPA routes — served by index.html) -->
-  <url><loc>https://ilovefasttools.in/pdfToImg</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/pdfToWord</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ilovefasttools.in/split</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/removePages</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ilovefasttools.in/cash</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/gst</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ilovefasttools.in/emi</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ilovefasttools.in/age</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/qrcode</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/password</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/base64</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ilovefasttools.in/unitConverter</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ilovefasttools.in/loremIpsum</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ilovefasttools.in/imageToText</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/percentage</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/caseConverter</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ilovefasttools.in/stopwatch</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <!-- Tool Pages -->
+  <url><loc>https://ilovefasttools.in/resizer</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/compress</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/pdf</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/pdfToImg</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/pdfToWord</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ilovefasttools.in/merge</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/split</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/removePages</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ilovefasttools.in/cash</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/gst</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ilovefasttools.in/emi</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ilovefasttools.in/age</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/qrcode</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/wordCounter</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/password</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/base64</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ilovefasttools.in/unitConverter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ilovefasttools.in/loremIpsum</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ilovefasttools.in/imageToText</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/percentage</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/caseConverter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ilovefasttools.in/stopwatch</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
   <!-- Standalone Pages -->
-  <url><loc>https://ilovefasttools.in/blog.html</loc><lastmod>2026-09-06</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ilovefasttools.in/video-to-mp3.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/about.html</loc><lastmod>2026-06-01</lastmod><changefreq>yearly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://ilovefasttools.in/contact.html</loc><lastmod>2026-06-01</lastmod><changefreq>yearly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://ilovefasttools.in/privacy-policy.html</loc><lastmod>2026-06-01</lastmod><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://ilovefasttools.in/student-gadgets.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ilovefasttools.in/blog.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ilovefasttools.in/video-to-mp3.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/about.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ilovefasttools.in/contact.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://ilovefasttools.in/privacy-policy.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://ilovefasttools.in/student-gadgets.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- Guide Pages -->
-  <url><loc>https://ilovefasttools.in/how-to-resize-photo-for-ssc-exam.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ilovefasttools.in/how-to-compress-image-online.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ilovefasttools.in/emi-calculator-india-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://ilovefasttools.in/gst-calculator-india-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/free-pdf-tools-online-india.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/free-online-pdf-merger-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/how-to-merge-pdf-online.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/image-to-pdf-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/age-calculator-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/qr-code-generator-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/password-generator-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/word-counter-online-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/online-cash-counter-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ilovefasttools.in/video-to-mp3-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://ilovefasttools.in/image-to-text-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/percentage-calculator-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://ilovefasttools.in/pdf-to-image-guide.html</loc><lastmod>2026-06-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/how-to-resize-photo-for-ssc-exam.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ilovefasttools.in/how-to-compress-image-online.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ilovefasttools.in/emi-calculator-india-guide.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ilovefasttools.in/gst-calculator-india-guide.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/free-pdf-tools-online-india.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/free-online-pdf-merger-guide.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/how-to-merge-pdf-online.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/image-to-pdf-guide.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/age-calculator-guide.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/qr-code-generator-guide.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/password-generator-guide.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/word-counter-online-guide.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/online-cash-counter-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ilovefasttools.in/video-to-mp3-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ilovefasttools.in/image-to-text-guide.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/percentage-calculator-guide.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ilovefasttools.in/pdf-to-image-guide.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 
 </urlset>
