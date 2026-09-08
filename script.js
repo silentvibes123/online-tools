@@ -59,6 +59,13 @@ window.addEventListener("load", () => {
 window.addEventListener("popstate", (e) => {
   if (e.state && e.state.tool) openTool(e.state.tool);
   else if (e.state && e.state.page) showExtra(e.state.page);
+  else {
+    // If no state but we're on a valid tool path, open that tool
+    const path = location.pathname.replace(/^\//, "").replace(/\/$/, "");
+    if (VALID_TOOLS.includes(path)) openTool(path);
+    else goToDashboard();
+  }
+});
   else goToDashboard();
 });
 
