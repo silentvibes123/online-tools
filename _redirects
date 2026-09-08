@@ -1,27 +1,2 @@
-# iLoveFastTools — Cloudflare Pages Routing
-# 200 = SPA rewrite (serves index.html content at the clean URL, no redirect)
-# Physical .html files (guides, blog, about, contact, etc.) are served directly by Cloudflare
-
-# SPA Tool Routes — rewrite to index.html
-/resizer        /index.html     200
-/compress       /index.html     200
-/pdf            /index.html     200
-/pdfToImg       /index.html     200
-/merge          /index.html     200
-/split          /index.html     200
-/removePages    /index.html     200
-/pdfToWord      /index.html     200
-/cash           /index.html     200
-/gst            /index.html     200
-/age            /index.html     200
-/qrcode         /index.html     200
-/wordCounter    /index.html     200
-/password       /index.html     200
-/base64         /index.html     200
-/unitConverter  /index.html     200
-/loremIpsum     /index.html     200
-/emi            /index.html     200
-/imageToText    /index.html     200
-/percentage     /index.html     200
-/caseConverter  /index.html     200
-/stopwatch      /index.html     200
+# iLoveFastTools — Cloudflare Pages SPA Rewrite Rule
+/*    /index.html   200
