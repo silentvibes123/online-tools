@@ -400,7 +400,7 @@ function showHeartBreak() {
 
   setTimeout(() => {
     heartBreakAnimation.classList.add("hidden");
-  }, 2500);
+  }, 1500);
 }
 
 // -----------------------------------------
