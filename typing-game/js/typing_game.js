@@ -187,9 +187,15 @@ function syncTypingGameViewport() {
     return;
   }
 
+  const gameContainer = wordArea.closest(".game-container");
+
+  if (!gameContainer) {
+    return;
+  }
+
   // Desktop ko bilkul touch nahi karna
   if (window.innerWidth > 600) {
-    wordArea.parentElement.style.removeProperty("--typing-game-height");
+    gameContainer.style.removeProperty("--typing-game-height");
     return;
   }
 
@@ -199,34 +205,18 @@ function syncTypingGameViewport() {
     return;
   }
 
-  const gameContainer = wordArea.closest(".game-container");
-
-  if (!gameContainer) {
-    return;
-  }
-
   const gameRect = gameContainer.getBoundingClientRect();
 
-  /*
-   * Actual visible bottom of the browser viewport.
-   * This becomes smaller when the mobile keyboard opens.
-   */
+  // Keyboard open hone par visible viewport ka bottom
   const visibleBottom = viewport.height + viewport.offsetTop;
 
-  /*
-   * Space available for the game from its current
-   * position until the visible viewport bottom.
-   */
+  // Game ke top se visible bottom tak available space
   let availableHeight = visibleBottom - gameRect.top - 10;
 
-  /*
-   * Keep enough space for the game UI.
-   */
+  // Input + danger line + word ke liye minimum usable height
   availableHeight = Math.max(360, availableHeight);
 
-  /*
-   * Never make the game larger than its normal mobile height.
-   */
+  // Normal mobile game height se bada nahi hone dena
   availableHeight = Math.min(570, availableHeight);
 
   gameContainer.style.setProperty(
@@ -244,36 +234,28 @@ function focusTypingInput() {
     return;
   }
 
+  // Mobile
   if (window.innerWidth <= 600) {
     const currentScrollY = window.scrollY;
 
-    /*
-     * preventScroll stops the browser from automatically
-     * jumping the whole page when the keyboard opens.
-     */
     try {
       typingInput.focus({
         preventScroll: true,
       });
     } catch {
-      focusTypingInput();
+      typingInput.focus();
     }
 
     syncTypingGameViewport();
 
-    /*
-     * Some mobile browsers scroll after the keyboard
-     * animation starts, so restore the original position.
-     */
+    // Browser ke automatic scroll ko prevent karo
     requestAnimationFrame(() => {
       window.scrollTo(0, currentScrollY);
-
       syncTypingGameViewport();
     });
 
     setTimeout(() => {
       window.scrollTo(0, currentScrollY);
-
       syncTypingGameViewport();
     }, 120);
 
@@ -284,8 +266,8 @@ function focusTypingInput() {
     return;
   }
 
-  // Desktop: normal behavior
-  focusTypingInput();
+  // Desktop
+  typingInput.focus();
 }
 
 // -----------------------------------------
