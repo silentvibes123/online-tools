@@ -178,6 +178,131 @@ let animationFrame = null;
 let gameRunning = false;
 
 let levelTransitioning = false;
+// -----------------------------------------
+// MOBILE KEYBOARD / VIEWPORT HANDLER
+// -----------------------------------------
+
+function syncTypingGameViewport() {
+  if (!wordArea) {
+    return;
+  }
+
+  // Desktop ko bilkul touch nahi karna
+  if (window.innerWidth > 600) {
+    wordArea.parentElement.style.removeProperty("--typing-game-height");
+    return;
+  }
+
+  const viewport = window.visualViewport;
+
+  if (!viewport) {
+    return;
+  }
+
+  const gameContainer = wordArea.closest(".game-container");
+
+  if (!gameContainer) {
+    return;
+  }
+
+  const gameRect = gameContainer.getBoundingClientRect();
+
+  /*
+   * Actual visible bottom of the browser viewport.
+   * This becomes smaller when the mobile keyboard opens.
+   */
+  const visibleBottom = viewport.height + viewport.offsetTop;
+
+  /*
+   * Space available for the game from its current
+   * position until the visible viewport bottom.
+   */
+  let availableHeight = visibleBottom - gameRect.top - 10;
+
+  /*
+   * Keep enough space for the game UI.
+   */
+  availableHeight = Math.max(360, availableHeight);
+
+  /*
+   * Never make the game larger than its normal mobile height.
+   */
+  availableHeight = Math.min(570, availableHeight);
+
+  gameContainer.style.setProperty(
+    "--typing-game-height",
+    `${availableHeight}px`,
+  );
+}
+
+// -----------------------------------------
+// MOBILE-SAFE INPUT FOCUS
+// -----------------------------------------
+
+function focusTypingInput() {
+  if (!typingInput) {
+    return;
+  }
+
+  if (window.innerWidth <= 600) {
+    const currentScrollY = window.scrollY;
+
+    /*
+     * preventScroll stops the browser from automatically
+     * jumping the whole page when the keyboard opens.
+     */
+    try {
+      typingInput.focus({
+        preventScroll: true,
+      });
+    } catch {
+      focusTypingInput();
+    }
+
+    syncTypingGameViewport();
+
+    /*
+     * Some mobile browsers scroll after the keyboard
+     * animation starts, so restore the original position.
+     */
+    requestAnimationFrame(() => {
+      window.scrollTo(0, currentScrollY);
+
+      syncTypingGameViewport();
+    });
+
+    setTimeout(() => {
+      window.scrollTo(0, currentScrollY);
+
+      syncTypingGameViewport();
+    }, 120);
+
+    setTimeout(() => {
+      syncTypingGameViewport();
+    }, 350);
+
+    return;
+  }
+
+  // Desktop: normal behavior
+  focusTypingInput();
+}
+
+// -----------------------------------------
+// LISTEN FOR MOBILE KEYBOARD RESIZE
+// -----------------------------------------
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", syncTypingGameViewport);
+
+  window.visualViewport.addEventListener("scroll", syncTypingGameViewport);
+}
+
+window.addEventListener("resize", syncTypingGameViewport);
+
+window.addEventListener("orientationchange", () => {
+  setTimeout(syncTypingGameViewport, 250);
+});
 
 // -----------------------------------------
 // GAME STATISTICS
@@ -630,7 +755,7 @@ function moveWords() {
 
         spawnReplacementWord();
 
-        typingInput.focus();
+        focusTypingInput();
       }, 250);
     }
   }
@@ -723,7 +848,8 @@ function startGame() {
   // ---------------------------------------
 
   setTimeout(() => {
-    typingInput.focus();
+    focusTypingInput();
+    syncTypingGameViewport();
   }, 100);
 
   // ---------------------------------------
@@ -955,7 +1081,7 @@ function completeWord(wordObject) {
       createWord();
     }
 
-    typingInput.focus();
+    focusTypingInput();
   }, 250);
 }
 
@@ -1160,7 +1286,7 @@ function completeLevel() {
 
     startMovement();
 
-    typingInput.focus();
+    focusTypingInput();
   }, 2500);
 }
 

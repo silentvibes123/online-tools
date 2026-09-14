@@ -1888,3 +1888,59 @@ body {
     color: #b8b8d9;
     opacity: 1;
 }
+
+
+/* =========================================================
+   MOBILE KEYBOARD VIEWPORT FIX
+   Keeps the game visible above the on-screen keyboard
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    .typing-page {
+        min-height: 100dvh;
+    }
+
+    .game-container {
+        /*
+         * JS updates this value when the mobile keyboard opens.
+         * 570px remains the normal maximum height.
+         */
+        height: var(--typing-game-height, 570px);
+
+        min-height: 360px;
+        max-height: 570px;
+
+        transition: height 0.15s ease;
+    }
+
+    .game-screen {
+        height: 100%;
+    }
+
+    .word-area {
+        height: 100%;
+    }
+
+    /*
+     * Keep the input safely inside the visible game area.
+     */
+    .typing-area {
+        bottom: 20px;
+    }
+
+    /*
+     * Prevent browser scroll anchoring from jumping
+     * the page when the keyboard appears.
+     */
+    .game-container,
+    .game-screen,
+    .word-area {
+        overflow-anchor: none;
+    }
+}
