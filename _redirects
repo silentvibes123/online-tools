@@ -1,2 +1,4 @@
 # iLoveFastTools — Cloudflare Pages SPA Rewrite Rule
 /*    /index.html   200
+
+/typing-game    /typing-game/typing_game.html    200
