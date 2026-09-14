@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Typing Rush | iLoveFastTools</title>
+
+        <meta
+            name="description"
+            content="Play Typing Rush by iLoveFastTools. Type fast, save your hearts and beat your high score.">
+
+        <link rel="stylesheet" href="css/typing_game.css">
+    </head>
+
+    <body>
+
+        <main class="typing-page">
+
+            <!-- GAME HEADER -->
+            <header class="game-header">
+
+                <div class="game-brand">
+                    <span class="brand-icon">⚡</span>
+
+                    <div>
+                        <h1>Typing Rush</h1>
+                        <p>Type fast. Stay alive.</p>
+                    </div>
+                </div>
+
+                <div class="game-stats">
+
+                    <div class="stat-box">
+                        <span class="stat-label">SCORE</span>
+                        <strong id="score">0</strong>
+                    </div>
+
+                    <div class="stat-box">
+                        <span class="stat-label">LEVEL</span>
+                        <strong id="level">1</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">BEST</span>
+                        <strong id="best-score">0</strong>
+                    </div>
+
+                    <div class="hearts-box">
+                        <span class="stat-label">LIVES</span>
+
+                        <div id="hearts" class="hearts">
+                            <span>❤️</span>
+                            <span>❤️</span>
+                            <span>❤️</span>
+                            <span>❤️</span>
+                            <span>❤️</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+            <!-- GAME AREA -->
+            <section class="game-container">
+
+                <!-- START SCREEN -->
+                <div id="start-screen" class="start-screen">
+
+                    <div class="start-icon">⌨️</div>
+
+                    <h2>Typing Rush</h2>
+
+                    <p>
+                        Type the falling words before they reach
+                        the danger line.
+                    </p>
+
+                    <div class="game-rules">
+
+                        <div class="rule">
+                            <span>❤️</span>
+                            <p>You have 5 lives</p>
+                        </div>
+
+                        <div class="rule">
+                            <span>⚡</span>
+                            <p>Type words correctly to score</p>
+                        </div>
+
+                        <div class="rule">
+                            <span>💥</span>
+                            <p>Don't let words reach the line</p>
+                        </div>
+
+                    </div>
+
+                    <button id="play-button" class="play-button">
+                        <span>▶</span>
+                        PLAY GAME
+                    </button>
+
+                </div>
+                <!-- HEART BREAK ANIMATION -->
+                <div id="heart-break-animation" class="heart-break-animation hidden">
+                    <div class="broken-heart">💔</div>
+                    <div class="heart-break-text">LIFE LOST!</div>
+                </div>
+
+                <!-- ACTUAL GAME -->
+                <div id="game-screen" class="game-screen hidden">
+
+                    <!-- WORD AREA -->
+                    <div id="word-area" class="word-area">
+
+                        <!-- Temporary preview word -->
+
+                    </div>
+                    <!-- WORD BLAST EFFECTS -->
+                    <div id="word-blast-effects" class="word-blast-effects"></div>
+
+                    <!-- DANGER LINE -->
+                    <div class="danger-zone">
+
+                        <div class="danger-label">
+                            ⚠️ DANGER
+                        </div>
+
+                        <div class="danger-line"></div>
+
+                    </div>
+
+                    <!-- TYPING AREA -->
+                    <div class="typing-area">
+
+                        <div class="typing-label">
+                            TYPE THE WORD
+                        </div>
+
+                        <div class="typing-box">
+
+                            <input
+                                type="text"
+                                id="typing-input"
+                                autocomplete="off"
+                                autocorrect="off"
+                                autocapitalize="off"
+                                spellcheck="false"
+                                placeholder="Start typing...">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- GAME OVER SCREEN -->
+                <div id="game-over-screen" class="game-over-screen hidden">
+
+                    <div class="game-over-icon">💔</div>
+
+                    <h2>GAME OVER</h2>
+
+                    <p>The words got past your defenses!</p>
+
+                    <div class="final-score">
+
+                        <span>FINAL SCORE</span>
+
+                        <strong id="final-score">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <div class="result-stats">
+
+                        <div>
+                            <span>WORDS</span>
+                            <strong id="final-words">0</strong>
+                        </div>
+
+                        <div>
+                            <span>ACCURACY</span>
+                            <strong id="final-accuracy">0%</strong>
+                        </div>
+
+                    </div>
+
+                    <button id="restart-button" class="play-button">
+                        ↻ PLAY AGAIN
+                    </button>
+
+                </div>
+                <!-- LEVEL COMPLETE ANIMATION -->
+                <div id="level-complete-animation" class="level-complete-animation hidden">
+
+                    <div class="level-complete-icon">🏆</div>
+
+                    <div class="level-complete-title">
+                        LEVEL COMPLETE!
+                    </div>
+
+                    <div class="level-complete-level" id="completed-level">
+                        LEVEL 1
+                    </div>
+
+                    <div class="level-complete-score">
+                        SCORE: <strong id="level-complete-score">0</strong>
+                    </div>
+
+                    <div class="next-level-text">
+                        GET READY...
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="game-footer">
+
+                <span>❤️ iLoveFastTools</span>
+
+                <span>•</span>
+
+                <span>Typing Rush</span>
+
+            </footer>
+
+        </main>
+
+        <script src="js/word_bank.js"></script>
+        <script src="js/typing_game.js"></script>
+
+    </body>
+</html>
