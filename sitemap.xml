@@ -31,6 +31,7 @@
   <url><loc>https://ilovefasttools.in/percentage</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ilovefasttools.in/caseConverter</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://ilovefasttools.in/stopwatch</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ilovefasttools.in/typing-game/typing_game</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 
   <!-- Standalone Pages -->
   <url><loc>https://ilovefasttools.in/blog.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
