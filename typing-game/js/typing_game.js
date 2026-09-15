@@ -55,28 +55,28 @@ const levelSettings = {
     totalWords: 10,
     simultaneousWords: 1,
     words: WORD_BANK.easy,
-    speed: 0.6,
+    speed: 1,
   },
 
   2: {
     totalWords: 15,
     simultaneousWords: 1,
     words: WORD_BANK.normal,
-    speed: 0.68,
+    speed: 1.15,
   },
 
   3: {
     totalWords: 15,
     simultaneousWords: 1,
     words: WORD_BANK.medium,
-    speed: 0.76,
+    speed: 1.3,
   },
 
   4: {
     totalWords: 15,
     simultaneousWords: 2,
     words: WORD_BANK.hard,
-    speed: 0.84,
+    speed: 1.45,
   },
 };
 
