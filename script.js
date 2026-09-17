@@ -519,7 +519,7 @@ function renderToolContent(name, container) {
           </div>
         </div>
       </div>
-      <button class="btn-premium info mt-3" onclick="compressImage()"><i class="fas fa-download me-2"></i>Compress & Download</button>${PRIVACY}
+      <button class="btn-premium info mt-3" onclick="compressImage(); window.open('https://omg10.com/4/11823707')"><i class="fas fa-download me-2"></i>Compress & Download</button>${PRIVACY}
       ${seoBlock("fas fa-compress-arrows-alt", "#0891b2", "Image Compressor — Reduce File Size Online", ["Compress JPG, PNG, or WEBP images without losing visible quality. Ideal for exam portals, websites, WhatsApp, or email.", "All compression runs in your browser using HTML5 Canvas API. No server, no upload, 100% private."])}`,
 
     qrcode: `${BACK}
